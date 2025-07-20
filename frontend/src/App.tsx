@@ -3,7 +3,12 @@ import BankReconciliation from './pages/BankReconciliation'
 function App() {
 
 	return (
-		<FrappeProvider>
+		<FrappeProvider
+			swrConfig={{
+				errorRetryCount: 2
+			}}
+			socketPort={import.meta.env.VITE_SOCKET_PORT}
+			siteName={window.frappe?.boot?.sitename ?? import.meta.env.VITE_SITE_NAME}>
 			<BankReconciliation />
 		</FrappeProvider>
 	)

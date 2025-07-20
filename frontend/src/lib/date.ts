@@ -101,10 +101,7 @@ export const getDatesForTimePeriod = (
 
 const toUserTimezone = (timestamp: string) => {
 
-
-    // @ts-expect-error - Boot should be loaded
     const systemTimezone = window.frappe?.boot?.time_zone?.system
-    // @ts-expect-error - Boot should be loaded
     const userTimezone = window.frappe?.boot?.time_zone?.user
 
     if (systemTimezone && userTimezone) {

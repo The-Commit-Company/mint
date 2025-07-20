@@ -51,6 +51,7 @@ const BankPickerItem = ({ bank }: { bank: SelectedBank }) => {
 
     return <div
         role="button"
+        title={`Select ${bank.account_name}`}
         onClick={() => setSelectedBank(bank)}
         className={cn('rounded-md border-2 border-gray-200 min-w-80 relative p-2 bg-card overflow-hidden cursor-pointer',
             isSelected ? 'border-primary bg-primary-foreground' : 'hover:bg-gray-50'
@@ -74,7 +75,7 @@ const BankPickerItem = ({ bank }: { bank: SelectedBank }) => {
 
         <div className="absolute -top-1 right-0">
             <span className={cn("uppercase rounded-bl-sm text-xs tracking-tight font-semibold py-1 px-1.5",
-                isSelected ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground/70'
+                isSelected ? 'bg-primary text-primary-foreground' : 'bg-gray-200 text-secondary-foreground/70'
             )}>
                 {bank.account_type?.slice(0, 24)}
             </span>

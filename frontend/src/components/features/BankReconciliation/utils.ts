@@ -1,7 +1,7 @@
 import { bankRecDateAtom, bankRecSelectedTransactionAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
-import { useFrappeGetCall, useFrappeGetDocList, useFrappePostCall, useSWRConfig } from 'frappe-react-sdk'
+import { useFrappeGetCall, useFrappePostCall, useSWRConfig } from 'frappe-react-sdk'
 import { BankTransaction } from '@/types/Accounts/BankTransaction'
 import { BankAccount } from '@/types/Accounts/BankAccount'
 import dayjs from 'dayjs'
@@ -67,7 +67,7 @@ export type UnreconciledTransaction = Pick<BankTransaction, 'name' | 'date' | 'w
 export const useGetUnreconciledTransactions = () => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
     const dates = useAtomValue(bankRecDateAtom)
-    return useFrappeGetCall<{ message: UnreconciledTransaction[] }>('emotive_app.api.bank_reconciliation.bank_reconciliation.get_bank_transactions', {
+    return useFrappeGetCall<{ message: UnreconciledTransaction[] }>('maester.apis.transactions.get_bank_transactions', {
         bank_account: bankAccount?.name,
         from_date: dates.fromDate,
         to_date: dates.toDate
@@ -225,30 +225,27 @@ export const useReconcileTransaction = () => {
 
 }
 
+interface BankAccountWithCurrency extends Pick<BankAccount, 'name' | 'bank' | 'account_name' | 'account_type' | 'account_subtype' | 'bank_account_no' | 'last_integration_date'> {
+    account_currency?: string
+}
+
 export const useGetBankAccounts = (onSuccess?: (data?: Omit<SelectedBank, 'logo'>[]) => void, filterFn?: (bank: SelectedBank) => boolean) => {
 
-    const companyID = useCurrentCompany()
+    const company = useCurrentCompany()
 
-    const { data, isLoading, error } = useFrappeGetDocList<BankAccount>('Bank Account', {
-        filters: [
-            ['is_company_account', '=', 1],
-            ['company', '=', companyID],
-            ['disabled', '=', 0]
-        ],
-        orderBy: {
-            field: 'is_default',
-            order: 'desc'
-        },
-        fields: ['name', 'bank_account_no', 'bank', 'account_type', 'account', 'is_default', 'account_name', 'account_subtype', 'integration_id', 'last_integration_date']
+    const { data, isLoading, error } = useFrappeGetCall<{ message: BankAccountWithCurrency[] }>('maester.apis.bank_account.get_list', {
+        company: company
     }, undefined, {
         revalidateOnFocus: false,
         revalidateIfStale: false,
-        onSuccess: onSuccess
+        onSuccess: (data) => {
+            onSuccess?.(data?.message)
+        }
     })
 
     const banks = useMemo(() => {
         // Match the bank account to the logo
-        const banksWithLogos = data?.map((bank) => {
+        const banksWithLogos = data?.message.map((bank) => {
             const logo = BANK_LOGOS.find((logo) => logo.keywords.some((keyword) => bank.bank?.toLowerCase().includes(keyword.toLowerCase())))
             return {
                 ...bank,
