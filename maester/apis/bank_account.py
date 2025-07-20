@@ -14,7 +14,7 @@ def get_list(company: str, show_disabled: bool = False):
              .join(account)
              .on(bank_account.account == account.name)
              .select(bank_account.name, account.account_currency,
-                     bank_account.account,
+                     bank_account.account, bank_account.company,
                      bank_account.account_name, bank_account.is_default,
                      bank_account.bank, bank_account.account_type,
                      bank_account.account_subtype, bank_account.bank_account_no,

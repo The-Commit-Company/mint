@@ -12,6 +12,8 @@ import { H4, Paragraph } from "@/components/ui/typography"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 import { Input } from "@/components/ui/input"
 import CurrencyInput from 'react-currency-input-field'
+import { getCompanyCurrency } from "@/lib/company"
+import { getCurrencySymbol } from "@/lib/currency"
 
 const BankBalance = () => {
 
@@ -35,15 +37,17 @@ const BankBalance = () => {
 }
 
 const OpeningBalance = () => {
+    const bankAccount = useAtomValue(selectedBankAccountAtom)
     const { data, isLoading } = useGetAccountOpeningBalance()
 
     return <StatContainer className="min-w-48">
         <StatLabel>Opening Balance</StatLabel>
-        {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue>{formatCurrency(data?.message)}</StatValue>}
+        {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue>{formatCurrency(data?.message, bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
     </StatContainer>
 }
 
 const ClosingBalance = () => {
+    const bankAccount = useAtomValue(selectedBankAccountAtom)
     const { data, isLoading } = useGetAccountClosingBalance()
 
     return (
@@ -71,7 +75,7 @@ const ClosingBalance = () => {
                 </HoverCard>
 
             </div>
-            {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue>{formatCurrency(data?.message)}</StatValue>}
+            {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue>{formatCurrency(data?.message, bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
         </StatContainer>
     )
 }
@@ -80,18 +84,20 @@ const ClosingBalanceAsPerStatement = () => {
 
     const bankAccount = useAtomValue(selectedBankAccountAtom)
 
+    const currencySymbol = getCurrencySymbol(bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))
+
     const [value, setValue] = useAtom(bankRecClosingBalanceAtom(bankAccount?.name ?? ''))
 
     return <StatContainer>
         <StatLabel className="mb-1">Enter Closing Balance as per statement</StatLabel>
         <CurrencyInput
             groupSeparator=","
-            placeholder="$0.00"
+            placeholder={`${currencySymbol}0.00`}
             decimalsLimit={2}
             value={value.stringValue}
             maxLength={12}
             decimalScale={2}
-            prefix={'$'}
+            prefix={currencySymbol}
             onValueChange={(v, _n, values) => {
                 // If the input ends with a decimal or a decimal with trailing zeroes, store the string since we need the user to be able to type the decimals.
                 // When the user eventually types the decimals or blurs out, the value is formatted anyway.
@@ -120,9 +126,12 @@ const Difference = () => {
 
     const isError = difference !== 0
 
-    return <StatContainer className="w-fit text-right min-w-64">
+    return <StatContainer className="w-fit text-right sm:min-w-56">
         <StatLabel className="text-right">Difference</StatLabel>
-        {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue className={isError ? 'text-destructive' : ''}>{formatCurrency(difference)}</StatValue>}
+        {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue className={isError ? 'text-destructive' : ''}>
+            {formatCurrency(difference,
+                bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))
+            }</StatValue>}
     </StatContainer>
 }
 

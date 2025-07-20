@@ -4,7 +4,7 @@ import { atom } from "jotai";
 import { atomFamily } from "jotai/utils";
 import { UnreconciledTransaction } from "./utils";
 
-export interface SelectedBank extends Pick<BankAccount, 'name' | 'bank' | 'account_name' | 'bank_account_no' | 'account' | 'account_type' | 'integration_id' | 'is_default' | 'last_integration_date'> {
+export interface SelectedBank extends Pick<BankAccount, 'name' | 'bank' | 'company' | 'account_name' | 'bank_account_no' | 'account' | 'account_type' | 'integration_id' | 'is_default' | 'last_integration_date'> {
     logo?: string,
     account_currency?: string
 }
