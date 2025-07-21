@@ -8,10 +8,7 @@ import dayjs from 'dayjs'
 import { toast } from 'sonner'
 import { BANK_LOGOS } from './logos'
 import { getErrorMessage } from '@/lib/frappe'
-
-const useCurrentCompany = () => {
-    return 'The Commit Company'
-}
+import { useCurrentCompany } from '@/hooks/useCurrentCompany'
 
 export const useGetAccountOpeningBalance = () => {
 

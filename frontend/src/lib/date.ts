@@ -12,6 +12,12 @@ dayjs.extend(relativeTime);
 dayjs.extend(quarterOfYear);
 
 const FRAPPE_DATE_FORMAT = "YYYY-MM-DD"
+
+const getUserDateFormat = () => {
+
+    return window?.frappe?.boot?.user?.defaults?.date_format.toUpperCase() || window?.frappe.boot.sysdefaults.date_format.toUpperCase()
+
+}
 // const FRAPPE_DATETIME_FORMAT = "YYYY-MM-DD HH:mm:ss"
 
 export type TimePeriod = 'This Week' | 'This Month' | 'This Quarter' | 'This Year' | 'Last Week' | 'Last Month' | 'Last Quarter' | 'Last Year' | 'Date Range'
@@ -116,6 +122,18 @@ export const getTimeago = (date?: string) => {
     if (date) {
         const userDate = toUserTimezone(date)
         return userDate.fromNow()
+    }
+    return ''
+}
+
+export const formatDate = (date?: string, format?: string) => {
+
+    if (!format) {
+        format = getUserDateFormat()
+    }
+
+    if (date) {
+        return dayjs(date).format(format)
     }
     return ''
 }

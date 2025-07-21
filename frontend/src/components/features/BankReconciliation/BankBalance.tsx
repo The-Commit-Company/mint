@@ -161,7 +161,7 @@ const ReconcileProgress = () => {
             <span className="text-right font-medium text-sm">Your Progress: {reconciledCount} / {totalCount} reconciled</span>
         </div>
         <div className="w-full">
-            <Progress value={reconciledCount} max={totalCount} />
+            <Progress value={reconciledCount} max={totalCount ? totalCount : 100} />
         </div>
     </div>
 }

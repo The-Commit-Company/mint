@@ -52,3 +52,7 @@ export const getErrorMessages = (error?: FrappeError | null): ParsedErrorMessage
     return eMessages
 
 }
+
+export const slug = (name?: string) => {
+    return name?.toLowerCase().replace(/ /g, "-") ?? "";
+}
