@@ -68,7 +68,7 @@ const BankClearanceSummaryView = () => {
 
         <div>
             <Paragraph className="text-sm">
-                Below is a list of all entries posted against the bank account <strong>{bankAccount?.account}</strong> between <strong>{formattedFromDate}</strong> and <strong>{formattedToDate}</strong>.
+                Below is a list of all accounting entries posted against the bank account <strong>{bankAccount?.account}</strong> between <strong>{formattedFromDate}</strong> and <strong>{formattedToDate}</strong>.
             </Paragraph>
         </div>
 
@@ -79,7 +79,7 @@ const BankClearanceSummaryView = () => {
                 <TableCaption>Bank Clearance Summary</TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[100px]">Document Type</TableHead>
+                        <TableHead>Document Type</TableHead>
                         <TableHead>Payment Document</TableHead>
                         <TableHead>Posting Date</TableHead>
                         <TableHead>Cheque/Reference Number</TableHead>
@@ -92,7 +92,7 @@ const BankClearanceSummaryView = () => {
                 <TableBody>
                     {data.message.result.map((row: BankClearanceSummaryEntry) => (
                         <TableRow key={row.payment_entry}>
-                            <TableCell className="font-medium">{row.payment_document_type}</TableCell>
+                            <TableCell>{row.payment_document_type}</TableCell>
                             <TableCell><a target="_blank" className="underline underline-offset-4" href={`/app/${slug(row.payment_document_type)}/${row.payment_entry}`}>{row.payment_entry}</a></TableCell>
                             <TableCell>{formatDate(row.posting_date)}</TableCell>
                             <TableCell>{row.cheque_no}</TableCell>
@@ -116,7 +116,7 @@ const BankClearanceSummaryView = () => {
                 <AlertCircle />
                 <AlertTitle>No entries found</AlertTitle>
                 <AlertDescription>
-                    There are no entries in the system for the selected bank account and dates.
+                    There are no accounting entries in the system for the selected account and dates.
                 </AlertDescription>
             </Alert>
         }

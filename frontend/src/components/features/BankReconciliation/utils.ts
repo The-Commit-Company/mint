@@ -89,7 +89,7 @@ export interface LinkedPayment {
 export const useGetBankTransactions = () => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
     const dates = useAtomValue(bankRecDateAtom)
-    return useFrappeGetCall<{ message: BankTransaction[] }>('emotive_app.api.bank_reconciliation.bank_reconciliation.get_bank_transactions', {
+    return useFrappeGetCall<{ message: BankTransaction[] }>('maester.apis.transactions.get_bank_transactions', {
         bank_account: bankAccount?.name,
         from_date: dates.fromDate,
         to_date: dates.toDate,

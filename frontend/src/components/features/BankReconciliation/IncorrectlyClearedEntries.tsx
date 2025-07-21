@@ -119,7 +119,7 @@ const IncorrectlyClearedEntriesView = () => {
                 <TableBody>
                     {data.message.result.map((row: IncorrectlyClearedEntry) => (
                         <TableRow key={row.payment_entry}>
-                            <TableCell className="font-medium">{row.payment_document}</TableCell>
+                            <TableCell>{row.payment_document}</TableCell>
                             <TableCell><a target="_blank" className="underline underline-offset-4" href={`/app/${slug(row.payment_document)}/${row.payment_entry}`}>{row.payment_entry}</a></TableCell>
                             <TableCell className="text-right">{formatCurrency(row.debit, bankAccount?.account_currency ?? getCompanyCurrency(companyID))}</TableCell>
                             <TableCell className="text-right">{formatCurrency(row.credit, bankAccount?.account_currency ?? getCompanyCurrency(companyID))}</TableCell>
