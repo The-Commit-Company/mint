@@ -6,7 +6,8 @@ export type Summary = {
 }
 
 
-export interface QueryReportReturnType<T> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface QueryReportReturnType<T = any> {
     prepared_report: boolean,
     report_summary: Summary[],
     result: T[],

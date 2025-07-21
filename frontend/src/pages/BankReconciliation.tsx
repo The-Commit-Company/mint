@@ -1,6 +1,7 @@
 import BankBalance from "@/components/features/BankReconciliation/BankBalance"
 import BankClearanceSummary from "@/components/features/BankReconciliation/BankClearanceSummary"
 import BankPicker from "@/components/features/BankReconciliation/BankPicker"
+import BankReconciliationStatement from "@/components/features/BankReconciliation/BankReconciliationStatement"
 import BankTransactions from "@/components/features/BankReconciliation/BankTransactionList"
 import IncorrectlyClearedEntries from "@/components/features/BankReconciliation/IncorrectlyClearedEntries"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -38,7 +39,9 @@ const BankReconciliation = () => {
                     <TabsTrigger value="Incorrectly Cleared Entries">Incorrectly Cleared Entries</TabsTrigger>
                 </TabsList>
                 <TabsContent value="Match and Reconcile"></TabsContent>
-                <TabsContent value="Bank Reconciliation Statement"></TabsContent>
+                <TabsContent value="Bank Reconciliation Statement">
+                    <BankReconciliationStatement />
+                </TabsContent>
                 <TabsContent value="Bank Transactions">
                     <BankTransactions />
                 </TabsContent>
