@@ -1,4 +1,5 @@
 export const BANK_LOGOS: { keywords: string[], logo: string }[] = [
+    // US + International
     {
         keywords: ['American Express', 'Amex'],
         logo: 'assets/bank-logos/Amex.svg'
@@ -90,5 +91,74 @@ export const BANK_LOGOS: { keywords: string[], logo: string }[] = [
     {
         keywords: ['PlainsCapital', 'Plains Capital'],
         logo: 'assets/bank-logos/PlainsCapitalBank.png'
+    },
+    // India
+    {
+        keywords: ['HDFC Bank', 'HDFC'],
+        logo: 'assets/bank-logos/HDFC.svg'
+    },
+    {
+        keywords: ['ICICI Bank', 'ICICI'],
+        logo: 'assets/bank-logos/ICICI.svg'
+    },
+    {
+        keywords: ['SBI', 'State Bank of India'],
+        logo: 'assets/bank-logos/State_Bank_of_India.svg'
+    },
+    {
+        keywords: ['Punjab National Bank', 'PNB'],
+        logo: 'assets/bank-logos/Punjab_National_Bank.svg'
+    },
+    {
+        keywords: ['Union Bank of India', 'Union Bank'],
+        logo: 'assets/bank-logos/Union_Bank_of_India.svg'
+    },
+    {
+        keywords: ['Yes Bank', 'Yes'],
+        logo: 'assets/bank-logos/Yes_Bank.svg'
+    },
+    {
+        keywords: ['RBL Bank', 'RBL'],
+        logo: 'assets/bank-logos/RBL_Bank.svg'
+    },
+    {
+        keywords: ['Axis Bank', 'Axis'],
+        logo: 'assets/bank-logos/Axis_Bank.svg'
+    },
+    {
+        keywords: ['Bank of Baroda', 'BOB'],
+        logo: 'assets/bank-logos/Bank_of_Baroda.svg'
+    },
+    {
+        keywords: ['Bank of India', 'BOI'],
+        logo: 'assets/bank-logos/Bank_of_India.svg'
+    },
+    {
+        keywords: ['Bank of Maharashtra', 'BOM'],
+        logo: 'assets/bank-logos/Bank_of_Maharashtra.svg'
+    },
+    {
+        keywords: ['Kotak Mahindra Bank', 'Kotak'],
+        logo: 'assets/bank-logos/Kotak_Mahindra.svg'
+    },
+    {
+        keywords: ['IndusInd Bank', 'IndusInd'],
+        logo: 'assets/bank-logos/IndusInd_Bank.svg'
+    },
+    {
+        keywords: ['IDBI Bank', 'IDBI'],
+        logo: 'assets/bank-logos/IDBI_Bank.svg'
+    },
+    {
+        keywords: ['IDFC First Bank', 'IDFC First'],
+        logo: 'assets/bank-logos/IDFC_First_Bank.svg'
+    },
+    {
+        keywords: ['Federal Bank'],
+        logo: 'assets/bank-logos/Federal_Bank.svg'
+    },
+    {
+        keywords: ['Fi Bank'],
+        logo: 'assets/bank-logos/Fi_Bank.svg'
     }
 ]

@@ -60,7 +60,7 @@ const BankPickerItem = ({ bank }: { bank: SelectedBank }) => {
         {bank.logo ? <img
             src={`/assets/maester/maester/${bank.logo}`}
             alt={bank.bank || bank.name || ''}
-            className="w-18 h-10 object-contain"
+            className="max-w-24 object-left h-10 object-contain mb-1"
         /> : <div className="rounded-md flex items-center h-10 gap-2">
             <Landmark size={'30px'} />
             <H4 className="text-base mb-0">{bank.bank}</H4>
