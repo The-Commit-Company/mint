@@ -220,7 +220,7 @@ const UnreconciledTransactionItem = ({ transaction }: { transaction: Unreconcile
 
     return <div className="py-0.5">
         <div className={cn("border rounded-md m-1 p-2 cursor-pointer transition-[color,box-shadow, bg]",
-            isSelected ? "border-ring outline-ring outline-1 bg-ring/5" : "border-border outline-none bg-card hover:bg-accent/40"
+            isSelected ? "border-primary bg-primary-foreground outline-ring outline-1" : "border-border outline-none bg-card hover:bg-accent/40"
         )}
             role='button'
             tabIndex={0}
