@@ -1,0 +1,17 @@
+from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
+
+def after_install():
+
+    create_custom_fields({
+        "Bank Transaction Payments": [
+			{
+				"fieldname": "reconciliation_type",
+				"fieldtype": "Select",
+				"label": "Reconciliation Type",
+				"options": "Matched\nVoucher Created",
+				"insert_after": "clearance_date",
+				"read_only": 1,
+				"default": "Matched",
+			}
+		]
+        })

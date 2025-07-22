@@ -83,7 +83,7 @@ app_license = "agpl-3.0"
 # ------------
 
 # before_install = "maester.install.before_install"
-# after_install = "maester.install.after_install"
+after_install = "maester.setup.install.after_install"
 
 # Uninstallation
 # ------------
