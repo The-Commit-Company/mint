@@ -117,7 +117,7 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
         return "Loading..."
     }
 
-    return <div className="space-y-2">
+    return <div className="space-y-1">
         <div className="flex py-2 w-full gap-2">
             <label className="sr-only">Search transactions</label>
             <div className={cn("flex items-center gap-2 w-full rounded-md dark:bg-input/30 border-input border bg-transparent px-2 text-base shadow-xs transition-[color,box-shadow] outline-none",
