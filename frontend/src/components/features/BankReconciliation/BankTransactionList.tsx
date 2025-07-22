@@ -7,7 +7,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { formatCurrency } from "@/lib/numbers"
 import { getCompanyCurrency } from "@/lib/company"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { DollarSign, ExternalLink } from "lucide-react"
+import { CheckCircle2, DollarSign, ExternalLink, Undo2, XCircle } from "lucide-react"
 import ErrorBanner from "@/components/ui/error-banner"
 import { Badge } from "@/components/ui/badge"
 import { useGetBankTransactions } from "./utils"
@@ -68,27 +68,40 @@ const BankTransactionListView = () => {
                     {data.message.map((row: BankTransaction) => (
                         <TableRow key={row.name}>
                             <TableCell>{formatDate(row.date)}</TableCell>
-                            <TableCell><span title={row.description} className="line-clamp-1 text-ellipsis">{row.description}</span></TableCell>
+                            <TableCell className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap"><span title={row.description}>{row.description}</span></TableCell>
                             <TableCell>{row.reference_number}</TableCell>
                             <TableCell className="text-right">{formatCurrency(row.withdrawal, bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</TableCell>
                             <TableCell className="text-right">{formatCurrency(row.deposit, bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</TableCell>
                             <TableCell className="text-right">{formatCurrency(row.unallocated_amount, bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</TableCell>
                             <TableCell><Badge variant={'outline'}>{row.transaction_type}</Badge></TableCell>
-                            <TableCell><Badge>{row.status}</Badge></TableCell>
                             <TableCell>
-                                <div className="flex justify-end">
-                                    <a
-                                        href={`/app/bank-transaction/${row.name}`}
-                                        target="_blank"
-                                        className="underline underline-offset-4"
-                                    >View <ExternalLink />
-                                    </a>
-                                    <Button
+                                {row.status === 'Unreconciled' ?
+                                    <Badge variant="destructive" className="bg-destructive/10 text-destructive">
+                                        <XCircle className="-mt-0.5 text-destructive" />
+                                        Not Reconciled</Badge> :
+                                    <Badge variant="outline" className="text-foreground px-1.5">
+                                        <CheckCircle2 width={16} height={16} className="text-green-600 dark:text-green-500" />
+                                        Unreconciled</Badge>}
+                            </TableCell>
+                            <TableCell>
+                                <div className="flex gap-2">
+                                    <div>
+                                        <Button variant='link' size='sm' asChild>
+                                            <a
+                                                href={`/app/bank-transaction/${row.name}`}
+                                                target="_blank"
+                                                className="underline underline-offset-4"
+                                            >View <ExternalLink />
+                                            </a>
+                                        </Button>
+                                    </div>
+                                    {row.status === 'Reconciled' && <Button
                                         variant='link'
                                         size='sm'
                                         className="text-destructive px-0">
+                                        <Undo2 />
                                         Undo
-                                    </Button>
+                                    </Button>}
                                 </div>
                             </TableCell>
                         </TableRow>
