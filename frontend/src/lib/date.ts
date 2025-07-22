@@ -22,6 +22,17 @@ const getUserDateFormat = () => {
 
 export type TimePeriod = 'This Week' | 'This Month' | 'This Quarter' | 'This Year' | 'Last Week' | 'Last Month' | 'Last Quarter' | 'Last Year' | 'Date Range'
 
+export const AVAILABLE_TIME_PERIODS: TimePeriod[] = [
+    'This Month',
+    'This Week',
+    'This Quarter',
+    'This Year',
+    'Last Week',
+    'Last Month',
+    'Last Quarter',
+    'Last Year',
+];
+
 /**
  * Get the start and end dates for a given time period
  * @param timePeriod - The time period to get the dates for
@@ -126,7 +137,7 @@ export const getTimeago = (date?: string) => {
     return ''
 }
 
-export const formatDate = (date?: string, format?: string) => {
+export const formatDate = (date?: string | Date, format?: string) => {
 
     if (!format) {
         format = getUserDateFormat()

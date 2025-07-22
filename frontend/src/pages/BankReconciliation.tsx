@@ -1,6 +1,7 @@
 import BankBalance from "@/components/features/BankReconciliation/BankBalance"
 import BankClearanceSummary from "@/components/features/BankReconciliation/BankClearanceSummary"
 import BankPicker from "@/components/features/BankReconciliation/BankPicker"
+import BankRecDateFilter from "@/components/features/BankReconciliation/BankRecDateFilter"
 import BankReconciliationStatement from "@/components/features/BankReconciliation/BankReconciliationStatement"
 import BankTransactions from "@/components/features/BankReconciliation/BankTransactionList"
 import IncorrectlyClearedEntries from "@/components/features/BankReconciliation/IncorrectlyClearedEntries"
@@ -25,7 +26,11 @@ const BankReconciliation = () => {
 
     return (
         <div className="p-4 flex flex-col gap-4">
-            <H1 className="text-2xl">Bank Reconciliation</H1>
+            <div className="flex justify-between">
+                <H1 className="text-2xl">Bank Reconciliation</H1>
+                <BankRecDateFilter />
+            </div>
+
 
             <BankPicker />
             <BankBalance />
