@@ -1,6 +1,6 @@
-import { useAtomValue } from "jotai"
+import { useAtom, useAtomValue } from "jotai"
 import { MissingFiltersBanner } from "./MissingFiltersBanner"
-import { selectedBankAccountAtom } from "./bankRecAtoms"
+import { bankRecSelectedTransactionAtom, selectedBankAccountAtom } from "./bankRecAtoms"
 import { H4 } from "@/components/ui/typography"
 import { useMemo, useState } from "react"
 // import { formatDate } from "@/lib/date"
@@ -10,7 +10,7 @@ import { getCompanyCurrency } from "@/lib/company"
 import ErrorBanner from "@/components/ui/error-banner"
 import { Separator } from "@/components/ui/separator"
 import Fuse from 'fuse.js'
-import { useGetUnreconciledTransactions } from "./utils"
+import { UnreconciledTransaction, useGetUnreconciledTransactions } from "./utils"
 import { useDebounceValue } from 'usehooks-ts'
 import { Input } from "@/components/ui/input"
 import { ArrowDownRight, ArrowUpRight, ChevronDown, DollarSign, Search } from "lucide-react"
@@ -19,6 +19,10 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Button } from "@/components/ui/button"
 import CurrencyInput from 'react-currency-input-field'
 import { getCurrencySymbol } from "@/lib/currency"
+import { Virtuoso } from 'react-virtuoso'
+import { formatDate } from "@/lib/date"
+import { Badge } from "@/components/ui/badge"
+import { formatCurrency } from "@/lib/numbers"
 
 const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
     const selectedBank = useAtomValue(selectedBankAccountAtom)
@@ -31,7 +35,7 @@ const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
         <div className={`flex items-start space-x-2`} >
             <div className="flex-1">
                 <H4 className="text-sm font-medium">Unreconciled Transactions</H4>
-                <UnreconciledTransactions />
+                <UnreconciledTransactions contentHeight={contentHeight} />
 
             </div>
             <Separator orientation="vertical" style={{ minHeight: `${contentHeight}px` }} />
@@ -45,7 +49,7 @@ const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
 }
 
 
-const UnreconciledTransactions = () => {
+const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
 
     const currencySymbol = getCurrencySymbol(bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))
@@ -53,10 +57,10 @@ const UnreconciledTransactions = () => {
     const { data: unreconciledTransactions, isLoading, error } = useGetUnreconciledTransactions()
 
     const [typeFilter, setTypeFilter] = useState('All')
-    const [amountFilter, setAmountFilter] = useDebounceValue<{ value: number, stringValue?: string | number }>({
+    const [amountFilter, setAmountFilter] = useState<{ value: number, stringValue?: string | number }>({
         value: 0,
         stringValue: '0.00'
-    }, 500)
+    })
 
     const [search, setSearch] = useDebounceValue('', 500)
 
@@ -107,14 +111,10 @@ const UnreconciledTransactions = () => {
 
         return r
 
-    }, [searchIndex, search, typeFilter, amountFilter, unreconciledTransactions?.message])
+    }, [searchIndex, search, typeFilter, amountFilter.value, unreconciledTransactions?.message])
 
     if (isLoading) {
         return "Loading..."
-    }
-
-    if (error) {
-        return <ErrorBanner error={error} />
     }
 
     return <div className="space-y-2">
@@ -174,6 +174,78 @@ const UnreconciledTransactions = () => {
             </div>
         </div>
 
+        {error && <ErrorBanner error={error} />}
+
+        <Virtuoso
+            data={results}
+            itemContent={(_index, transaction) => (
+                <UnreconciledTransactionItem transaction={transaction} />
+            )}
+            style={{ height: contentHeight - 100 }}
+            totalCount={results?.length}
+        />
+
+    </div>
+}
+
+const UnreconciledTransactionItem = ({ transaction }: { transaction: UnreconciledTransaction }) => {
+
+    const selectedBank = useAtomValue(selectedBankAccountAtom)
+
+    const [selectedTransaction, setSelectedTransaction] = useAtom(bankRecSelectedTransactionAtom(selectedBank?.name || ''))
+
+    const { amount, isWithdrawal } = useMemo(() => {
+        const isWithdrawal = transaction.withdrawal && transaction.withdrawal > 0
+        const isDeposit = transaction.deposit && transaction.deposit > 0
+
+        return {
+            amount: isWithdrawal ? transaction.withdrawal : transaction.deposit,
+            isWithdrawal,
+            isDeposit
+        }
+    }, [transaction])
+
+    const isSelected = selectedTransaction?.some((t) => t.name === transaction.name)
+
+    const currency = transaction.currency ?? selectedBank?.account_currency ?? getCompanyCurrency(selectedBank?.company ?? '')
+
+    const handleSelectTransaction = (event: React.MouseEvent<HTMLDivElement>) => {
+        // If the user is pressing the shift key, add/remove the transaction from the selected transactions
+        if (event.shiftKey) {
+            setSelectedTransaction(isSelected ? selectedTransaction.filter((t) => t.name !== transaction.name) : [...selectedTransaction, transaction])
+        } else {
+            setSelectedTransaction([transaction])
+        }
+    }
+
+    return <div className="py-0.5">
+        <div className={cn("border rounded-md m-1 p-2 cursor-pointer transition-[color,box-shadow, bg]",
+            isSelected ? "border-ring outline-ring outline-1 bg-ring/5" : "border-border outline-none bg-card hover:bg-accent/40"
+        )}
+            role='button'
+            tabIndex={0}
+            onClick={handleSelectTransaction}>
+            <div className="flex justify-between items-start w-full">
+                <div className="space-y-1">
+                    <div className="flex items-center gap-1">
+                        <span className="font-semibold text-sm">{formatDate(transaction.date)}</span>
+                        {transaction.transaction_type &&
+                            <Badge variant='secondary' className="text-xs py-0.5 px-1 rounded-sm bg-secondary">{transaction.transaction_type}</Badge>}
+                        {transaction.reference_number && <Badge
+                            title={transaction.reference_number}
+                            className="inline-block max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap bg-primary-foreground rounded-sm text-primary"
+                        >
+                            Ref: {transaction.reference_number}</Badge>}
+                    </div>
+                    <span className="text-sm">{transaction.description}</span>
+                </div>
+                <div className="gap-1 flex flex-col items-end min-w-32 h-full text-right">
+                    {isWithdrawal ? <ArrowUpRight className="w-6 h-6 text-destructive" /> : <ArrowDownRight className="w-6 h-6 text-green-500" />}
+                    {amount && amount > 0 && <span className="font-semibold text-md">{formatCurrency(amount, currency)}</span>}
+                    {amount !== transaction.unallocated_amount && <span className="text-xs text-gray-700">{formatCurrency(transaction.unallocated_amount, currency)}<br />Unallocated</span>}
+                </div>
+            </div>
+        </div>
     </div>
 }
 

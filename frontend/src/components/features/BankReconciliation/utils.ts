@@ -162,23 +162,23 @@ export const useRefreshUnreconciledTransactions = () => {
                     // Check if next transaction is there in the response
                     const nextTransactionObj = res?.message.find((t: UnreconciledTransaction) => t.name === nextTransaction.name)
                     if (nextTransactionObj) {
-                        setSelectedTransaction(nextTransactionObj)
+                        setSelectedTransaction([nextTransactionObj])
                     } else {
                         // If the next transaction is not there in the response, we need to select the first unreconciled transaction
                         const firstTransaction = res?.message && res?.message.length > 0 ? res?.message[0] : null
                         if (firstTransaction) {
-                            setSelectedTransaction(firstTransaction)
+                            setSelectedTransaction([firstTransaction])
                         } else {
-                            setSelectedTransaction(null)
+                            setSelectedTransaction([])
                         }
                     }
                 } else {
                     // If there is no next transaction, we need to select the first unreconciled transaction
                     const firstTransaction = res?.message && res?.message.length > 0 ? res?.message[0] : null
                     if (firstTransaction) {
-                        setSelectedTransaction(firstTransaction)
+                        setSelectedTransaction([firstTransaction])
                     } else {
-                        setSelectedTransaction(null)
+                        setSelectedTransaction([])
                     }
                 }
             })

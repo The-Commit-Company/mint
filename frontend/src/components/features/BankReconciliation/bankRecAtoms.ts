@@ -25,7 +25,7 @@ export const bankRecClosingBalanceAtom = atomFamily((_id: string) => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const bankRecSelectedTransactionAtom = atomFamily((_id: string) => {
-    return atom<UnreconciledTransaction | null>(null)
+    return atom<UnreconciledTransaction[]>([])
 })
 
 /** Action Modals */
