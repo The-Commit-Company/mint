@@ -159,7 +159,7 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
             <div>
                 <DropdownMenu>
                     <DropdownMenuTrigger>
-                        <Button variant="outline" className="min-w-28 h-9 text-left">
+                        <Button variant="outline" className="min-w-32 h-9 text-left">
                             {typeFilter === 'All' ? <DollarSign className="w-4 h-4 text-muted-foreground" /> : typeFilter === 'Debits' ? <ArrowUpRight className="w-4 h-4 text-destructive" /> : <ArrowDownRight className="w-4 h-4 text-green-500" />}
                             {typeFilter}
                             <ChevronDown className="w-4 h-4" />
