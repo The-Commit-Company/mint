@@ -450,7 +450,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                                 <Tooltip>
                                     <TooltipTrigger>
                                         <Badge className={cn("text-xs rounded-sm", referenceMatchesFull ? "bg-green-600 text-white" : referenceMatchesPartial ? "bg-amber-400 text-white" : "bg-red-500 text-white")}>
-                                            {referenceMatchesFull ? "Full Match" : referenceMatchesPartial ? "Partial Match" : "No Match"}</Badge>
+                                            {referenceMatchesFull ? "Complete Match" : referenceMatchesPartial ? "Partial Match" : "No Match"}</Badge>
                                     </TooltipTrigger>
                                     <TooltipContent side="top">
                                         {referenceMatchesFull ? "Reference matches the selected transaction" : referenceMatchesPartial ? "Reference matches the selected transaction partially" : "Reference does not match the selected transaction"}
@@ -461,7 +461,9 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                     </TooltipProvider>
                 </div>
                 <div>
-                    <Button className="bg-green-600 hover:bg-green-700 active:bg-green-600 text-white" onClick={onClick} disabled={loading}>{loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Reconciling...</> : 'Reconcile'}</Button>
+                    <Button variant='outline' className={
+                        cn(isSuggested || amountMatches ? "bg-green-600 hover:bg-green-700 active:bg-green-600 text-white hover:text-white active:text-white" : "")
+                    } onClick={onClick} disabled={loading}>{loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Reconciling...</> : 'Reconcile'}</Button>
                 </div>
             </div>
 
