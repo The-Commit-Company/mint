@@ -1,5 +1,5 @@
 app_name = "mint"
-app_title = "Maester"
+app_title = "Mint"
 app_publisher = "The Commit Company (Algocode Technologies Pvt. Ltd.)"
 app_description = "Bank reconciliation made simple for ERPNext"
 app_email = "support@thecommit.company"
@@ -15,7 +15,7 @@ app_license = "agpl-3.0"
 # 	{
 # 		"name": "mint",
 # 		"logo": "/assets/mint/logo.png",
-# 		"title": "Maester",
+# 		"title": "Mint",
 # 		"route": "/mint",
 # 		"has_permission": "mint.api.permission.has_app_permission"
 # 	}
