@@ -1,19 +1,16 @@
-import { useAtom, useAtomValue } from "jotai"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { MissingFiltersBanner } from "./MissingFiltersBanner"
-import { bankRecSelectedTransactionAtom, selectedBankAccountAtom } from "./bankRecAtoms"
+import { bankRecRecordJournalEntryModalAtom, bankRecRecordPaymentModalAtom, bankRecSelectedTransactionAtom, bankRecTransferModalAtom, selectedBankAccountAtom } from "./bankRecAtoms"
 import { H4 } from "@/components/ui/typography"
 import { useMemo, useState } from "react"
-// import { formatDate } from "@/lib/date"
-// import { formatCurrency } from "@/lib/numbers"
 import { getCompanyCurrency } from "@/lib/company"
-// import { slug } from "@/lib/frappe"
 import ErrorBanner from "@/components/ui/error-banner"
 import { Separator } from "@/components/ui/separator"
 import Fuse from 'fuse.js'
-import { UnreconciledTransaction, useGetUnreconciledTransactions } from "./utils"
+import { LinkedPayment, UnreconciledTransaction, useGetUnreconciledTransactions, useGetVouchersForTransaction, useIsTransactionWithdrawal, useReconcileTransaction } from "./utils"
 import { useDebounceValue } from 'usehooks-ts'
 import { Input } from "@/components/ui/input"
-import { ArrowDownRight, ArrowUpRight, ChevronDown, DollarSign, Search } from "lucide-react"
+import { ArrowDownRight, ArrowRightLeft, ArrowUpRight, BadgeCheck, ChevronDown, DollarSign, Landmark, Loader2, Receipt, Search, User, XCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
@@ -23,6 +20,9 @@ import { Virtuoso } from 'react-virtuoso'
 import { formatDate } from "@/lib/date"
 import { Badge } from "@/components/ui/badge"
 import { formatCurrency } from "@/lib/numbers"
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
+import { Skeleton } from "@/components/ui/skeleton"
+import { slug } from "@/lib/frappe"
 
 const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
     const selectedBank = useAtomValue(selectedBankAccountAtom)
@@ -36,14 +36,12 @@ const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
             <div className="flex-1">
                 <H4 className="text-sm font-medium">Unreconciled Transactions</H4>
                 <UnreconciledTransactions contentHeight={contentHeight} />
-
             </div>
             <Separator orientation="vertical" style={{ minHeight: `${contentHeight}px` }} />
             <div className="flex-1">
-                <H4 className="text-sm font-medium">Vouchers</H4>
-
+                <H4 className="text-sm font-medium">Match or Create</H4>
+                <VouchersSection contentHeight={contentHeight} />
             </div>
-
         </div>
     </>
 }
@@ -181,7 +179,7 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
             itemContent={(_index, transaction) => (
                 <UnreconciledTransactionItem transaction={transaction} />
             )}
-            style={{ height: contentHeight - 100 }}
+            style={{ minHeight: contentHeight - 100 }}
             totalCount={results?.length}
         />
 
@@ -194,16 +192,7 @@ const UnreconciledTransactionItem = ({ transaction }: { transaction: Unreconcile
 
     const [selectedTransaction, setSelectedTransaction] = useAtom(bankRecSelectedTransactionAtom(selectedBank?.name || ''))
 
-    const { amount, isWithdrawal } = useMemo(() => {
-        const isWithdrawal = transaction.withdrawal && transaction.withdrawal > 0
-        const isDeposit = transaction.deposit && transaction.deposit > 0
-
-        return {
-            amount: isWithdrawal ? transaction.withdrawal : transaction.deposit,
-            isWithdrawal,
-            isDeposit
-        }
-    }, [transaction])
+    const { amount, isWithdrawal } = useIsTransactionWithdrawal(transaction)
 
     const isSelected = selectedTransaction?.some((t) => t.name === transaction.name)
 
@@ -247,6 +236,256 @@ const UnreconciledTransactionItem = ({ transaction }: { transaction: Unreconcile
             </div>
         </div>
     </div>
+}
+
+
+const VouchersSection = ({ contentHeight }: { contentHeight: number }) => {
+
+    const selectedBank = useAtomValue(selectedBankAccountAtom)
+    const selectedTransactions = useAtomValue(bankRecSelectedTransactionAtom(selectedBank?.name || ''))
+
+
+    if (selectedTransactions.length === 0) {
+        return <MissingFiltersBanner text='Select a transaction to match and reconcile with vouchers' />
+    }
+
+    if (selectedTransactions.length > 1) {
+        return <div className="text-sm text-muted-foreground">Multiple transactions selected</div>
+    }
+
+    return <div style={{ minHeight: contentHeight }} className="mt-2">
+        <OptionsForSingleTransaction transaction={selectedTransactions[0]} contentHeight={contentHeight} />
+    </div>
+}
+
+
+const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transaction: UnreconciledTransaction, contentHeight: number }) => {
+
+    const setTransferModalOpen = useSetAtom(bankRecTransferModalAtom)
+    const setRecordPaymentModalOpen = useSetAtom(bankRecRecordPaymentModalAtom)
+    const setRecordJournalEntryModalOpen = useSetAtom(bankRecRecordJournalEntryModalAtom)
+
+    return <div className="flex flex-col gap-3">
+        <TooltipProvider>
+            <div className="flex gap-4 justify-center">
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant='outline'
+                            aria-label="Record a payment entry against a customer or supplier"
+                            onClick={() => setRecordPaymentModalOpen(true)}>
+                            <Receipt /> Record Payment
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        Record a payment entry against a customer or supplier
+                    </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant='outline'
+                            aria-label="Record a bank journal entry for expenses, income or split transactions"
+                            onClick={() => setRecordJournalEntryModalOpen(true)}>
+                            <Landmark /> Bank Entry
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        Record a journal entry for expenses, income or split transactions
+                    </TooltipContent>
+                </Tooltip>
+                <Tooltip >
+                    <TooltipTrigger asChild>
+                        <Button
+                            variant='outline'
+                            aria-label="Record an internal transfer to another bank/credit card/cash account"
+                            onClick={() => setTransferModalOpen(true)}>
+                            <ArrowRightLeft /> Transfer
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        Record an internal transfer to another bank/credit card/cash account
+                    </TooltipContent>
+                </Tooltip>
+
+            </div>
+        </TooltipProvider>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Separator className="flex-1" />
+            <span>or</span>
+            <Separator className="flex-1" />
+        </div>
+
+        <VouchersForTransaction transaction={transaction} contentHeight={contentHeight} />
+    </div>
+}
+
+const VouchersForTransaction = ({ transaction, contentHeight }: { transaction: UnreconciledTransaction, contentHeight: number }) => {
+
+    const { data: vouchers, isLoading, error } = useGetVouchersForTransaction(transaction)
+
+    if (error) {
+        return <ErrorBanner error={error} />
+    }
+
+    if (isLoading) {
+        return <div className="flex flex-col gap-2">
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+        </div>
+    }
+
+    return <div className="relative space-y-2">
+        {vouchers?.message.length === 0 && <MissingFiltersBanner text='No vouchers found for this transaction' />}
+        <Virtuoso
+            data={vouchers?.message}
+            itemContent={(index, voucher) => (
+                <VoucherItem voucher={voucher} index={index} />
+            )}
+            style={{ height: contentHeight }}
+            totalCount={vouchers?.message.length}
+        />
+    </div >
+}
+
+const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number }) => {
+
+    const selectedBank = useAtomValue(selectedBankAccountAtom)
+    const selectedTransaction = useAtomValue(bankRecSelectedTransactionAtom(selectedBank?.name || ''))
+
+    const { amountMatches, postingDateMatches, referenceDateMatches, referenceMatchesFull, referenceMatchesPartial, isSuggested } = useMemo(() => {
+
+        const transaction = selectedTransaction?.[0]
+
+        // We need to check if the following details match:
+        // Amount
+        // Date
+        // Reference/Description: Full or partial
+        // Whether this is suggested or not - depends on the above scores
+
+        const transactionAmount = transaction?.deposit || transaction?.withdrawal
+
+        const amountMatches = voucher.paid_amount === transactionAmount
+        const postingDateMatches = voucher.posting_date === transaction?.date
+        const referenceDateMatches = voucher.reference_date === transaction?.date
+        const referenceMatchesFull = voucher.reference_no === transaction?.reference_number || voucher.reference_no === transaction?.description
+
+        const referenceMatchesPartial = transaction?.reference_number?.includes(voucher.reference_no) || transaction?.description?.includes(voucher.reference_no)
+
+
+        const isSuggested = amountMatches && (postingDateMatches || referenceDateMatches) && index === 0
+
+        return { isSelected: false, amountMatches, postingDateMatches, referenceDateMatches, referenceMatchesFull, referenceMatchesPartial, isSuggested: isSuggested }
+
+    }, [voucher, selectedTransaction, index])
+
+    const { reconcileTransaction, loading } = useReconcileTransaction()
+
+    const onClick = () => {
+        if (!selectedTransaction) {
+            return
+        }
+        reconcileTransaction(selectedTransaction[0], [voucher])
+    }
+
+    return <div className="py-1 px-1">
+        <div
+            className={cn("border outline overflow-hidden relative rounded-md p-2",
+                isSuggested ? "border-amber-400 bg-amber-50/50 outline-amber-400" : "border-border bg-card outline-transparent"
+            )}
+        >
+
+            <div className="flex justify-between items-end gap-2">
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                        <Badge variant='secondary' className={cn("text-sm rounded-sm", isSuggested ? "bg-amber-100 text-amber-700" : "bg-secondary")}>{voucher.doctype}</Badge>
+                        <a target="_blank"
+                            href={`/app/${slug(voucher.doctype)}/${voucher.name}`}
+                            className="underline underline-offset-2 font-medium"
+                        >{voucher.name}</a>
+                    </div>
+                    {voucher.party && voucher.party_type && <div className="flex items-center gap-2">
+                        <User size='18px' />
+                        <span>{voucher.party_type}</span>
+                        <a target="_blank"
+                            href={`/app/${slug(voucher.party_type)}/${voucher.party}`}
+                            className="underline underline-offset-2 font-medium"
+                        >{voucher.party}</a>
+                    </div>}
+                    <TooltipProvider>
+                        <div className="flex items-center gap-1">
+                            <span>Amount: <span className="font-bold">{formatCurrency(voucher.paid_amount)}</span></span>
+                            {amountMatches ?
+                                <MatchBadge matchType="full" label="Amount matches the selected transaction" />
+                                :
+                                <MatchBadge matchType="none" label="Amount does not match the selected transaction" />
+                            }
+                        </div>
+                        <div className="flex gap-2 h-6">
+
+                            <div className="flex items-center gap-1">
+                                <span>Posted On: <span className="font-bold">{formatDate(voucher.posting_date)}</span></span>
+                                <MatchBadge
+                                    matchType={postingDateMatches ? "full" : "none"}
+                                    label={postingDateMatches ? "Posting Date matches the transaction date" : "Posting Date does not match the transaction date"}
+                                />
+                            </div>
+                            {voucher.reference_date && <Separator orientation="vertical" className="h-4" />}
+                            {voucher.reference_date && <div className="flex items-center gap-1">
+                                <span>Reference Date: <span className="font-bold">{formatDate(voucher.reference_date)}</span></span>
+                                <MatchBadge
+                                    matchType={referenceDateMatches ? "full" : "none"}
+                                    label={referenceDateMatches ? "Reference Date matches the transaction date" : "Reference Date does not match the transaction date"}
+                                />
+                            </div>}
+                        </div>
+                        <div className="flex items-start gap-1">
+                            <span className="font-medium">
+                                {voucher.reference_no}
+                                &nbsp;&nbsp;
+                                <Tooltip>
+                                    <TooltipTrigger>
+                                        <Badge className={cn("text-xs rounded-sm", referenceMatchesFull ? "bg-green-600 text-white" : referenceMatchesPartial ? "bg-amber-400 text-white" : "bg-red-500 text-white")}>
+                                            {referenceMatchesFull ? "Full Match" : referenceMatchesPartial ? "Partial Match" : "No Match"}</Badge>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="top">
+                                        {referenceMatchesFull ? "Reference matches the selected transaction" : referenceMatchesPartial ? "Reference matches the selected transaction partially" : "Reference does not match the selected transaction"}
+                                    </TooltipContent>
+                                </Tooltip>
+                            </span>
+                        </div>
+                    </TooltipProvider>
+                </div>
+                <div>
+                    <Button className="bg-green-600 hover:bg-green-700 active:bg-green-600 text-white" onClick={onClick} disabled={loading}>{loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Reconciling...</> : 'Reconcile'}</Button>
+                </div>
+            </div>
+
+            <div className="absolute -top-0.5 right-0 flex items-center gap-1 justify-center">
+                {isSuggested && <span
+                    className="bg-amber-400 uppercase font-medium text-white px-3 py-1 rounded-bl-md text-sm rounded-tr-sm">Suggested</span>}
+            </div>
+
+        </div>
+    </div>
+}
+
+
+const MatchBadge = ({ matchType, label }: { matchType: 'full' | 'partial' | 'none', label: string }) => {
+    return <Tooltip>
+        <TooltipTrigger>
+            {matchType === 'full' ? <BadgeCheck className="text-white fill-green-600" /> : matchType === 'partial' ?
+                <Badge className="text-white bg-amber-400 rounded-sm">Partial Match</Badge> :
+                <XCircle className="text-white fill-red-500" />}
+        </TooltipTrigger>
+        <TooltipContent>
+            {label}
+        </TooltipContent>
+    </Tooltip>
 }
 
 export default MatchAndReconcile

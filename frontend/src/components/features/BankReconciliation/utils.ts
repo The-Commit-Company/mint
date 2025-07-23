@@ -191,7 +191,7 @@ export const useRefreshUnreconciledTransactions = () => {
 
 export const useReconcileTransaction = () => {
 
-    const { call, loading } = useFrappePostCall<{ message: BankTransaction }>('emotive_app.api.bank_reconciliation.bank_reconciliation.reconcile_vouchers')
+    const { call, loading } = useFrappePostCall<{ message: BankTransaction }>('maester.apis.bank_reconciliation.reconcile_vouchers')
 
     const onReconcileTransaction = useRefreshUnreconciledTransactions()
 
@@ -207,7 +207,7 @@ export const useReconcileTransaction = () => {
         }).then((res) => {
             onReconcileTransaction(transaction, res.message)
             toast.success("Reconciled", {
-                duration: 500,
+                duration: 4000,
             })
         }).catch((error) => {
             console.error(error)
@@ -263,4 +263,17 @@ export const useGetBankAccounts = (onSuccess?: (data?: Omit<SelectedBank, 'logo'
         error
     }
 
+}
+
+export const useIsTransactionWithdrawal = (transaction: UnreconciledTransaction) => {
+    return useMemo(() => {
+        const isWithdrawal = transaction.withdrawal && transaction.withdrawal > 0
+        const isDeposit = transaction.deposit && transaction.deposit > 0
+
+        return {
+            amount: isWithdrawal ? transaction.withdrawal : transaction.deposit,
+            isWithdrawal,
+            isDeposit
+        }
+    }, [transaction])
 }
