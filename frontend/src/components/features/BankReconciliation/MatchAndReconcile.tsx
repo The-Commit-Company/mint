@@ -395,7 +395,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
     return <div className="py-1 px-1">
         <div
             className={cn("border outline overflow-hidden relative rounded-md p-2",
-                isSuggested ? "border-amber-400 bg-amber-50/50 outline-amber-400" : "border-border bg-card outline-transparent"
+                isSuggested ? "border-amber-500 bg-amber-50/50 outline-amber-500" : "border-border bg-card outline-transparent"
             )}
         >
 
@@ -465,9 +465,9 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                 </div>
             </div>
 
-            <div className="absolute -top-0.5 right-0 flex items-center gap-1 justify-center">
+            <div className="absolute top-0 right-0 flex items-center gap-1 justify-center">
                 {isSuggested && <span
-                    className="bg-amber-400 uppercase font-medium text-white px-3 py-1 rounded-bl-md text-sm rounded-tr-sm">Suggested</span>}
+                    className="bg-amber-500 uppercase font-medium text-white px-3 py-1 rounded-bl-md text-xs rounded-tr-sm">Suggested</span>}
             </div>
 
         </div>
