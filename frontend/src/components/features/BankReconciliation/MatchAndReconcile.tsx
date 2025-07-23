@@ -322,13 +322,13 @@ const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transacti
 
 const VouchersForTransaction = ({ transaction, contentHeight }: { transaction: UnreconciledTransaction, contentHeight: number }) => {
 
-    const { data: vouchers, isLoading, error } = useGetVouchersForTransaction(transaction)
+    const { data: vouchers, isLoading, isValidating, error } = useGetVouchersForTransaction(transaction)
 
     if (error) {
         return <ErrorBanner error={error} />
     }
 
-    if (isLoading) {
+    if (isLoading || isValidating) {
         return <div className="flex flex-col gap-2">
             <Skeleton className="h-16 w-full" />
             <Skeleton className="h-16 w-full" />

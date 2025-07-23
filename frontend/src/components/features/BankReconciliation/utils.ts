@@ -69,7 +69,8 @@ export const useGetUnreconciledTransactions = () => {
         from_date: dates.fromDate,
         to_date: dates.toDate
     }, `bank-reconciliation-unreconciled-transactions-${bankAccount?.name}-${dates.fromDate}-${dates.toDate}`, {
-        revalidateOnFocus: false
+        revalidateOnFocus: false,
+        revalidateIfStale: false
     })
 }
 
