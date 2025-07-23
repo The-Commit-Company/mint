@@ -18,7 +18,7 @@ export default defineConfig({
 		}
 	},
 	build: {
-		outDir: '../maester/public/maester',
+		outDir: '../mint/public/mint',
 		emptyOutDir: true,
 		target: 'es2015',
 	},

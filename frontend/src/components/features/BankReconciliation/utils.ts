@@ -64,7 +64,7 @@ export type UnreconciledTransaction = Pick<BankTransaction, 'name' | 'date' | 'w
 export const useGetUnreconciledTransactions = () => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
     const dates = useAtomValue(bankRecDateAtom)
-    return useFrappeGetCall<{ message: UnreconciledTransaction[] }>('maester.apis.transactions.get_bank_transactions', {
+    return useFrappeGetCall<{ message: UnreconciledTransaction[] }>('mint.apis.transactions.get_bank_transactions', {
         bank_account: bankAccount?.name,
         from_date: dates.fromDate,
         to_date: dates.toDate
@@ -90,7 +90,7 @@ export interface LinkedPayment {
 export const useGetBankTransactions = () => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
     const dates = useAtomValue(bankRecDateAtom)
-    return useFrappeGetCall<{ message: BankTransaction[] }>('maester.apis.transactions.get_bank_transactions', {
+    return useFrappeGetCall<{ message: BankTransaction[] }>('mint.apis.transactions.get_bank_transactions', {
         bank_account: bankAccount?.name,
         from_date: dates.fromDate,
         to_date: dates.toDate,
@@ -192,7 +192,7 @@ export const useRefreshUnreconciledTransactions = () => {
 
 export const useReconcileTransaction = () => {
 
-    const { call, loading } = useFrappePostCall<{ message: BankTransaction }>('maester.apis.bank_reconciliation.reconcile_vouchers')
+    const { call, loading } = useFrappePostCall<{ message: BankTransaction }>('mint.apis.bank_reconciliation.reconcile_vouchers')
 
     const onReconcileTransaction = useRefreshUnreconciledTransactions()
 
@@ -231,7 +231,7 @@ export const useGetBankAccounts = (onSuccess?: (data?: Omit<SelectedBank, 'logo'
 
     const company = useCurrentCompany()
 
-    const { data, isLoading, error } = useFrappeGetCall<{ message: BankAccountWithCurrency[] }>('maester.apis.bank_account.get_list', {
+    const { data, isLoading, error } = useFrappeGetCall<{ message: BankAccountWithCurrency[] }>('mint.apis.bank_account.get_list', {
         company: company
     }, undefined, {
         revalidateOnFocus: false,

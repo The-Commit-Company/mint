@@ -6,6 +6,6 @@ tags
 node_modules
 __pycache__
 
-maester/public/maester
-maester/public/node_modules
-maester/www/maester.html
+mint/public/mint
+mint/public/node_modules
+mint/www/mint.html

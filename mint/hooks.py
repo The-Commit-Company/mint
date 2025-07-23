@@ -1,4 +1,4 @@
-app_name = "maester"
+app_name = "mint"
 app_title = "Maester"
 app_publisher = "The Commit Company (Algocode Technologies Pvt. Ltd.)"
 app_description = "Bank reconciliation made simple for ERPNext"
@@ -13,11 +13,11 @@ app_license = "agpl-3.0"
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
 # 	{
-# 		"name": "maester",
-# 		"logo": "/assets/maester/logo.png",
+# 		"name": "mint",
+# 		"logo": "/assets/mint/logo.png",
 # 		"title": "Maester",
-# 		"route": "/maester",
-# 		"has_permission": "maester.api.permission.has_app_permission"
+# 		"route": "/mint",
+# 		"has_permission": "mint.api.permission.has_app_permission"
 # 	}
 # ]
 
@@ -25,15 +25,15 @@ app_license = "agpl-3.0"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/maester/css/maester.css"
-# app_include_js = "/assets/maester/js/maester.js"
+# app_include_css = "/assets/mint/css/mint.css"
+# app_include_js = "/assets/mint/js/mint.js"
 
 # include js, css files in header of web template
-# web_include_css = "/assets/maester/css/maester.css"
-# web_include_js = "/assets/maester/js/maester.js"
+# web_include_css = "/assets/mint/css/mint.css"
+# web_include_js = "/assets/mint/js/mint.js"
 
 # include custom scss in every website theme (without file extension ".scss")
-# website_theme_scss = "maester/public/scss/website"
+# website_theme_scss = "mint/public/scss/website"
 
 # include js, css files in header of web form
 # webform_include_js = {"doctype": "public/js/doctype.js"}
@@ -51,7 +51,7 @@ app_license = "agpl-3.0"
 # Svg Icons
 # ------------------
 # include app icons in desk
-# app_include_icons = "maester/public/icons.svg"
+# app_include_icons = "mint/public/icons.svg"
 
 # Home Pages
 # ----------
@@ -75,43 +75,43 @@ app_license = "agpl-3.0"
 
 # add methods and filters to jinja environment
 # jinja = {
-# 	"methods": "maester.utils.jinja_methods",
-# 	"filters": "maester.utils.jinja_filters"
+# 	"methods": "mint.utils.jinja_methods",
+# 	"filters": "mint.utils.jinja_filters"
 # }
 
 # Installation
 # ------------
 
-# before_install = "maester.install.before_install"
-after_install = "maester.setup.install.after_install"
+# before_install = "mint.install.before_install"
+after_install = "mint.setup.install.after_install"
 
 # Uninstallation
 # ------------
 
-# before_uninstall = "maester.uninstall.before_uninstall"
-# after_uninstall = "maester.uninstall.after_uninstall"
+# before_uninstall = "mint.uninstall.before_uninstall"
+# after_uninstall = "mint.uninstall.after_uninstall"
 
 # Integration Setup
 # ------------------
 # To set up dependencies/integrations with other apps
 # Name of the app being installed is passed as an argument
 
-# before_app_install = "maester.utils.before_app_install"
-# after_app_install = "maester.utils.after_app_install"
+# before_app_install = "mint.utils.before_app_install"
+# after_app_install = "mint.utils.after_app_install"
 
 # Integration Cleanup
 # -------------------
 # To clean up dependencies/integrations with other apps
 # Name of the app being uninstalled is passed as an argument
 
-# before_app_uninstall = "maester.utils.before_app_uninstall"
-# after_app_uninstall = "maester.utils.after_app_uninstall"
+# before_app_uninstall = "mint.utils.before_app_uninstall"
+# after_app_uninstall = "mint.utils.after_app_uninstall"
 
 # Desk Notifications
 # ------------------
 # See frappe.core.notifications.get_notification_config
 
-# notification_config = "maester.notifications.get_notification_config"
+# notification_config = "mint.notifications.get_notification_config"
 
 # Permissions
 # -----------
@@ -150,39 +150,39 @@ after_install = "maester.setup.install.after_install"
 
 # scheduler_events = {
 # 	"all": [
-# 		"maester.tasks.all"
+# 		"mint.tasks.all"
 # 	],
 # 	"daily": [
-# 		"maester.tasks.daily"
+# 		"mint.tasks.daily"
 # 	],
 # 	"hourly": [
-# 		"maester.tasks.hourly"
+# 		"mint.tasks.hourly"
 # 	],
 # 	"weekly": [
-# 		"maester.tasks.weekly"
+# 		"mint.tasks.weekly"
 # 	],
 # 	"monthly": [
-# 		"maester.tasks.monthly"
+# 		"mint.tasks.monthly"
 # 	],
 # }
 
 # Testing
 # -------
 
-# before_tests = "maester.install.before_tests"
+# before_tests = "mint.install.before_tests"
 
 # Overriding Methods
 # ------------------------------
 #
 # override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "maester.event.get_events"
+# 	"frappe.desk.doctype.event.event.get_events": "mint.event.get_events"
 # }
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
 # override_doctype_dashboards = {
-# 	"Task": "maester.task.get_dashboard_data"
+# 	"Task": "mint.task.get_dashboard_data"
 # }
 
 # exempt linked doctypes from being automatically cancelled
@@ -196,13 +196,13 @@ after_install = "maester.setup.install.after_install"
 
 # Request Events
 # ----------------
-# before_request = ["maester.utils.before_request"]
-# after_request = ["maester.utils.after_request"]
+# before_request = ["mint.utils.before_request"]
+# after_request = ["mint.utils.after_request"]
 
 # Job Events
 # ----------
-# before_job = ["maester.utils.before_job"]
-# after_job = ["maester.utils.after_job"]
+# before_job = ["mint.utils.before_job"]
+# after_job = ["mint.utils.after_job"]
 
 # User Data Protection
 # --------------------
@@ -232,7 +232,7 @@ after_install = "maester.setup.install.after_install"
 # --------------------------------
 
 # auth_hooks = [
-# 	"maester.auth.validate"
+# 	"mint.auth.validate"
 # ]
 
 # Automatically update python controller files with type annotations for this app.
@@ -243,4 +243,4 @@ export_python_type_annotations = True
 # }
 
 
-website_route_rules = [{'from_route': '/maester/<path:app_path>', 'to_route': 'maester'}]
+website_route_rules = [{'from_route': '/mint/<path:app_path>', 'to_route': 'mint'}]

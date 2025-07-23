@@ -6,7 +6,7 @@ import './lib/namespace'
 
 
 if (import.meta.env.DEV) {
-  fetch('/api/method/maester.www.maester.get_context_for_dev', {
+  fetch('/api/method/mint.www.mint.get_context_for_dev', {
     method: 'POST',
   })
     .then(response => response.json())

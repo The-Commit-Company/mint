@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/assets/maester/maester/ && yarn copy-html-entry",
+    "build": "vite build --base=/assets/mint/mint/ && yarn copy-html-entry",
     "lint": "eslint .",
     "preview": "vite preview",
-    "copy-html-entry": "cp ../maester/public/maester/index.html ../maester/www/maester.html"
+    "copy-html-entry": "cp ../mint/public/mint/index.html ../mint/www/mint.html"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",

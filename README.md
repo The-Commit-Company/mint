@@ -1,4 +1,4 @@
-## Maester
+## mint
 
 Bank reconciliation made simple for ERPNext
 
