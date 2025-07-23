@@ -30,7 +30,7 @@ const BankReconciliation = () => {
         <div className="p-4 flex flex-col gap-4">
             <div ref={ref} className="flex flex-col gap-4">
                 <div className="flex justify-between">
-                    <H1 className="text-base font-medium"><span className="text-3xl font-extrabold text-blue-500">Mint</span>&nbsp; Bank Reconciliation</H1>
+                    <H1 className="text-base font-medium"><span className="text-4xl font-extrabold text-emerald-500">mint</span>&nbsp; Bank Reconciliation</H1>
                     <div className="flex items-center gap-2">
                         <CompanySelector />
                         <BankRecDateFilter />
