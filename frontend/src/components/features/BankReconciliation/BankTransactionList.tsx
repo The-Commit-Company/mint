@@ -1,6 +1,6 @@
-import { useAtomValue } from "jotai"
+import { useAtomValue, useSetAtom } from "jotai"
 import { MissingFiltersBanner } from "./MissingFiltersBanner"
-import { bankRecDateAtom, selectedBankAccountAtom } from "./bankRecAtoms"
+import { bankRecDateAtom, bankRecUnreconcileModalAtom, selectedBankAccountAtom } from "./bankRecAtoms"
 import { Paragraph } from "@/components/ui/typography"
 import { formatDate } from "@/lib/date"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -37,6 +37,12 @@ const BankTransactionListView = () => {
 
     const formattedFromDate = formatDate(dates.fromDate)
     const formattedToDate = formatDate(dates.toDate)
+
+    const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
+
+    const onUndo = (transaction: BankTransaction) => {
+        setBankRecUnreconcileModalAtom(transaction.name)
+    }
 
     return <div className="space-y-4 py-2">
 
@@ -97,6 +103,7 @@ const BankTransactionListView = () => {
                                     </div>
                                     {row.status === 'Reconciled' && <Button
                                         variant='link'
+                                        onClick={() => onUndo(row)}
                                         size='sm'
                                         className="text-destructive px-0">
                                         <Undo2 />

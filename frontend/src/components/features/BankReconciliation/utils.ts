@@ -1,4 +1,4 @@
-import { bankRecDateAtom, bankRecSelectedTransactionAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
+import { bankRecDateAtom, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { useFrappeGetCall, useFrappePostCall, useSWRConfig } from 'frappe-react-sdk'
@@ -196,6 +196,8 @@ export const useReconcileTransaction = () => {
 
     const onReconcileTransaction = useRefreshUnreconciledTransactions()
 
+    const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
+
     const reconcileTransaction = (transaction: UnreconciledTransaction, vouchers: LinkedPayment[]) => {
 
         call({
@@ -209,6 +211,14 @@ export const useReconcileTransaction = () => {
             onReconcileTransaction(transaction, res.message)
             toast.success("Reconciled", {
                 duration: 4000,
+                closeButton: true,
+                action: {
+                    label: "Undo",
+                    onClick: () => setBankRecUnreconcileModalAtom(transaction.name)
+                },
+                actionButtonStyle: {
+                    backgroundColor: "rgb(0, 138, 46)"
+                }
             })
         }).catch((error) => {
             console.error(error)
