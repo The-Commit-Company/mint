@@ -42,7 +42,7 @@ const OpeningBalance = () => {
 
     return <StatContainer className="min-w-48">
         <StatLabel>Opening Balance</StatLabel>
-        {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue>{formatCurrency(data?.message, bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
+        {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue>{formatCurrency(flt(data?.message, 2), bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
     </StatContainer>
 }
 
@@ -75,7 +75,7 @@ const ClosingBalance = () => {
                 </HoverCard>
 
             </div>
-            {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue>{formatCurrency(data?.message, bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
+            {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue>{formatCurrency(flt(data?.message, 2), bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
         </StatContainer>
     )
 }

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { Landmark } from "lucide-react"
 import { H4 } from "@/components/ui/typography"
 import { getTimeago } from "@/lib/date"
+import ErrorBanner from "@/components/ui/error-banner"
 
 const BankPicker = () => {
 
@@ -30,7 +31,7 @@ const BankPicker = () => {
     }
 
     if (error) {
-        return 'Error'
+        return <ErrorBanner error={error} />
     }
     return (
         <div className="flex gap-2 items-stretch w-full flex-wrap overflow-x-auto">

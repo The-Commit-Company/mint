@@ -25,7 +25,9 @@ export const flt = (value?: number | string | null, decimals?: number, rounding_
 
     //TODO: We need to round the value here
     if (decimals !== undefined && decimals !== null) {
-        return _round(value, decimals, rounding_method)
+        const rounded = _round(value, decimals, rounding_method)
+        if (Math.abs(rounded) === 0) return 0
+        return rounded
     }
 
     return value
