@@ -11,7 +11,7 @@ function App() {
 			socketPort={import.meta.env.VITE_SOCKET_PORT}
 			siteName={window.frappe?.boot?.sitename ?? import.meta.env.VITE_SITE_NAME}>
 			<BankReconciliation />
-			<Toaster richColors />
+			<Toaster richColors theme='light' />
 		</FrappeProvider>
 	)
 }
