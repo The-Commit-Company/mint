@@ -17,8 +17,6 @@ const BankRecDateFilter = () => {
 
     const { data: fiscalYear } = useFiscalYear()
 
-    console.log(fiscalYear)
-
     const timePeriodOptions = useMemo(() => {
         const standardOptions = AVAILABLE_TIME_PERIODS.map((period) => {
             const dates = getDatesForTimePeriod(period)
@@ -195,10 +193,6 @@ const EmptyState = ({ onSelect, value }: { onSelect: (fromDate: string, toDate: 
         if (value) {
             // Try parsing the value
             const parsedDate = parse(value, undefined, { forwardDate: false })
-
-            console.log(parsedDate)
-
-
 
             if (parsedDate && parsedDate.length > 0) {
                 const startDate = parsedDate[0].start.date()
