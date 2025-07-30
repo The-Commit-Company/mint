@@ -4,30 +4,98 @@ import { useMemo, useState } from 'react'
 import { AVAILABLE_TIME_PERIODS, formatDate, getDatesForTimePeriod, TimePeriod } from '@/lib/date'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { ChevronDownIcon, MoveRight } from 'lucide-react'
+import { ChevronDownIcon, ChevronRight } from 'lucide-react'
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { parse } from "chrono-node"
 import { Calendar } from '@/components/ui/calendar'
+import useFiscalYear from '@/hooks/useFiscalYear'
+import dayjs from 'dayjs'
 
 const BankRecDateFilter = () => {
 
     const [bankRecDate, setBankRecDate] = useAtom(bankRecDateAtom)
 
+    const { data: fiscalYear } = useFiscalYear()
+
+    console.log(fiscalYear)
+
     const timePeriodOptions = useMemo(() => {
-        return AVAILABLE_TIME_PERIODS.map((period) => {
+        const standardOptions = AVAILABLE_TIME_PERIODS.map((period) => {
             const dates = getDatesForTimePeriod(period)
             return {
                 label: period,
                 fromDate: dates.fromDate,
-                toDate: dates.toDate
+                toDate: dates.toDate,
+                format: dates.format
             }
         })
-    }, [])
+
+        if (fiscalYear?.message) {
+            // For a fiscal year, we need to replace "Last Year", "This Year", and add options for quarters
+            const fiscalYearStart = fiscalYear.message.year_start_date
+            const fiscalYearEnd = fiscalYear.message.year_end_date
+
+            const q1 = {
+                label: `Q1: ${fiscalYear.message.name}`,
+                fromDate: fiscalYearStart,
+                toDate: dayjs(fiscalYearStart).add(3, 'month').format('YYYY-MM-DD'),
+                format: 'MMM YYYY'
+            }
+
+            const q2 = {
+                label: `Q2: ${fiscalYear.message.name}`,
+                fromDate: dayjs(fiscalYearStart).add(3, 'month').format('YYYY-MM-DD'),
+                toDate: dayjs(fiscalYearStart).add(6, 'month').format('YYYY-MM-DD'),
+                format: 'MMM YYYY'
+            }
+
+            const q3 = {
+                label: `Q3: ${fiscalYear.message.name}`,
+                fromDate: dayjs(fiscalYearStart).add(6, 'month').format('YYYY-MM-DD'),
+                toDate: dayjs(fiscalYearStart).add(9, 'month').format('YYYY-MM-DD'),
+                format: 'MMM YYYY'
+            }
+
+            const q4 = {
+                label: `Q4: ${fiscalYear.message.name}`,
+                fromDate: dayjs(fiscalYearStart).add(9, 'month').format('YYYY-MM-DD'),
+                toDate: fiscalYearEnd,
+                format: 'MMM YYYY'
+            }
+
+            const thisYear = {
+                label: `This Fiscal Year`,
+                fromDate: fiscalYearStart,
+                toDate: fiscalYearEnd,
+                format: 'MMM YYYY'
+            }
+
+            const lastYear = {
+                label: `Last Fiscal Year`,
+                fromDate: dayjs(fiscalYearStart).subtract(1, 'year').format('YYYY-MM-DD'),
+                toDate: dayjs(fiscalYearStart).subtract(1, 'year').format('YYYY-MM-DD'),
+                format: 'MMM YYYY'
+            }
+            // Sort the options so that we get "This Month", "Last Month", quarters, fiscal year, then the rest of the standard options
+
+            const topRankedItems = standardOptions.filter((option) => {
+                return option.label === "This Month" || option.label === "Last Month"
+            })
+
+            const bottomRankedItems = standardOptions.filter((option) => {
+                return option.label !== "This Month" && option.label !== "Last Month"
+            })
+
+            return [...topRankedItems, q1, q2, q3, q4, thisYear, lastYear, ...bottomRankedItems]
+        }
+
+        return standardOptions
+    }, [fiscalYear])
 
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState("")
 
-    const timePeriod: TimePeriod = useMemo(() => {
+    const timePeriod: TimePeriod | string = useMemo(() => {
         if (bankRecDate.fromDate && bankRecDate.toDate) {
             // Check if the from and to dates match any predefined time period
             for (const period of timePeriodOptions) {
@@ -68,11 +136,12 @@ const BankRecDateFilter = () => {
                     <ChevronDownIcon />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-74 p-0" align='end'>
+
+            <PopoverContent className="w-84 p-0" align='start'>
                 <Command>
 
                     <CommandInput placeholder="e.g. Last 3 weeks" onValueChange={setValue} value={value} />
-                    <CommandList>
+                    <CommandList className='max-h-fit'>
                         <CommandEmpty className='text-left p-2 hover:bg-muted'>
                             <EmptyState onSelect={handleTimePeriodChange} value={value} />
                         </CommandEmpty>
@@ -82,7 +151,7 @@ const BankRecDateFilter = () => {
                                     {period.label}
                                 </span>
                                 <span className='text-xs text-muted-foreground flex items-center gap-1 text-balance font-mono'>
-                                    {formatDate(period.fromDate)} <MoveRight className='w-4 h-4' /> {formatDate(period.toDate)}
+                                    {formatDate(period.fromDate, period.format)} <ChevronRight className='text-[12px] text-muted-foreground/70' /> {formatDate(period.toDate, period.format)}
                                 </span>
                             </CommandItem>
                         ))}
@@ -119,13 +188,17 @@ const BankRecDateFilter = () => {
     </div>
 }
 
-
+const referentialKeywords = ["last", "this", "next", "previous"]
 const EmptyState = ({ onSelect, value }: { onSelect: (fromDate: string, toDate: string) => void, value: string }) => {
 
     const dates = useMemo(() => {
         if (value) {
             // Try parsing the value
             const parsedDate = parse(value, undefined, { forwardDate: false })
+
+            console.log(parsedDate)
+
+
 
             if (parsedDate && parsedDate.length > 0) {
                 const startDate = parsedDate[0].start.date()
@@ -137,7 +210,27 @@ const EmptyState = ({ onSelect, value }: { onSelect: (fromDate: string, toDate: 
                     if (startDate.getTime() > today.getTime()) {
                         return { fromDate: today, toDate: startDate }
                     } else {
-                        return { fromDate: startDate, toDate: today }
+                        // Check if the user only wants a specific month like "May 2025"
+                        // If the "known values" just has month and year, then we need to get the first day of the month and the last day of the month
+                        // @ts-expect-error - "Known Values" is available in the start "ParsingComponents"
+                        if (parsedDate[0].start.knownValues?.month && !parsedDate[0].start.knownValues?.day) {
+                            return {
+                                fromDate: startDate,
+                                toDate: dayjs(startDate).endOf('month').toDate()
+                            }
+                            // @ts-expect-error - "Known Values" is available in the start "ParsingComponents"
+                        } else if (parsedDate[0].start.knownValues?.month && parsedDate[0].start.knownValues?.day && !referentialKeywords.some(keyword => value.toLowerCase().includes(keyword))) {
+                            // If month and day is known, then we should not assume that the user wants to get everything until today
+                            return {
+                                fromDate: startDate,
+                                toDate: startDate,
+                            }
+                        }
+
+                        return {
+                            fromDate: startDate,
+                            toDate: today
+                        }
                     }
                 } else {
                     return { fromDate: startDate, toDate: endDate }
@@ -151,15 +244,20 @@ const EmptyState = ({ onSelect, value }: { onSelect: (fromDate: string, toDate: 
         onSelect(formatDate(fromDate, 'YYYY-MM-DD'), formatDate(toDate, 'YYYY-MM-DD'))
     }
 
+    const isEqual = dates?.fromDate && dates?.toDate && dayjs(dates.fromDate).isSame(dates.toDate, 'date')
+
     return <div>
         {dates ?
             <div className='flex gap-2 items-center justify-between cursor-pointer' onClick={() => onClick(dates.fromDate, dates.toDate)}>
-                <span className='text-sm text-muted-foreground'>
+                <span className='text-sm text-muted-foreground max-w-[30%]'>
                     {value}
                 </span>
-                <span className='text-xs text-muted-foreground font-mono text-balance flex items-center gap-1'>
-                    {formatDate(dates.fromDate)} <MoveRight className='w-4 h-4' /> {formatDate(dates.toDate)}
-                </span>
+                {isEqual ? <span className='text-xs text-muted-foreground font-mono text-balance flex items-center gap-1'>
+                    {formatDate(dates.fromDate, 'Do MMM YYYY')}
+                </span> :
+                    <span className='text-xs text-muted-foreground font-mono flex items-center gap-1'>
+                        {formatDate(dates.fromDate, 'Do MMM YY')} <ChevronRight size='16' className='text-muted-foreground/70' /> {formatDate(dates.toDate, 'Do MMM YY')}
+                    </span>}
             </div> :
             <span className='text-sm text-muted-foreground'>
                 No results found
