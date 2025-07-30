@@ -1,5 +1,5 @@
 
-export interface BankTransactionPayments{
+export interface BankTransactionPayments {
 	name: string
 	creation: string
 	modified: string
@@ -18,4 +18,6 @@ export interface BankTransactionPayments{
 	allocated_amount: number
 	/**	Clearance Date : Date	*/
 	clearance_date?: string
+	/**	Reconciliation Type : Select	*/
+	reconciliation_type?: 'Matched' | 'Voucher Created'
 }

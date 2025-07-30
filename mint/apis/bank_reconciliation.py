@@ -42,3 +42,27 @@ def reconcile_vouchers(bank_transaction_name, vouchers, is_new_voucher: bool = F
     transaction.save()
     
     return transaction
+
+@frappe.whitelist()
+def unreconcile_transaction(transaction_name: str):
+    """
+        Unreconcile a transaction
+
+        If the individual entries in the bank transaction are matched, just remove the payment entries
+        Else, cancel the individual entries
+    """
+    transaction = frappe.get_doc("Bank Transaction", transaction_name)
+
+    vouchers_to_cancel = []
+
+    for entry in transaction.payment_entries:
+        if entry.reconciliation_type == "Voucher Created":
+            vouchers_to_cancel.append({
+                "doctype": entry.payment_document,
+                "name": entry.payment_entry,
+            })
+            
+    transaction.remove_payment_entries()
+
+    for voucher in vouchers_to_cancel:
+        frappe.get_doc(voucher["doctype"], voucher["name"]).cancel()

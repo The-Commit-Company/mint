@@ -1,7 +1,7 @@
 import { BankAccount } from "@/types/Accounts/BankAccount";
 import { getDatesForTimePeriod } from "@/lib/date";
 import { atom } from "jotai";
-import { atomFamily } from "jotai/utils";
+import { atomFamily, atomWithStorage } from "jotai/utils";
 import { UnreconciledTransaction } from "./utils";
 
 export interface SelectedBank extends Pick<BankAccount, 'name' | 'bank' | 'company' | 'account_name' | 'bank_account_no' | 'account' | 'account_type' | 'integration_id' | 'is_default' | 'last_integration_date'> {
@@ -10,7 +10,7 @@ export interface SelectedBank extends Pick<BankAccount, 'name' | 'bank' | 'compa
 }
 export const selectedBankAccountAtom = atom<SelectedBank | null>(null)
 
-export const bankRecDateAtom = atom<{ fromDate: string, toDate: string }>({
+export const bankRecDateAtom = atomWithStorage<{ fromDate: string, toDate: string }>("mint-bank-rec-date", {
     fromDate: getDatesForTimePeriod('This Month').fromDate,
     toDate: getDatesForTimePeriod('This Month').toDate
 })

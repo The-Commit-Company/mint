@@ -4,6 +4,7 @@ import BankPicker from "@/components/features/BankReconciliation/BankPicker"
 import BankRecDateFilter from "@/components/features/BankReconciliation/BankRecDateFilter"
 import BankReconciliationStatement from "@/components/features/BankReconciliation/BankReconciliationStatement"
 import BankTransactions from "@/components/features/BankReconciliation/BankTransactionList"
+import BankTransactionUnreconcileModal from "@/components/features/BankReconciliation/BankTransactionUnreconcileModal"
 import CompanySelector from "@/components/features/BankReconciliation/CompanySelector"
 import IncorrectlyClearedEntries from "@/components/features/BankReconciliation/IncorrectlyClearedEntries"
 import MatchAndReconcile from "@/components/features/BankReconciliation/MatchAndReconcile"
@@ -63,6 +64,8 @@ const BankReconciliation = () => {
                     <IncorrectlyClearedEntries />
                 </TabsContent>
             </Tabs>
+
+            <BankTransactionUnreconcileModal />
         </div>
     )
 }
