@@ -15,17 +15,18 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 import ErrorBanner from "@/components/ui/error-banner"
 import { StatContainer, StatLabel, StatValue } from "@/components/ui/stats"
+import _ from "@/lib/translate"
 
 const BankReconciliationStatement = () => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
     const dates = useAtomValue(bankRecDateAtom)
 
     if (!bankAccount) {
-        return <MissingFiltersBanner text='Please select a bank account to view the bank reconciliation statement.' />
+        return <MissingFiltersBanner text={_("Please select a bank account to view the bank reconciliation statement.")} />
     }
 
     if (!dates) {
-        return <MissingFiltersBanner text='Please select dates to view the bank reconciliation statement.' />
+        return <MissingFiltersBanner text={_("Please select dates to view the bank reconciliation statement.")} />
     }
 
     return <BankReconciliationStatementView />
@@ -78,18 +79,18 @@ const BankReconciliationStatementView = () => {
 
         {data && data.message.result.length > 0 &&
             <Table>
-                <TableCaption>Bank Reconciliation Statement</TableCaption>
+                <TableCaption>{_("Bank Reconciliation Statement")}</TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Posting Date</TableHead>
-                        <TableHead>Document Type</TableHead>
-                        <TableHead>Payment Document</TableHead>
-                        <TableHead className="text-right">Debit</TableHead>
-                        <TableHead className='text-right'>Credit</TableHead>
-                        <TableHead>Against Account</TableHead>
-                        <TableHead>Reference #</TableHead>
-                        <TableHead>Reference Date</TableHead>
-                        <TableHead>Clearance Date</TableHead>
+                        <TableHead>{_("Posting Date")}</TableHead>
+                        <TableHead>{_("Document Type")}</TableHead>
+                        <TableHead>{_("Payment Document")}</TableHead>
+                        <TableHead className="text-right">{_("Debit")}</TableHead>
+                        <TableHead className='text-right'>{_("Credit")}</TableHead>
+                        <TableHead>{_("Against Account")}</TableHead>
+                        <TableHead>{_("Reference #")}</TableHead>
+                        <TableHead>{_("Reference Date")}</TableHead>
+                        <TableHead>{_("Clearance Date")}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -99,7 +100,7 @@ const BankReconciliationStatementView = () => {
 
                         return <TableRow key={row.payment_entry}>
                             <TableCell>{formatDate(row.posting_date)}</TableCell>
-                            <TableCell>{row.payment_document}</TableCell>
+                            <TableCell>{_(row.payment_document)}</TableCell>
                             <TableCell>
                                 {row.payment_document ?
                                     <a target="_blank" className="underline underline-offset-4" href={`/app/${slug(row.payment_document)}/${row.payment_entry}`}>{row.payment_entry}</a>
@@ -121,9 +122,9 @@ const BankReconciliationStatementView = () => {
         {data && data.message.result.length === 0 &&
             <Alert variant='default'>
                 <AlertCircle />
-                <AlertTitle>No entries found</AlertTitle>
+                <AlertTitle>{_("No entries found")}</AlertTitle>
                 <AlertDescription>
-                    There are no accounting entries in the system for the selected account and dates.
+                    {_("There are no accounting entries in the system for the selected account and dates.")}
                 </AlertDescription>
             </Alert>
         }
@@ -187,17 +188,17 @@ const SummarySection = ({ data }: { data: { message: QueryReportReturnType } }) 
 
     return <div className="flex gap-4 items-start justify-between">
         <StatContainer>
-            <StatLabel>Bank Statement Balance as per General Ledger</StatLabel>
+            <StatLabel>{_("Bank Statement Balance as per General Ledger")}</StatLabel>
             <StatValue>{formatCurrency(bankStatementBalanceAsPerGL, currency)}</StatValue>
         </StatContainer>
 
         <StatContainer>
-            <StatLabel>Outstanding Checks and Deposits to clear</StatLabel>
+            <StatLabel>{_("Outstanding Checks and Deposits to clear")}</StatLabel>
             <StatValue>{formatCurrency(outstandingChecksDebit - outstandingChecksCredit, currency)}</StatValue>
         </StatContainer>
 
         {(incorrectlyClearedEntriesDebit > 0 || incorrectlyClearedEntriesCredit > 0) && <StatContainer>
-            <StatLabel className="text-destructive">Checks and Deposits incorrectly cleared</StatLabel>
+            <StatLabel className="text-destructive">{_("Checks and Deposits incorrectly cleared")}</StatLabel>
             <StatValue className="text-destructive">{formatCurrency(incorrectlyClearedEntriesDebit - incorrectlyClearedEntriesCredit)}</StatValue>
             {/* <div className="" divider={<StackDivider height='20px' />}>
                 {incorrectlyClearedEntriesDebit !== 0 && <StatHelpText>Debit: {formatCurrency(incorrectlyClearedEntriesDebit)}</StatHelpText>}
@@ -205,7 +206,7 @@ const SummarySection = ({ data }: { data: { message: QueryReportReturnType } }) 
             </div> */}
         </StatContainer>}
         <StatContainer>
-            <StatLabel>Calculated Bank Statement Balance</StatLabel>
+            <StatLabel>{_("Calculated Bank Statement Balance")}</StatLabel>
             <StatValue>{formatCurrency(calculatedBankStatementBalance)}</StatValue>
         </StatContainer>
 

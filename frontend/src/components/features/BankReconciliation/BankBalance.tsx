@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import CurrencyInput from 'react-currency-input-field'
 import { getCompanyCurrency } from "@/lib/company"
 import { getCurrencySymbol } from "@/lib/currency"
+import _ from "@/lib/translate"
 
 const BankBalance = () => {
 
@@ -41,7 +42,7 @@ const OpeningBalance = () => {
     const { data, isLoading } = useGetAccountOpeningBalance()
 
     return <StatContainer className="min-w-48">
-        <StatLabel>Opening Balance</StatLabel>
+        <StatLabel>{_("Opening Balance")}</StatLabel>
         {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue>{formatCurrency(flt(data?.message, 2), bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
     </StatContainer>
 }
@@ -54,20 +55,20 @@ const ClosingBalance = () => {
         <StatContainer className="min-w-48">
             <div className="flex items-start gap-1">
                 <StatLabel>
-                    Closing Balance as per system
+                    {_("Closing Balance as per system")}
                 </StatLabel>
                 <HoverCard openDelay={100}>
                     <HoverCardTrigger>
                         <Info size='14px' className="text-secondary-foreground/80" />
                     </HoverCardTrigger>
                     <HoverCardContent className="w-96" align="start" side="right">
-                        <H4 className="text-base">Closing balance as per system</H4>
+                        <H4 className="text-base">{_("Closing balance as per system")}</H4>
                         <Paragraph className="mt-2 text-sm">
-                            This is what the system expects the closing balance to be in your bank statement.
+                            {_("This is what the system expects the closing balance to be in your bank statement.")}
                             <br />
-                            It takes into account all the transactions that have been posted and subtracts the transactions that have not cleared yet.
+                            {_("It takes into account all the transactions that have been posted and subtracts the transactions that have not cleared yet.")}
                             <br />
-                            If your bank statement shows a different closing balance, it is because all transactions have not reconciled yet.
+                            {_("If your bank statement shows a different closing balance, it is because all transactions have not reconciled yet.")}
                             <br /><br />
                             For more information, click on the <strong>Bank Reconciliation Statement</strong> tab below.
                         </Paragraph>
@@ -89,7 +90,7 @@ const ClosingBalanceAsPerStatement = () => {
     const [value, setValue] = useAtom(bankRecClosingBalanceAtom(bankAccount?.name ?? ''))
 
     return <StatContainer>
-        <StatLabel className="mb-1">Enter Closing Balance as per statement</StatLabel>
+        <StatLabel className="mb-1">{_("Enter Closing Balance as per statement")}</StatLabel>
         <CurrencyInput
             groupSeparator=","
             placeholder={`${currencySymbol}0.00`}
@@ -127,15 +128,13 @@ const Difference = () => {
     const isError = difference !== 0
 
     return <StatContainer className="w-fit text-right sm:min-w-56">
-        <StatLabel className="text-right">Difference</StatLabel>
+        <StatLabel className="text-right">{_("Difference")}</StatLabel>
         {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue className={isError ? 'text-destructive' : ''}>
             {formatCurrency(difference,
                 bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))
             }</StatValue>}
     </StatContainer>
 }
-
-
 
 const ReconcileProgress = () => {
 
@@ -158,7 +157,7 @@ const ReconcileProgress = () => {
 
     return <div className="w-[18%] flex flex-col gap-1 items-end">
         <div>
-            <span className="text-right font-medium text-sm">Your Progress: {reconciledCount} / {totalCount} reconciled</span>
+            <span className="text-right font-medium text-sm">{_("Your Progress")}: {reconciledCount} / {totalCount} {_("reconciled")}</span>
         </div>
         <div className="w-full">
             <Progress value={reconciledCount} max={totalCount ? totalCount : 100} />

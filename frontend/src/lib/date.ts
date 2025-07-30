@@ -4,6 +4,7 @@ import timezone from 'dayjs/plugin/timezone';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
+import _ from './translate';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -54,7 +55,8 @@ export const getDatesForTimePeriod = (
         return {
             fromDate: daysJSObject.startOf('week').format(format),
             toDate: daysJSObject.endOf('week').format(format),
-            format: "Do MMM 'YY"
+            format: "Do MMM 'YY",
+            translatedLabel: _('This Week')
         }
     }
 
@@ -62,7 +64,8 @@ export const getDatesForTimePeriod = (
         return {
             fromDate: daysJSObject.startOf('month').format(format),
             toDate: daysJSObject.endOf('month').format(format),
-            format: "Do MMM 'YY"
+            format: "Do MMM 'YY",
+            translatedLabel: _(timePeriod)
         }
     }
 
@@ -70,7 +73,8 @@ export const getDatesForTimePeriod = (
         return {
             fromDate: daysJSObject.startOf('quarter').format(format),
             toDate: daysJSObject.endOf('quarter').format(format),
-            format: 'MMM YYYY'
+            format: 'MMM YYYY',
+            translatedLabel: _(timePeriod)
         }
     }
 
@@ -78,7 +82,8 @@ export const getDatesForTimePeriod = (
         return {
             fromDate: daysJSObject.startOf('year').format(format),
             toDate: daysJSObject.endOf('year').format(format),
-            format: 'MMM YYYY'
+            format: 'MMM YYYY',
+            translatedLabel: _(timePeriod)
         }
     }
 
@@ -87,7 +92,8 @@ export const getDatesForTimePeriod = (
         return {
             fromDate: lastWeek.startOf('week').format(format),
             toDate: lastWeek.endOf('week').format(format),
-            format: "Do MMM 'YY"
+            format: "Do MMM 'YY",
+            translatedLabel: _(timePeriod)
         }
     }
 
@@ -96,7 +102,8 @@ export const getDatesForTimePeriod = (
         return {
             fromDate: lastMonth.startOf('month').format(format),
             toDate: lastMonth.endOf('month').format(format),
-            format: "Do MMM 'YY"
+            format: "Do MMM 'YY",
+            translatedLabel: _(timePeriod)
         }
     }
 
@@ -105,7 +112,8 @@ export const getDatesForTimePeriod = (
         return {
             fromDate: lastQuarter.startOf('quarter').format(format),
             toDate: lastQuarter.endOf('quarter').format(format),
-            format: 'MMM YYYY'
+            format: 'MMM YYYY',
+            translatedLabel: _(timePeriod)
         }
     }
 
@@ -114,14 +122,16 @@ export const getDatesForTimePeriod = (
         return {
             fromDate: lastYear.startOf('year').format(format),
             toDate: lastYear.endOf('year').format(format),
-            format: 'MMM YYYY'
+            format: 'MMM YYYY',
+            translatedLabel: _(timePeriod)
         }
     }
 
     return {
         fromDate: '',
         toDate: '',
-        format: 'Do MMM YY'
+        format: 'Do MMM YY',
+        translatedLabel: _(timePeriod)
     }
 }
 

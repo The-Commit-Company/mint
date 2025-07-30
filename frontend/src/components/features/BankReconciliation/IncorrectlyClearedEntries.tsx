@@ -16,6 +16,7 @@ import { toast } from "sonner"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { PartyPopper } from "lucide-react"
 import ErrorBanner from "@/components/ui/error-banner"
+import _ from "@/lib/translate"
 
 const IncorrectlyClearedEntries = () => {
     const companyID = useCurrentCompany()
@@ -76,12 +77,12 @@ const IncorrectlyClearedEntriesView = () => {
     const onClearClick = (voucher_type: string, voucher_name: string) => {
         clearClearingDate({ voucher_type, voucher_name })
             .then(() => {
-                toast.success('Cleared', {
+                toast.success(_('Cleared'), {
                     duration: 1000
                 })
                 mutate()
             }).catch((e) => {
-                toast.error("There was an error while performing the action.", {
+                toast.error(_("There was an error while performing the action."), {
                     description: getErrorMessage(e),
                     duration: 5000
                 })
@@ -104,22 +105,22 @@ const IncorrectlyClearedEntriesView = () => {
 
         {data && data.message.result.length > 0 &&
             <Table>
-                <TableCaption>Incorrectly cleared entries as per the report.</TableCaption>
+                <TableCaption>{_("Incorrectly cleared entries as per the report.")}</TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[100px]">Document Type</TableHead>
-                        <TableHead>Payment Document</TableHead>
-                        <TableHead className="text-right">Debit</TableHead>
-                        <TableHead className="text-right">Credit</TableHead>
-                        <TableHead>Posting Date</TableHead>
-                        <TableHead>Clearance Date</TableHead>
-                        <TableHead>Actions</TableHead>
+                        <TableHead className="w-[100px]">{_("Document Type")}</TableHead>
+                        <TableHead>{_("Payment Document")}</TableHead>
+                        <TableHead className="text-right">{_("Debit")}</TableHead>
+                        <TableHead className="text-right">{_("Credit")}</TableHead>
+                        <TableHead>{_("Posting Date")}</TableHead>
+                        <TableHead>{_("Clearance Date")}</TableHead>
+                        <TableHead>{_("Actions")}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {data.message.result.map((row: IncorrectlyClearedEntry) => (
                         <TableRow key={row.payment_entry}>
-                            <TableCell>{row.payment_document}</TableCell>
+                            <TableCell>{_(row.payment_document)}</TableCell>
                             <TableCell><a target="_blank" className="underline underline-offset-4" href={`/app/${slug(row.payment_document)}/${row.payment_entry}`}>{row.payment_entry}</a></TableCell>
                             <TableCell className="text-right">{formatCurrency(row.debit, bankAccount?.account_currency ?? getCompanyCurrency(companyID))}</TableCell>
                             <TableCell className="text-right">{formatCurrency(row.credit, bankAccount?.account_currency ?? getCompanyCurrency(companyID))}</TableCell>
@@ -130,7 +131,7 @@ const IncorrectlyClearedEntriesView = () => {
                                     variant='link'
                                     size="sm"
                                     className="text-destructive px-0"
-                                    onClick={() => onClearClick(row.payment_document, row.payment_entry)}>Reset Clearing Date</Button>
+                                    onClick={() => onClearClick(row.payment_document, row.payment_entry)}>{_("Reset Clearing Date")}</Button>
                             </TableCell>
                         </TableRow>
                     ))}
@@ -140,9 +141,9 @@ const IncorrectlyClearedEntriesView = () => {
         {data && data.message.result.length === 0 &&
             <Alert variant='default'>
                 <PartyPopper />
-                <AlertTitle>It's all good!</AlertTitle>
+                <AlertTitle>{_("It's all good!")}</AlertTitle>
                 <AlertDescription>
-                    There are no entries in the system where the clearance date is before the posting date.
+                    {_("There are no entries in the system where the clearance date is before the posting date.")}
                 </AlertDescription>
             </Alert>
         }

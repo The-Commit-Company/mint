@@ -23,23 +23,24 @@ import { formatCurrency } from "@/lib/numbers"
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { Skeleton } from "@/components/ui/skeleton"
 import { slug } from "@/lib/frappe"
+import _ from "@/lib/translate"
 
 const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
     const selectedBank = useAtomValue(selectedBankAccountAtom)
 
     if (!selectedBank) {
-        return <MissingFiltersBanner text='Select a bank account to reconcile' />
+        return <MissingFiltersBanner text={_("Select a bank account to reconcile")} />
     }
 
     return <>
         <div className={`flex items-start space-x-2`} >
             <div className="flex-1">
-                <H4 className="text-sm font-medium">Unreconciled Transactions</H4>
+                <H4 className="text-sm font-medium">{_("Unreconciled Transactions")}</H4>
                 <UnreconciledTransactions contentHeight={contentHeight} />
             </div>
             <Separator orientation="vertical" style={{ minHeight: `${contentHeight}px` }} />
             <div className="flex-1">
-                <H4 className="text-sm font-medium">Match or Create</H4>
+                <H4 className="text-sm font-medium">{_("Match or Create")}</H4>
                 <VouchersSection contentHeight={contentHeight} />
             </div>
         </div>
@@ -112,25 +113,25 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
     }, [searchIndex, search, typeFilter, amountFilter.value, unreconciledTransactions?.message])
 
     if (isLoading) {
-        return "Loading..."
+        return <div className="text-sm text-center p-4 text-muted-foreground">{_("Loading")}...</div>
     }
 
     return <div className="space-y-1">
         <div className="flex py-2 w-full gap-2">
-            <label className="sr-only">Search transactions</label>
+            <label className="sr-only">{_("Search transactions")}</label>
             <div className={cn("flex items-center gap-2 w-full rounded-md dark:bg-input/30 border-input border bg-transparent px-2 text-base shadow-xs transition-[color,box-shadow] outline-none",
                 "focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]",
                 "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
             )}>
                 <Search className="w-5 h-5 text-muted-foreground" />
-                <Input placeholder="Search" type='search' onChange={(e) => setSearch(e.target.value)}
+                <Input placeholder={_("Search")} type='search' onChange={(e) => setSearch(e.target.value)}
                     className="border-none px-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0" />
                 <div>
-                    <span className="text-sm text-muted-foreground text-nowrap whitespace-nowrap">{results?.length} results</span>
+                    <span className="text-sm text-muted-foreground text-nowrap whitespace-nowrap">{results?.length} {_(results?.length === 1 ? "result" : "results")}</span>
                 </div>
             </div>
             <div>
-                <label className="sr-only">Filter by amount</label>
+                <label className="sr-only">{_("Filter by amount")}</label>
                 <CurrencyInput
                     groupSeparator=","
                     placeholder={`${currencySymbol}0.00`}
@@ -159,14 +160,14 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="min-w-32 h-9 text-left">
                             {typeFilter === 'All' ? <DollarSign className="w-4 h-4 text-muted-foreground" /> : typeFilter === 'Debits' ? <ArrowUpRight className="w-4 h-4 text-destructive" /> : <ArrowDownRight className="w-4 h-4 text-green-500" />}
-                            {typeFilter}
+                            {_(typeFilter)}
                             <ChevronDown className="w-4 h-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem onClick={() => setTypeFilter('All')}><DollarSign /> All</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTypeFilter('Debits')}><ArrowUpRight className="text-destructive" /> Debits</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTypeFilter('Credits')}><ArrowDownRight className="text-green-500" /> Credits</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTypeFilter('All')}><DollarSign /> {_("All")}</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTypeFilter('Debits')}><ArrowUpRight className="text-destructive" /> {_("Debits")}</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTypeFilter('Credits')}><ArrowDownRight className="text-green-500" /> {_("Credits")}</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
@@ -179,7 +180,7 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
             itemContent={(_index, transaction) => (
                 <UnreconciledTransactionItem transaction={transaction} />
             )}
-            style={{ minHeight: contentHeight - 100 }}
+            style={{ minHeight: contentHeight - 80 }}
             totalCount={results?.length}
         />
 
@@ -224,14 +225,14 @@ const UnreconciledTransactionItem = ({ transaction }: { transaction: Unreconcile
                             title={transaction.reference_number}
                             className="inline-block max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap bg-primary-foreground rounded-sm text-primary"
                         >
-                            Ref: {transaction.reference_number}</Badge>}
+                            {_("Ref")}: {transaction.reference_number}</Badge>}
                     </div>
                     <span className="text-sm">{transaction.description}</span>
                 </div>
                 <div className="gap-1 flex flex-col items-end min-w-32 h-full text-right">
                     {isWithdrawal ? <ArrowUpRight className="w-6 h-6 text-destructive" /> : <ArrowDownRight className="w-6 h-6 text-green-500" />}
                     {amount && amount > 0 && <span className="font-semibold text-md">{formatCurrency(amount, currency)}</span>}
-                    {amount !== transaction.unallocated_amount && <span className="text-xs text-gray-700">{formatCurrency(transaction.unallocated_amount, currency)}<br />Unallocated</span>}
+                    {amount !== transaction.unallocated_amount && <span className="text-xs text-gray-700">{formatCurrency(transaction.unallocated_amount, currency)}<br />{_("Unallocated")}</span>}
                 </div>
             </div>
         </div>
@@ -246,11 +247,11 @@ const VouchersSection = ({ contentHeight }: { contentHeight: number }) => {
 
 
     if (selectedTransactions.length === 0) {
-        return <MissingFiltersBanner text='Select a transaction to match and reconcile with vouchers' />
+        return <MissingFiltersBanner text={_("Select a transaction to match and reconcile with vouchers")} />
     }
 
     if (selectedTransactions.length > 1) {
-        return <div className="text-sm text-muted-foreground">Multiple transactions selected</div>
+        return <div className="text-sm text-muted-foreground">{_("Multiple transactions selected")}</div>
     }
 
     return <div style={{ minHeight: contentHeight }} className="mt-2">
@@ -272,39 +273,39 @@ const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transacti
                     <TooltipTrigger asChild>
                         <Button
                             variant='outline'
-                            aria-label="Record a payment entry against a customer or supplier"
+                            aria-label={_("Record a payment entry against a customer or supplier")}
                             onClick={() => setRecordPaymentModalOpen(true)}>
-                            <Receipt /> Record Payment
+                            <Receipt /> {_("Record Payment")}
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                        Record a payment entry against a customer or supplier
+                        {_("Record a payment entry against a customer or supplier")}
                     </TooltipContent>
                 </Tooltip>
                 <Tooltip>
                     <TooltipTrigger asChild>
                         <Button
                             variant='outline'
-                            aria-label="Record a bank journal entry for expenses, income or split transactions"
+                            aria-label={_("Record a bank journal entry for expenses, income or split transactions")}
                             onClick={() => setRecordJournalEntryModalOpen(true)}>
-                            <Landmark /> Bank Entry
+                            <Landmark /> {_("Bank Entry")}
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                        Record a journal entry for expenses, income or split transactions
+                        {_("Record a journal entry for expenses, income or split transactions")}
                     </TooltipContent>
                 </Tooltip>
                 <Tooltip >
                     <TooltipTrigger asChild>
                         <Button
                             variant='outline'
-                            aria-label="Record an internal transfer to another bank/credit card/cash account"
+                            aria-label={_("Record an internal transfer to another bank/credit card/cash account")}
                             onClick={() => setTransferModalOpen(true)}>
-                            <ArrowRightLeft /> Transfer
+                            <ArrowRightLeft /> {_("Transfer")}
                         </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                        Record an internal transfer to another bank/credit card/cash account
+                        {_("Record an internal transfer to another bank/credit card/cash account")}
                     </TooltipContent>
                 </Tooltip>
 
@@ -340,7 +341,7 @@ const VouchersForTransaction = ({ transaction, contentHeight }: { transaction: U
     }
 
     return <div className="relative space-y-2">
-        {vouchers?.message.length === 0 && <MissingFiltersBanner text='No vouchers found for this transaction' />}
+        {vouchers?.message.length === 0 && <MissingFiltersBanner text={_("No vouchers found for this transaction")} />}
         <Virtuoso
             data={vouchers?.message}
             itemContent={(index, voucher) => (
@@ -402,7 +403,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
             <div className="flex justify-between items-end gap-2">
                 <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2">
-                        <Badge variant='secondary' className={cn("text-sm rounded-sm", isSuggested ? "bg-amber-100 text-amber-700" : "bg-secondary")}>{voucher.doctype}</Badge>
+                        <Badge variant='secondary' className={cn("text-sm rounded-sm", isSuggested ? "bg-amber-100 text-amber-700" : "bg-secondary")}>{_(voucher.doctype)}</Badge>
                         <a target="_blank"
                             href={`/app/${slug(voucher.doctype)}/${voucher.name}`}
                             className="underline underline-offset-2 font-medium"
@@ -410,7 +411,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                     </div>
                     {voucher.party && voucher.party_type && <div className="flex items-center gap-2">
                         <User size='18px' />
-                        <span>{voucher.party_type}</span>
+                        <span>{_(voucher.party_type)}</span>
                         <a target="_blank"
                             href={`/app/${slug(voucher.party_type)}/${voucher.party}`}
                             className="underline underline-offset-2 font-medium"
@@ -418,7 +419,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                     </div>}
                     <TooltipProvider>
                         <div className="flex items-center gap-1">
-                            <span>Amount: <span className="font-bold">{formatCurrency(voucher.paid_amount)}</span></span>
+                            <span>{_("Amount")}: <span className="font-bold">{formatCurrency(voucher.paid_amount)}</span></span>
                             {amountMatches ?
                                 <MatchBadge matchType="full" label="Amount matches the selected transaction" />
                                 :
@@ -428,7 +429,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                         <div className="flex gap-2 h-6">
 
                             <div className="flex items-center gap-1">
-                                <span>Posted On: <span className="font-bold">{formatDate(voucher.posting_date)}</span></span>
+                                <span>{_("Posted On")}: <span className="font-bold">{formatDate(voucher.posting_date)}</span></span>
                                 <MatchBadge
                                     matchType={postingDateMatches ? "full" : "none"}
                                     label={postingDateMatches ? "Posting Date matches the transaction date" : "Posting Date does not match the transaction date"}
@@ -436,10 +437,10 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                             </div>
                             {voucher.reference_date && <Separator orientation="vertical" className="h-4" />}
                             {voucher.reference_date && <div className="flex items-center gap-1">
-                                <span>Reference Date: <span className="font-bold">{formatDate(voucher.reference_date)}</span></span>
+                                <span>{_("Reference Date")}: <span className="font-bold">{formatDate(voucher.reference_date)}</span></span>
                                 <MatchBadge
                                     matchType={referenceDateMatches ? "full" : "none"}
-                                    label={referenceDateMatches ? "Reference Date matches the transaction date" : "Reference Date does not match the transaction date"}
+                                    label={referenceDateMatches ? `${_("Reference Date matches the transaction date")}` : `${_("Reference Date does not match the transaction date")}`}
                                 />
                             </div>}
                         </div>
@@ -450,10 +451,10 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                                 <Tooltip>
                                     <TooltipTrigger>
                                         <Badge className={cn("text-xs rounded-sm", referenceMatchesFull ? "bg-green-600 text-white" : referenceMatchesPartial ? "bg-amber-400 text-white" : "bg-red-500 text-white")}>
-                                            {referenceMatchesFull ? "Complete Match" : referenceMatchesPartial ? "Partial Match" : "No Match"}</Badge>
+                                            {referenceMatchesFull ? `${_("Complete Match")}` : referenceMatchesPartial ? `${_("Partial Match")}` : `${_("No Match")}`}</Badge>
                                     </TooltipTrigger>
                                     <TooltipContent side="top">
-                                        {referenceMatchesFull ? "Reference matches the selected transaction" : referenceMatchesPartial ? "Reference matches the selected transaction partially" : "Reference does not match the selected transaction"}
+                                        {referenceMatchesFull ? `${_("Reference matches the selected transaction")}` : referenceMatchesPartial ? `${_("Reference matches the selected transaction partially")}` : `${_("Reference does not match the selected transaction")}`}
                                     </TooltipContent>
                                 </Tooltip>
                             </span>
@@ -463,13 +464,13 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                 <div>
                     <Button variant='outline' className={
                         cn(isSuggested || amountMatches ? "bg-green-600 hover:bg-green-700 active:bg-green-600 text-white hover:text-white active:text-white" : "")
-                    } onClick={onClick} disabled={loading}>{loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Reconciling...</> : 'Reconcile'}</Button>
+                    } onClick={onClick} disabled={loading}>{loading ? <><Loader2 className="w-4 h-4 animate-spin" /> {_("Reconciling")}...</> : `${_("Reconcile")}`}</Button>
                 </div>
             </div>
 
             <div className="absolute top-0 right-0 flex items-center gap-1 justify-center">
                 {isSuggested && <span
-                    className="bg-amber-500 uppercase font-medium text-white px-3 py-1 rounded-bl-md text-xs rounded-tr-sm">Suggested</span>}
+                    className="bg-amber-500 uppercase font-medium text-white px-3 py-1 rounded-bl-md text-xs rounded-tr-sm">{_("Suggested")}</span>}
             </div>
 
         </div>
@@ -481,7 +482,7 @@ const MatchBadge = ({ matchType, label }: { matchType: 'full' | 'partial' | 'non
     return <Tooltip>
         <TooltipTrigger>
             {matchType === 'full' ? <BadgeCheck className="text-white fill-green-600" /> : matchType === 'partial' ?
-                <Badge className="text-white bg-amber-400 rounded-sm">Partial Match</Badge> :
+                <Badge className="text-white bg-amber-400 rounded-sm">{_("Partial Match")}</Badge> :
                 <XCircle className="text-white fill-red-500" />}
         </TooltipTrigger>
         <TooltipContent>

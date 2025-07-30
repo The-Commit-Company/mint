@@ -10,6 +10,7 @@ import { parse } from "chrono-node"
 import { Calendar } from '@/components/ui/calendar'
 import useFiscalYear from '@/hooks/useFiscalYear'
 import dayjs from 'dayjs'
+import _ from '@/lib/translate'
 
 const BankRecDateFilter = () => {
 
@@ -24,7 +25,8 @@ const BankRecDateFilter = () => {
                 label: period,
                 fromDate: dates.fromDate,
                 toDate: dates.toDate,
-                format: dates.format
+                format: dates.format,
+                translatedLabel: dates.translatedLabel
             }
         })
 
@@ -35,6 +37,7 @@ const BankRecDateFilter = () => {
 
             const q1 = {
                 label: `Q1: ${fiscalYear.message.name}`,
+                translatedLabel: `${_("Q1")}: ${fiscalYear.message.name}`,
                 fromDate: fiscalYearStart,
                 toDate: dayjs(fiscalYearStart).add(3, 'month').format('YYYY-MM-DD'),
                 format: 'MMM YYYY'
@@ -42,6 +45,7 @@ const BankRecDateFilter = () => {
 
             const q2 = {
                 label: `Q2: ${fiscalYear.message.name}`,
+                translatedLabel: `${_("Q2")}: ${fiscalYear.message.name}`,
                 fromDate: dayjs(fiscalYearStart).add(3, 'month').format('YYYY-MM-DD'),
                 toDate: dayjs(fiscalYearStart).add(6, 'month').format('YYYY-MM-DD'),
                 format: 'MMM YYYY'
@@ -49,6 +53,7 @@ const BankRecDateFilter = () => {
 
             const q3 = {
                 label: `Q3: ${fiscalYear.message.name}`,
+                translatedLabel: `${_("Q3")}: ${fiscalYear.message.name}`,
                 fromDate: dayjs(fiscalYearStart).add(6, 'month').format('YYYY-MM-DD'),
                 toDate: dayjs(fiscalYearStart).add(9, 'month').format('YYYY-MM-DD'),
                 format: 'MMM YYYY'
@@ -56,6 +61,7 @@ const BankRecDateFilter = () => {
 
             const q4 = {
                 label: `Q4: ${fiscalYear.message.name}`,
+                translatedLabel: `${_("Q4")}: ${fiscalYear.message.name}`,
                 fromDate: dayjs(fiscalYearStart).add(9, 'month').format('YYYY-MM-DD'),
                 toDate: fiscalYearEnd,
                 format: 'MMM YYYY'
@@ -63,6 +69,7 @@ const BankRecDateFilter = () => {
 
             const thisYear = {
                 label: `This Fiscal Year`,
+                translatedLabel: `${_("This Fiscal Year")}`,
                 fromDate: fiscalYearStart,
                 toDate: fiscalYearEnd,
                 format: 'MMM YYYY'
@@ -70,6 +77,7 @@ const BankRecDateFilter = () => {
 
             const lastYear = {
                 label: `Last Fiscal Year`,
+                translatedLabel: `${_("Last Fiscal Year")}`,
                 fromDate: dayjs(fiscalYearStart).subtract(1, 'year').format('YYYY-MM-DD'),
                 toDate: dayjs(fiscalYearStart).subtract(1, 'year').format('YYYY-MM-DD'),
                 format: 'MMM YYYY'
@@ -129,7 +137,7 @@ const BankRecDateFilter = () => {
                     aria-expanded={open}
                     className='rounded-r-none border-r-0'
                     role="combobox">
-                    {timePeriod}
+                    {timePeriodOptions.find((period) => period.label === timePeriod)?.translatedLabel ?? _(timePeriod)}
 
                     <ChevronDownIcon />
                 </Button>
@@ -146,9 +154,9 @@ const BankRecDateFilter = () => {
                         {timePeriodOptions.map((period) => (
                             <CommandItem key={period.label} className='flex justify-between' onSelect={() => handleTimePeriodChange(period.fromDate, period.toDate)}>
                                 <span>
-                                    {period.label}
+                                    {period.translatedLabel ?? _(period.label)}
                                 </span>
-                                <span className='text-xs text-muted-foreground flex items-center gap-1 text-balance font-mono'>
+                                <span className='text-xs text-muted-foreground flex items-center gap-1 text-right whitespace-nowrap font-mono'>
                                     {formatDate(period.fromDate, period.format)} <ChevronRight className='text-[12px] text-muted-foreground/70' /> {formatDate(period.toDate, period.format)}
                                 </span>
                             </CommandItem>

@@ -10,6 +10,7 @@ import IncorrectlyClearedEntries from "@/components/features/BankReconciliation/
 import MatchAndReconcile from "@/components/features/BankReconciliation/MatchAndReconcile"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { H1 } from "@/components/ui/typography"
+import _ from "@/lib/translate"
 import { useLayoutEffect, useRef, useState } from "react"
 
 
@@ -31,7 +32,7 @@ const BankReconciliation = () => {
         <div className="p-4 flex flex-col gap-4">
             <div ref={ref} className="flex flex-col gap-4">
                 <div className="flex justify-between">
-                    <H1 className="text-base font-medium"><span className="text-4xl font-extrabold text-emerald-500">mint</span>&nbsp; Bank Reconciliation</H1>
+                    <H1 className="text-base font-medium"><span className="text-4xl font-extrabold text-emerald-500">mint</span>&nbsp; {_("Bank Reconciliation")}</H1>
                     <div className="flex items-center gap-2">
                         <CompanySelector />
                         <BankRecDateFilter />
@@ -42,11 +43,11 @@ const BankReconciliation = () => {
             </div>
             <Tabs defaultValue="Match and Reconcile">
                 <TabsList className="w-full">
-                    <TabsTrigger value="Match and Reconcile">Match and Reconcile</TabsTrigger>
-                    <TabsTrigger value="Bank Reconciliation Statement">Bank Reconciliation Statement</TabsTrigger>
-                    <TabsTrigger value="Bank Transactions">Bank Transactions</TabsTrigger>
-                    <TabsTrigger value="Bank Clearance Summary">Bank Clearance Summary</TabsTrigger>
-                    <TabsTrigger value="Incorrectly Cleared Entries">Incorrectly Cleared Entries</TabsTrigger>
+                    <TabsTrigger value="Match and Reconcile">{_("Match and Reconcile")}</TabsTrigger>
+                    <TabsTrigger value="Bank Reconciliation Statement">{_("Bank Reconciliation Statement")}</TabsTrigger>
+                    <TabsTrigger value="Bank Transactions">{_("Bank Transactions")}</TabsTrigger>
+                    <TabsTrigger value="Bank Clearance Summary">{_("Bank Clearance Summary")}</TabsTrigger>
+                    <TabsTrigger value="Incorrectly Cleared Entries">{_("Incorrectly Cleared Entries")}</TabsTrigger>
                 </TabsList>
                 <TabsContent value="Match and Reconcile">
                     <MatchAndReconcile contentHeight={remainingHeightAfterTabs} />

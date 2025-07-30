@@ -7,6 +7,7 @@ import { Landmark } from "lucide-react"
 import { H4 } from "@/components/ui/typography"
 import { getTimeago } from "@/lib/date"
 import ErrorBanner from "@/components/ui/error-banner"
+import _ from "@/lib/translate"
 
 const BankPicker = () => {
 
@@ -71,7 +72,7 @@ const BankPickerItem = ({ bank }: { bank: SelectedBank }) => {
             <span className="tracking-tight text-sm font-medium">{bank.account_name}</span>
             <span title="GL Account" className="text-sm">{bank.account}</span>
 
-            {bank.last_integration_date && <span className="text-xs text-muted-foreground">Last Synced Transaction: {getTimeago(bank.last_integration_date)}</span>}
+            {bank.last_integration_date && <span className="text-xs text-muted-foreground">{_("Last Synced Transaction")}: {getTimeago(bank.last_integration_date)}</span>}
         </div>
 
         <div className="absolute -top-1 right-0">

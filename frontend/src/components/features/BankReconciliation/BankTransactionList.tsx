@@ -13,13 +13,14 @@ import { Badge } from "@/components/ui/badge"
 import { useGetBankTransactions } from "./utils"
 import { BankTransaction } from "@/types/Accounts/BankTransaction"
 import { Button } from "@/components/ui/button"
+import _ from "@/lib/translate"
 
 const BankTransactions = () => {
     const selectedBank = useAtomValue(selectedBankAccountAtom)
     const dates = useAtomValue(bankRecDateAtom)
 
     if (!selectedBank || !dates) {
-        return <MissingFiltersBanner text='Please select a bank and set the date range' />
+        return <MissingFiltersBanner text={_("Please select a bank and set the date range")} />
     }
 
     return <>
@@ -56,18 +57,18 @@ const BankTransactionListView = () => {
 
         {data && data.message.length > 0 &&
             <Table>
-                <TableCaption>Bank Transactions between {formattedFromDate} and {formattedToDate}</TableCaption>
+                <TableCaption>{_("Bank Transactions between {0} and {1}", [formattedFromDate, formattedToDate])}</TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead>Reference #</TableHead>
-                        <TableHead className="text-right">Withdrawal</TableHead>
-                        <TableHead className="text-right">Deposit</TableHead>
-                        <TableHead className="text-right">Unallocated</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
+                        <TableHead>{_("Date")}</TableHead>
+                        <TableHead>{_("Description")}</TableHead>
+                        <TableHead>{_("Reference #")}</TableHead>
+                        <TableHead className="text-right">{_("Withdrawal")}</TableHead>
+                        <TableHead className="text-right">{_("Deposit")}</TableHead>
+                        <TableHead className="text-right">{_("Unallocated")}</TableHead>
+                        <TableHead>{_("Type")}</TableHead>
+                        <TableHead>{_("Status")}</TableHead>
+                        <TableHead>{_("Actions")}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -84,10 +85,10 @@ const BankTransactionListView = () => {
                                 {row.status === 'Unreconciled' ?
                                     <Badge variant="destructive" className="bg-destructive/10 text-destructive">
                                         <XCircle className="-mt-0.5 text-destructive" />
-                                        Not Reconciled</Badge> :
+                                        {_("Not Reconciled")}</Badge> :
                                     <Badge variant="outline" className="text-foreground px-1.5">
                                         <CheckCircle2 width={16} height={16} className="text-green-600 dark:text-green-500" />
-                                        Unreconciled</Badge>}
+                                        {_("Unreconciled")}</Badge>}
                             </TableCell>
                             <TableCell>
                                 <div className="flex gap-2">
@@ -97,7 +98,7 @@ const BankTransactionListView = () => {
                                                 href={`/app/bank-transaction/${row.name}`}
                                                 target="_blank"
                                                 className="underline underline-offset-4"
-                                            >View <ExternalLink />
+                                            >{_("View")} <ExternalLink />
                                             </a>
                                         </Button>
                                     </div>
@@ -107,7 +108,7 @@ const BankTransactionListView = () => {
                                         size='sm'
                                         className="text-destructive px-0">
                                         <Undo2 />
-                                        Undo
+                                        {_("Undo")}
                                     </Button>}
                                 </div>
                             </TableCell>
@@ -119,9 +120,9 @@ const BankTransactionListView = () => {
         {data && data.message.length === 0 &&
             <Alert variant='default'>
                 <DollarSign />
-                <AlertTitle>No transactions found</AlertTitle>
+                <AlertTitle>{_("No transactions found")}</AlertTitle>
                 <AlertDescription>
-                    There are no transactions in the system for the selected bank account and dates.
+                    {_("There are no transactions in the system for the selected bank account and dates.")}
                 </AlertDescription>
             </Alert>
         }

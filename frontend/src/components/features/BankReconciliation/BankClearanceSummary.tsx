@@ -15,17 +15,18 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, CheckCircle2, XCircle } from "lucide-react"
 import ErrorBanner from "@/components/ui/error-banner"
 import { Badge } from "@/components/ui/badge"
+import _ from "@/lib/translate"
 
 const BankClearanceSummary = () => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
     const dates = useAtomValue(bankRecDateAtom)
 
     if (!bankAccount) {
-        return <MissingFiltersBanner text='Please select a bank account to view the bank clearance summary.' />
+        return <MissingFiltersBanner text={_("Please select a bank account to view the bank clearance summary.")} />
     }
 
     if (!dates) {
-        return <MissingFiltersBanner text='Please select dates to view the bank clearance summary.' />
+        return <MissingFiltersBanner text={_("Please select dates to view the bank clearance summary.")} />
     }
 
     return <BankClearanceSummaryView />
@@ -76,23 +77,23 @@ const BankClearanceSummaryView = () => {
 
         {data && data.message.result.length > 0 &&
             <Table>
-                <TableCaption>Bank Clearance Summary</TableCaption>
+                <TableCaption>{_("Bank Clearance Summary")}</TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Document Type</TableHead>
-                        <TableHead>Payment Document</TableHead>
-                        <TableHead>Posting Date</TableHead>
-                        <TableHead>Cheque/Reference Number</TableHead>
-                        <TableHead>Clearance Date</TableHead>
-                        <TableHead>Against Account</TableHead>
-                        <TableHead className="text-right">Amount</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>{_("Document Type")}</TableHead>
+                        <TableHead>{_("Payment Document")}</TableHead>
+                        <TableHead>{_("Posting Date")}</TableHead>
+                        <TableHead>{_("Cheque/Reference Number")}</TableHead>
+                        <TableHead>{_("Clearance Date")}</TableHead>
+                        <TableHead>{_("Against Account")}</TableHead>
+                        <TableHead className="text-right">{_("Amount")}</TableHead>
+                        <TableHead>{_("Status")}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {data.message.result.map((row: BankClearanceSummaryEntry) => (
                         <TableRow key={row.payment_entry}>
-                            <TableCell>{row.payment_document_type}</TableCell>
+                            <TableCell>{_(row.payment_document_type)}</TableCell>
                             <TableCell><a target="_blank" className="underline underline-offset-4" href={`/app/${slug(row.payment_document_type)}/${row.payment_entry}`}>{row.payment_entry}</a></TableCell>
                             <TableCell>{formatDate(row.posting_date)}</TableCell>
                             <TableCell>{row.cheque_no}</TableCell>
@@ -102,9 +103,9 @@ const BankClearanceSummaryView = () => {
                             <TableCell>
                                 {row.clearance_date ? <Badge variant="outline" className="text-foreground px-1.5">
                                     <CheckCircle2 width={16} height={16} className="text-green-600 dark:text-green-500" />
-                                    Cleared</Badge> : <Badge variant="destructive" className="bg-destructive/10 text-destructive">
+                                    {_("Cleared")}</Badge> : <Badge variant="destructive" className="bg-destructive/10 text-destructive">
                                     <XCircle className="-mt-0.5 text-destructive" />
-                                    Not Cleared</Badge>}
+                                    {_("Not Cleared")}</Badge>}
                             </TableCell>
                         </TableRow>
                     ))}
