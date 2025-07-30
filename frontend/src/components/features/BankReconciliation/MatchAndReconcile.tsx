@@ -368,9 +368,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
         // Reference/Description: Full or partial
         // Whether this is suggested or not - depends on the above scores
 
-        const transactionAmount = transaction?.deposit || transaction?.withdrawal
-
-        const amountMatches = voucher.paid_amount === transactionAmount
+        const amountMatches = voucher.paid_amount === transaction?.unallocated_amount
         const postingDateMatches = voucher.posting_date === transaction?.date
         const referenceDateMatches = voucher.reference_date === transaction?.date
         const referenceMatchesFull = voucher.reference_no === transaction?.reference_number || voucher.reference_no === transaction?.description
@@ -378,7 +376,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
         const referenceMatchesPartial = transaction?.reference_number?.includes(voucher.reference_no) || transaction?.description?.includes(voucher.reference_no)
 
 
-        const isSuggested = amountMatches && (postingDateMatches || referenceDateMatches) && index === 0
+        const isSuggested = amountMatches && (postingDateMatches || referenceDateMatches || referenceMatchesPartial) && index === 0
 
         return { isSelected: false, amountMatches, postingDateMatches, referenceDateMatches, referenceMatchesFull, referenceMatchesPartial, isSuggested: isSuggested }
 
