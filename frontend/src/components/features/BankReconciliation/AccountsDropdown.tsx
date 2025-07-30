@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useCurrentCompany } from "@/hooks/useCurrentCompany"
+import _ from "@/lib/translate"
 import { useFrappeGetDocList } from "frappe-react-sdk"
 import Fuse from "fuse.js"
 import { ChevronsUpDownIcon } from "lucide-react"
@@ -98,7 +99,7 @@ const AccountsDropdown = ({ root_type, report_type, account_type, value, onChang
                     role="combobox"
                     aria-expanded={open}
                     className="w-full justify-between font-normal">
-                    {value || "Select Account"}
+                    {value || _('Select Account')}
 
                     <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -106,12 +107,12 @@ const AccountsDropdown = ({ root_type, report_type, account_type, value, onChang
             </PopoverTrigger>
             <PopoverContent className="p-0">
                 <Command shouldFilter={false} className="w-full">
-                    <CommandInput placeholder="Search account..." onValueChange={setSearch} value={search} />
+                    <CommandInput placeholder={_("Search account...")} onValueChange={setSearch} value={search} />
                     <CommandList>
-                        <CommandEmpty>No accounts found.</CommandEmpty>
+                        <CommandEmpty>{_("No accounts found.")}</CommandEmpty>
 
                         {recommendedAccounts.length > 0 && (
-                            <CommandGroup heading="Search Results">
+                            <CommandGroup heading={_("Search Results")}>
                                 {recommendedAccounts.map((account) => (
                                     <CommandItem key={account.name} onSelect={() => onSelect(account.name)}>{account.name}</CommandItem>
                                 ))}

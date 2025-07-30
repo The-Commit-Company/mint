@@ -11,6 +11,7 @@ import { formatCurrency } from "@/lib/numbers"
 import { Badge } from "@/components/ui/badge"
 import { slug } from "@/lib/frappe"
 import SelectedTransactionDetails from "./SelectedTransactionDetails"
+import _ from "@/lib/translate"
 
 const BankTransactionUnreconcileModal = () => {
 
@@ -26,9 +27,9 @@ const BankTransactionUnreconcileModal = () => {
         <AlertDialogOverlay />
         <AlertDialogContent className="min-w-2xl">
             <AlertDialogHeader>
-                <AlertDialogTitle>Undo Transaction Reconciliation</AlertDialogTitle>
+                <AlertDialogTitle>{_("Undo Transaction Reconciliation")}</AlertDialogTitle>
                 <AlertDialogDescription>
-                    Are you sure you want to unreconcile this transaction?
+                    {_("Are you sure you want to unreconcile this transaction?")}
                 </AlertDialogDescription>
             </AlertDialogHeader>
             <BankTransactionUnreconcileModalContent />
@@ -58,7 +59,7 @@ const BankTransactionUnreconcileModalContent = () => {
             mutate(`bank-reconciliation-bank-transactions-${bankAccount?.name}-${dates.fromDate}-${dates.toDate}`)
             mutate(`bank-reconciliation-unreconciled-transactions-${bankAccount?.name}-${dates.fromDate}-${dates.toDate}`)
             mutate(`bank-reconciliation-account-closing-balance-${bankAccount?.name}-${dates.toDate}`)
-            toast.success("Transaction Unreconciled")
+            toast.success(_("Transaction Unreconciled"))
             setBankRecUnreconcileModal('')
         })
 
@@ -74,13 +75,13 @@ const BankTransactionUnreconcileModalContent = () => {
             {error && <ErrorBanner error={error} />}
             {unreconcileError && <ErrorBanner error={unreconcileError} />}
             {transaction && <SelectedTransactionDetails transaction={transaction} />}
-            <span className="font-medium text-sm">This transaction has been reconciled with the following document(s):</span>
+            <span className="font-medium text-sm">{_("This transaction has been reconciled with the following document(s):")}</span>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Document</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Reconciliation Type</TableHead>
+                        <TableHead>{_("Document")}</TableHead>
+                        <TableHead>{_("Amount")}</TableHead>
+                        <TableHead>{_("Reconciliation Type")}</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -92,13 +93,13 @@ const BankTransactionUnreconcileModalContent = () => {
                                     rel="noopener noreferrer"
                                     href={`/app/${slug(voucher.payment_document as string)}/${voucher.payment_entry}`}
                                 >
-                                    {`${voucher.payment_document} - ${voucher.payment_entry}`}
+                                    {`${_(voucher.payment_document)} - ${voucher.payment_entry}`}
                                 </a>
                             </TableCell>
                             <TableCell>{formatCurrency(voucher.allocated_amount)}</TableCell>
                             <TableCell>{voucher.reconciliation_type === 'Voucher Created' ?
-                                <Badge className="bg-green-500 text-white rounded-sm">{voucher.reconciliation_type}</Badge> :
-                                <Badge className="rounded-sm">{voucher.reconciliation_type}</Badge>}</TableCell>
+                                <Badge className="bg-green-500 text-white rounded-sm">{_(voucher.reconciliation_type)}</Badge> :
+                                <Badge className="rounded-sm">{_(voucher.reconciliation_type ?? "Matched")}</Badge>}</TableCell>
                         </TableRow>
                     })}
                 </TableBody>
@@ -113,9 +114,9 @@ const BankTransactionUnreconcileModalContent = () => {
             </div>
         </div>
         <AlertDialogFooter>
-            <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={loading}>{_("Cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={onUnreconcile} variant="destructive" disabled={loading}>
-                Unreconcile
+                {_("Unreconcile")}
             </AlertDialogAction>
         </AlertDialogFooter>
     </div>

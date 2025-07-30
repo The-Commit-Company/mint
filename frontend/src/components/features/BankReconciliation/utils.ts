@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import { BANK_LOGOS } from './logos'
 import { getErrorMessage } from '@/lib/frappe'
 import { useCurrentCompany } from '@/hooks/useCurrentCompany'
+import _ from '@/lib/translate'
 
 export const useGetAccountOpeningBalance = () => {
 
@@ -209,11 +210,11 @@ export const useReconcileTransaction = () => {
             })))
         }).then((res) => {
             onReconcileTransaction(transaction, res.message)
-            toast.success("Reconciled", {
+            toast.success(_("Reconciled"), {
                 duration: 4000,
                 closeButton: true,
                 action: {
-                    label: "Undo",
+                    label: _("Undo"),
                     onClick: () => setBankRecUnreconcileModalAtom(transaction.name)
                 },
                 actionButtonStyle: {
@@ -222,7 +223,7 @@ export const useReconcileTransaction = () => {
             })
         }).catch((error) => {
             console.error(error)
-            toast.error("Error", {
+            toast.error(_("Error"), {
                 duration: 5000,
                 description: getErrorMessage(error)
             })
