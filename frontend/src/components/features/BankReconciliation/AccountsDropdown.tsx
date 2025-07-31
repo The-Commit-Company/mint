@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { useFrappeGetDocList } from "frappe-react-sdk"
 import Fuse from "fuse.js"
 import { ChevronsUpDownIcon } from "lucide-react"
-import { useMemo, useState } from "react"
+import { useLayoutEffect, useMemo, useRef, useState } from "react"
 
 
 export interface AccountsDropdownProps {
@@ -97,12 +97,23 @@ const AccountsDropdown = ({ root_type, report_type, account_type, value, onChang
         setSearch(value)
     }
 
+    const buttonRef = useRef<HTMLButtonElement>(null)
+
+    const [width, setWidth] = useState(320)
+
+    useLayoutEffect(() => {
+        if (buttonRef.current) {
+            setWidth(buttonRef.current.getBoundingClientRect().width)
+        }
+    }, [])
+
     return (
         <Popover open={open} onOpenChange={onOpenChange}>
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
                     role="combobox"
+                    ref={buttonRef}
                     disabled={disabled}
                     aria-expanded={open}
                     className={cn("w-full justify-between font-normal",
@@ -114,7 +125,7 @@ const AccountsDropdown = ({ root_type, report_type, account_type, value, onChang
                 </Button>
 
             </PopoverTrigger>
-            <PopoverContent className="p-0">
+            <PopoverContent className="p-0" style={{ minWidth: width + 32 }}>
                 <Command shouldFilter={false} className="w-full">
                     <CommandInput placeholder={_("Search account...")} onValueChange={setSearch} value={search} />
                     <CommandList>

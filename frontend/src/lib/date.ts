@@ -176,6 +176,5 @@ export const formatDate = (date?: string | Date, format?: string) => {
  * @returns 
  */
 export const toDate = (date: string, format: string = "YYYY-MM-DD") => {
-    console.log(format, date, dayjs(date, format).toDate())
     return dayjs(date, format).toDate()
 }
