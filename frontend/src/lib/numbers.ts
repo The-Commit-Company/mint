@@ -1,41 +1,167 @@
 import { in_list } from "./checks";
+import { getCurrencyNumberFormat, getCurrencyProperty, getCurrencySymbol } from "./currency";
+import { getSystemDefault } from "./frappe";
+import _ from "./translate";
 
-export const formatCurrency = (value?: number, currency: string = 'USD', returnPlaceholder = false) => {
-    const CurrencyFormat = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency,
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    if (value !== undefined && value !== null) {
-        return CurrencyFormat.format(value);
-    } else {
-        return returnPlaceholder ? CurrencyFormat.format(0) : ''
+export const formatCurrency = (value?: number, currency: string = 'USD', decimals: number = 2) => {
+
+    if (!value) {
+        value = 0
+    }
+    const format = get_number_format(currency);
+    const symbol = getCurrencySymbol(currency);
+
+    const show_symbol_on_right = getCurrencyProperty(currency, 'symbol_on_right') ?? false;
+
+    if (decimals === undefined) {
+        decimals = getSystemDefault('currency_precision') || null;
+    }
+
+    if (symbol) {
+        if (show_symbol_on_right) {
+            return format_number(value, format, decimals) + " " + _(symbol);
+        }
+        return _(symbol) + " " + format_number(value, format, decimals);
     }
 }
 
-export const flt = (value?: number | string | null, decimals?: number, rounding_method?: string) => {
+const replace_all = (str: string, search: string, replace: string) => {
+    return str.split(search).join(replace);
+};
+
+const number_format_info = {
+    "#,###.##": { decimal_str: ".", group_sep: "," },
+    "#.###,##": { decimal_str: ",", group_sep: "." },
+    "# ###.##": { decimal_str: ".", group_sep: " " },
+    "# ###,##": { decimal_str: ",", group_sep: " " },
+    "#'###.##": { decimal_str: ".", group_sep: "'" },
+    "#, ###.##": { decimal_str: ".", group_sep: ", " },
+    "#,##,###.##": { decimal_str: ".", group_sep: "," },
+    "#,###.###": { decimal_str: ".", group_sep: "," },
+    "#.###": { decimal_str: "", group_sep: "." },
+    "#,###": { decimal_str: "", group_sep: "," },
+};
+
+const format_number = (v?: number, format?: string, decimals?: number | null) => {
+    if (!format) {
+        format = get_number_format();
+        if (decimals == null) decimals = cint(getSystemDefault("float_precision")) || 3;
+    }
+
+    const info = get_number_format_info(format);
+
+    // Fix the decimal first, toFixed will auto fill trailing zero.
+    if (decimals == null) decimals = info.precision;
+
+    v = flt(v, decimals, format);
+
+    let is_negative = false;
+    if (v < 0) is_negative = true;
+    v = Math.abs(v);
+
+    const val = v.toFixed(decimals)
+
+    const part = val.split(".");
+
+    // get group position and parts
+    let group_position = info.group_sep ? 3 : 0;
+
+    if (group_position) {
+        const integer = part[0];
+        let str = "";
+        for (let i = integer.length; i >= 0; i--) {
+            let l = replace_all(str, info.group_sep, "").length;
+            if (format == "#,##,###.##" && str.indexOf(",") != -1) {
+                // INR
+                group_position = 2;
+                l += 1;
+            }
+
+            str += integer.charAt(i);
+
+            if (l && !((l + 1) % group_position) && i != 0) {
+                str += info.group_sep;
+            }
+        }
+        part[0] = str.split("").reverse().join("");
+    }
+    if (part[0] + "" == "") {
+        part[0] = "0";
+    }
+
+    // join decimal
+    part[1] = part[1] && info.decimal_str ? info.decimal_str + part[1] : "";
+
+    // join
+    return (is_negative ? "-" : "") + part[0] + part[1];
+};
+
+function get_number_format_info(format: string) {
+    let info: { decimal_str: string, group_sep: string, precision?: number } = number_format_info[format as keyof typeof number_format_info];
+
+    if (!info) {
+        info = { decimal_str: ".", group_sep: "," };
+    }
+
+    // get the precision from the number format
+    info.precision = format.split(info.decimal_str).slice(1)[0].length;
+
+    return info;
+}
+
+function get_number_format(currency?: string): string {
+    return (
+        (cint(getSystemDefault("use_number_format_from_currency")) &&
+            currency &&
+            getCurrencyNumberFormat(currency)) ||
+        getSystemDefault("number_format") ||
+        "#,###.##"
+    )
+}
+
+export const flt = (value?: number | string | null, decimals?: number, number_format?: string, rounding_method?: string) => {
     if (value === undefined || value === null || value === "") return 0
 
     if (typeof value !== "number") {
-        value = Number(typeof value === 'string' ? value?.split(",")?.join("") : value)
+        value = value + "";
 
-        if (isNaN(value)) return 0
+        // strip currency symbol if exists
+        if (value.indexOf(" ") != -1) {
+            // using slice(1).join(" ") because space could also be a group separator
+            const parts = value.split(" ");
+            value = isNaN(parseFloat(parts[0])) ? parts.slice(parts.length - 1).join(" ") : value;
+        }
+
+        value = strip_number_groups(value, number_format);
+
+        value = parseFloat(value as string);
+        if (isNaN(value)) value = 0;
     }
 
-    //TODO: We need to round the value here
-    if (decimals !== undefined && decimals !== null) {
-        const rounded = _round(value, decimals, rounding_method)
-        if (Math.abs(rounded) === 0) return 0
-        return rounded
+    if (decimals != null) return _round(value, decimals, rounding_method);
+    return value;
+}
+
+function strip_number_groups(v: string, number_format?: string) {
+    if (!number_format) number_format = get_number_format();
+    const info = get_number_format_info(number_format);
+
+    // strip groups (,)
+    const group_regex = new RegExp(info.group_sep === "." ? "\\." : info.group_sep, "g");
+    v = v.replace(group_regex, "");
+
+    // replace decimal separator with (.)
+    if (info.decimal_str !== "." && info.decimal_str !== "") {
+        const decimal_regex = new RegExp(info.decimal_str, "g");
+        v = v.replace(decimal_regex, ".");
     }
 
-    return value
+    return v;
 }
 
 const _round = (num: number, precision: number, rounding_method?: string) => {
 
-    rounding_method = rounding_method || window.frappe?.boot?.sysdefaults?.rounding_method || "Banker's Rounding (legacy)";
+    rounding_method = rounding_method || getSystemDefault('rounding_method') || "Banker's Rounding (legacy)";
 
     const is_negative = num < 0 ? true : false;
 

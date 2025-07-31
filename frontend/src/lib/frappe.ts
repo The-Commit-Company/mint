@@ -56,3 +56,15 @@ export const getErrorMessages = (error?: FrappeError | null): ParsedErrorMessage
 export const slug = (name?: string) => {
     return name?.toLowerCase().replace(/ /g, "-") ?? "";
 }
+
+export const getSystemDefault = (fieldName: string, fallback?: string) => {
+    return window.frappe?.boot?.sysdefaults?.[fieldName] ?? fallback
+}
+
+export const getUserDefault = (fieldName: string, fallback?: string) => {
+    return window.frappe?.boot?.user?.defaults?.[fieldName] ?? fallback
+}
+
+export const getBootFieldData = (fieldName: string, fallback?: string) => {
+    return window.frappe?.boot?.[fieldName] ?? fallback
+}
