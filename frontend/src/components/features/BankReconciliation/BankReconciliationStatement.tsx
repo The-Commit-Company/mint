@@ -189,17 +189,17 @@ const SummarySection = ({ data }: { data: { message: QueryReportReturnType } }) 
     return <div className="flex gap-4 items-start justify-between">
         <StatContainer>
             <StatLabel>{_("Bank Statement Balance as per General Ledger")}</StatLabel>
-            <StatValue>{formatCurrency(bankStatementBalanceAsPerGL, currency)}</StatValue>
+            <StatValue className="font-mono">{formatCurrency(bankStatementBalanceAsPerGL, currency)}</StatValue>
         </StatContainer>
 
         <StatContainer>
             <StatLabel>{_("Outstanding Checks and Deposits to clear")}</StatLabel>
-            <StatValue>{formatCurrency(outstandingChecksDebit - outstandingChecksCredit, currency)}</StatValue>
+            <StatValue className="font-mono">{formatCurrency(outstandingChecksDebit - outstandingChecksCredit, currency)}</StatValue>
         </StatContainer>
 
         {(incorrectlyClearedEntriesDebit > 0 || incorrectlyClearedEntriesCredit > 0) && <StatContainer>
             <StatLabel className="text-destructive">{_("Checks and Deposits incorrectly cleared")}</StatLabel>
-            <StatValue className="text-destructive">{formatCurrency(incorrectlyClearedEntriesDebit - incorrectlyClearedEntriesCredit)}</StatValue>
+            <StatValue className="text-destructive font-mono">{formatCurrency(incorrectlyClearedEntriesDebit - incorrectlyClearedEntriesCredit)}</StatValue>
             {/* <div className="" divider={<StackDivider height='20px' />}>
                 {incorrectlyClearedEntriesDebit !== 0 && <StatHelpText>Debit: {formatCurrency(incorrectlyClearedEntriesDebit)}</StatHelpText>}
                 {incorrectlyClearedEntriesCredit !== 0 && <StatHelpText>Credit: {formatCurrency(incorrectlyClearedEntriesCredit)}</StatHelpText>}
@@ -207,7 +207,7 @@ const SummarySection = ({ data }: { data: { message: QueryReportReturnType } }) 
         </StatContainer>}
         <StatContainer>
             <StatLabel>{_("Calculated Bank Statement Balance")}</StatLabel>
-            <StatValue>{formatCurrency(calculatedBankStatementBalance)}</StatValue>
+            <StatValue className="font-mono">{formatCurrency(calculatedBankStatementBalance)}</StatValue>
         </StatContainer>
 
     </div>

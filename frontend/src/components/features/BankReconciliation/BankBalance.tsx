@@ -43,7 +43,7 @@ const OpeningBalance = () => {
 
     return <StatContainer className="min-w-48">
         <StatLabel>{_("Opening Balance")}</StatLabel>
-        {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue>{formatCurrency(flt(data?.message, 2), bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
+        {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue className="font-mono">{formatCurrency(flt(data?.message, 2), bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
     </StatContainer>
 }
 
@@ -76,7 +76,7 @@ const ClosingBalance = () => {
                 </HoverCard>
 
             </div>
-            {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue>{formatCurrency(flt(data?.message, 2), bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
+            {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue className="font-mono">{formatCurrency(flt(data?.message, 2), bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
         </StatContainer>
     )
 }
@@ -129,7 +129,7 @@ const Difference = () => {
 
     return <StatContainer className="w-fit text-right sm:min-w-56">
         <StatLabel className="text-right">{_("Difference")}</StatLabel>
-        {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue className={isError ? 'text-destructive' : ''}>
+        {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue className={isError ? 'text-destructive font-mono' : 'font-mono'}>
             {formatCurrency(difference,
                 bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))
             }</StatValue>}

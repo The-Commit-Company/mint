@@ -248,9 +248,9 @@ const UnreconciledTransactionItem = ({ transaction }: { transaction: Unreconcile
                     </div>
                     <span className="text-sm">{transaction.description}</span>
                 </div>
-                <div className="gap-1 flex flex-col items-end min-w-32 h-full text-right">
+                <div className="gap-1 flex flex-col items-end min-w-36 h-full text-right">
                     {isWithdrawal ? <ArrowUpRight className="w-6 h-6 text-destructive" /> : <ArrowDownRight className="w-6 h-6 text-green-500" />}
-                    {amount && amount > 0 && <span className="font-semibold text-md">{formatCurrency(amount, currency)}</span>}
+                    {amount && amount > 0 && <span className="font-semibold font-mono text-md">{formatCurrency(amount, currency)}</span>}
                     {amount !== transaction.unallocated_amount && <span className="text-xs text-gray-700">{formatCurrency(transaction.unallocated_amount, currency)}<br />{_("Unallocated")}</span>}
                 </div>
             </div>
@@ -436,7 +436,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                     </div>}
                     <TooltipProvider>
                         <div className="flex items-center gap-1">
-                            <span>{_("Amount")}: <span className="font-bold">{formatCurrency(voucher.paid_amount)}</span></span>
+                            <span>{_("Amount")}: <span className="font-bold font-mono">{formatCurrency(voucher.paid_amount)}</span></span>
                             {amountMatches ?
                                 <MatchBadge matchType="full" label="Amount matches the selected transaction" />
                                 :
