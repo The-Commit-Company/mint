@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { bankRecSelectedTransactionAtom, bankRecTransferModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
+import { bankRecSelectedTransactionAtom, bankRecTransferModalAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogClose, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import _ from '@/lib/translate'
 import { UnreconciledTransaction, useGetBankAccounts, useRefreshUnreconciledTransactions } from './utils'
@@ -86,6 +86,8 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
 
     const { call: createPaymentEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_internal_transfer')
 
+    const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
+
     const onSubmit = (data: PaymentEntry) => {
 
         createPaymentEntry({
@@ -93,7 +95,17 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
             ...data,
             custom_remarks: data.remarks ? true : false
         }).then(() => {
-            toast.success(_("Transfer Recorded"))
+            toast.success(_("Transfer Recorded"), {
+                duration: 4000,
+                closeButton: true,
+                action: {
+                    label: _("Undo"),
+                    onClick: () => setBankRecUnreconcileModalAtom(selectedTransaction.name)
+                },
+                actionButtonStyle: {
+                    backgroundColor: "rgb(0, 138, 46)"
+                }
+            })
             onReconcile(selectedTransaction)
             onClose()
         })
