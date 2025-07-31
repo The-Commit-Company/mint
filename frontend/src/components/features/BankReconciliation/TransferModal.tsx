@@ -27,7 +27,7 @@ const TransferModal = () => {
                 <DialogHeader>
                     <DialogTitle>{_("Transfer")}</DialogTitle>
                     <DialogDescription>
-                        {_("Record an internal transfer to another bank/credit card/cash account")}
+                        {_("Record an internal transfer to another bank/credit card/cash account.")}
                     </DialogDescription>
                 </DialogHeader>
                 <TransferModalContent />

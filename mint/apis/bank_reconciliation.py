@@ -1,5 +1,8 @@
 import frappe
 import json
+from erpnext.accounts.doctype.bank_reconciliation_tool.bank_reconciliation_tool import create_payment_entry_bts, create_journal_entry_bts
+from erpnext.accounts.party import get_party_account
+from erpnext import get_default_cost_center
 
 @frappe.whitelist()
 def clear_clearing_date(voucher_type: str, voucher_name: str):
@@ -130,3 +133,104 @@ def create_internal_transfer(bank_transaction_name: str,
 	)
 
     return reconcile_vouchers(bank_transaction_name, vouchers, is_new_voucher=True)
+
+
+@frappe.whitelist(methods=['POST'])
+def create_bank_entry_and_reconcile(bank_transaction_name: str, 
+                                    cheque_date: str,
+                                    posting_date: str,
+                                    cheque_no: str,
+                                    user_remark: str,
+                                    entries: list,
+                                    dimensions: dict = None):
+    """
+        Create a bank entry and reconcile it with the bank transaction
+    """
+    # Create a new journal entry based on the bank transaction
+    bank_transaction = frappe.db.get_values(
+        "Bank Transaction",
+        bank_transaction_name,
+        fieldname=["name", "deposit", "withdrawal", "bank_account", "currency"],
+        as_dict=True,
+    )[0]
+
+    bank_account = frappe.get_cached_value("Bank Account", bank_transaction.bank_account, "account")
+    company = frappe.get_cached_value("Account", bank_account, "company")
+
+    default_cost_center = get_default_cost_center(company)
+
+    bank_entry = frappe.get_doc({
+        "doctype": "Journal Entry",
+        "voucher_type": "Bank Entry",
+        "company": company,
+        "cheque_date": cheque_date,
+        "posting_date": posting_date,
+        "cheque_no": cheque_no,
+        "user_remark": user_remark,
+    })
+
+    # Compute accounts for JE 
+    is_withdrawal = bank_transaction.withdrawal > 0.0
+
+    if is_withdrawal:
+        bank_entry.append("accounts", {
+            "account": bank_account,
+            "bank_account": bank_transaction.bank_account,
+            "credit_in_account_currency": bank_transaction.withdrawal,
+            "credit": bank_transaction.withdrawal,
+            "debit_in_account_currency": 0,
+            "debit": 0,
+        })
+    else:
+        bank_entry.append("accounts", {
+            "account": bank_account,
+            "bank_account": bank_transaction.bank_account,
+            "debit_in_account_currency": bank_transaction.deposit,
+            "debit": bank_transaction.deposit,
+            "credit_in_account_currency": 0,
+            "debit": 0,
+        })
+    
+    if not dimensions:
+        dimensions = {}
+    
+    for entry in entries:
+        # Check if this account is a Income or Expense Account
+        # If it is, and no cost center is added, select the company default cost center
+        cost_center = dimensions.get("cost_center")
+
+        if not cost_center:
+            report_type = frappe.get_cached_value("Account", entry["account"], "report_type")
+            if report_type == "Profit and Loss":
+                # Cost center is required
+                cost_center = default_cost_center
+        
+        credit = entry["amount"] if not is_withdrawal else 0
+        debit = entry["amount"] if is_withdrawal else 0
+        bank_entry.append("accounts", {
+            "account": entry["account"],
+            # TODO: Multi currency support
+            "debit_in_account_currency": debit,
+            "credit_in_account_currency": credit,
+            "debit": debit,
+            "credit": credit,
+            "cost_center": cost_center,
+            "party_type": entry.get("party_type") if entry.get("party") else None,
+            "party": entry.get("party"),
+            "user_remark": entry.get("user_remark"),
+            **dimensions,
+        })
+
+    bank_entry.insert()
+    bank_entry.submit()
+
+    if bank_transaction.deposit > 0.0:
+        paid_amount = bank_transaction.deposit
+    else:
+        paid_amount = bank_transaction.withdrawal
+
+    return reconcile_vouchers(bank_transaction_name, json.dumps([{
+        "payment_doctype": "Journal Entry",
+        "payment_name": bank_entry.name,
+        "amount": paid_amount,
+    }]), is_new_voucher=True)
