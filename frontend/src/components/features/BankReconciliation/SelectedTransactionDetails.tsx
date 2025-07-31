@@ -39,11 +39,11 @@ const SelectedTransactionDetails = ({ transaction, showAccount = false, account 
                             <div className='flex flex-col'> {bankLogo ? <img
                                 src={`/assets/mint/mint/${bankLogo.logo}`}
                                 alt={bankLogo?.keywords.join(', ') || ''}
-                                className="max-w-24 object-left h-10 object-contain"
+                                className="max-w-20 object-left h-10 object-contain"
                             /> :
                                 <Landmark size={'30px'} />
                             }
-                                <span className='font-medium text-base'>{transaction.bank_account}</span>
+                                <span className='font-medium text-sm'>{transaction.bank_account}</span>
                             </div>
                             <div className='flex items-center gap-1'>
                                 <Calendar size='16px' />
@@ -57,7 +57,7 @@ const SelectedTransactionDetails = ({ transaction, showAccount = false, account 
                                 {isWithdrawal ? <ArrowUpRight className="w-5 h-5 text-destructive" /> : <ArrowDownRight className="w-5 h-5 text-green-600" />}
                                 <span className='text-sm font-semibold uppercase'>{isWithdrawal ? _('Spent') : _('Received')}</span>
                             </div>
-                            <span className='font-semibold font-mono text-xl text-right pr-0.5'>{formatCurrency(amount, currency)}</span>
+                            <span className='font-semibold font-mono text-lg text-right pr-0.5'>{formatCurrency(amount, currency)}</span>
                             {transaction.unallocated_amount && transaction.unallocated_amount !== amount ? <span className='text-muted-foreground'>{_("Unallocated")}: {formatCurrency(transaction.unallocated_amount)}</span> : null}
                         </div>
                     </div>

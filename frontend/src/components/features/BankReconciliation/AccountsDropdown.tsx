@@ -3,18 +3,23 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useCurrentCompany } from "@/hooks/useCurrentCompany"
 import _ from "@/lib/translate"
+import { cn } from "@/lib/utils"
 import { useFrappeGetDocList } from "frappe-react-sdk"
 import Fuse from "fuse.js"
 import { ChevronsUpDownIcon } from "lucide-react"
 import { useMemo, useState } from "react"
 
 
-interface AccountsDropdownProps {
+export interface AccountsDropdownProps {
     root_type?: ('Asset' | 'Liability' | 'Equity' | 'Income' | 'Expense')[],
     report_type?: 'Balance Sheet' | 'Profit and Loss',
     account_type?: string[],
     value?: string,
-    onChange?: (value: string) => void
+    onChange?: (value: string) => void,
+    readOnly?: boolean,
+    disabled?: boolean,
+    company?: string,
+    filterFunction?: (account: Account) => boolean
 }
 /**
  * Component to select an account - supports fuzzy search
@@ -25,9 +30,9 @@ interface AccountsDropdownProps {
  * @param onChange - The function to call when the value changes
  * @returns 
  */
-const AccountsDropdown = ({ root_type, report_type, account_type, value, onChange }: AccountsDropdownProps) => {
+const AccountsDropdown = ({ root_type, report_type, account_type, value, onChange, readOnly, disabled, company, filterFunction }: AccountsDropdownProps) => {
 
-    const { data } = useGetAccounts(root_type, report_type, account_type)
+    const { data } = useGetAccounts(root_type, report_type, account_type, company, filterFunction)
 
     const groupedAccounts = useMemo(() => {
         if (!data) return []
@@ -81,6 +86,7 @@ const AccountsDropdown = ({ root_type, report_type, account_type, value, onChang
     const [open, setOpen] = useState(false)
 
     const onOpenChange = (open: boolean) => {
+        if (readOnly) return
         setOpen(open)
         // setSearch("")
     }
@@ -97,8 +103,11 @@ const AccountsDropdown = ({ root_type, report_type, account_type, value, onChang
                 <Button
                     variant="outline"
                     role="combobox"
+                    disabled={disabled}
                     aria-expanded={open}
-                    className="w-full justify-between font-normal">
+                    className={cn("w-full justify-between font-normal",
+                        readOnly ? "bg-muted" : ""
+                    )}>
                     {value || _('Select Account')}
 
                     <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -145,19 +154,20 @@ interface Account {
     parent_account: string
 }
 
-const useGetAccounts = (root_type?: ('Asset' | 'Liability' | 'Equity' | 'Income' | 'Expense')[], report_type?: 'Balance Sheet' | 'Profit and Loss', account_type?: string[]) => {
+const useGetAccounts = (root_type?: ('Asset' | 'Liability' | 'Equity' | 'Income' | 'Expense')[], report_type?: 'Balance Sheet' | 'Profit and Loss', account_type?: string[], company?: string,
+    filterFunction?: (account: Account) => boolean) => {
 
-    const company = useCurrentCompany()
+    const currentCompany = useCurrentCompany()
     const { data, isLoading, error, mutate } = useFrappeGetDocList<Account>("Account", {
         fields: ["name", "root_type", "report_type", "account_type", "account_currency", "parent_account"],
-        filters: [["is_group", "=", 0], ["disabled", "=", 0], ["company", "=", company]],
+        filters: [["is_group", "=", 0], ["disabled", "=", 0], ["company", "=", company ?? currentCompany]],
         limit: 1000,
         orderBy: {
             "field": "root_type",
             // @ts-expect-error - we can pass in additional fields to orderBy
             "order": "asc, account_number asc"
         }
-    }, `accounts-${company}`, {
+    }, `accounts-${company ?? currentCompany}`, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -169,10 +179,12 @@ const useGetAccounts = (root_type?: ('Asset' | 'Liability' | 'Equity' | 'Income'
             if (root_type && !root_type.includes(account.root_type)) return false
             if (report_type && account.report_type !== report_type) return false
             if (account_type && !account_type.includes(account.account_type)) return false
+
+            if (filterFunction) return filterFunction(account)
             return true
         }) ?? []
 
-    }, [data, root_type, report_type, account_type])
+    }, [data, root_type, report_type, account_type, filterFunction])
 
     return { data: filteredData, isLoading, error, mutate }
 }

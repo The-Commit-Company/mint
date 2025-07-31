@@ -234,7 +234,7 @@ export const useReconcileTransaction = () => {
 
 }
 
-interface BankAccountWithCurrency extends Pick<BankAccount, 'name' | 'bank' | 'account_name' | 'account_type' | 'account_subtype' | 'bank_account_no' | 'last_integration_date'> {
+interface BankAccountWithCurrency extends Pick<BankAccount, 'name' | 'bank' | 'account_name' | 'company' | 'account' | 'account_type' | 'account_subtype' | 'bank_account_no' | 'last_integration_date'> {
     account_currency?: string
 }
 

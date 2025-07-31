@@ -24,6 +24,7 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/comp
 import { Skeleton } from "@/components/ui/skeleton"
 import { slug } from "@/lib/frappe"
 import _ from "@/lib/translate"
+import TransferModal from "./TransferModal"
 
 const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
     const selectedBank = useAtomValue(selectedBankAccountAtom)
@@ -44,6 +45,7 @@ const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
                 <VouchersSection contentHeight={contentHeight} />
             </div>
         </div>
+        <TransferModal />
     </>
 }
 
@@ -180,7 +182,7 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
             itemContent={(_index, transaction) => (
                 <UnreconciledTransactionItem transaction={transaction} />
             )}
-            style={{ minHeight: contentHeight - 80 }}
+            style={{ minHeight: Math.max(contentHeight - 80, 400) }}
             totalCount={results?.length}
         />
 

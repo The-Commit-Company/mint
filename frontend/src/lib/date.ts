@@ -4,6 +4,7 @@ import timezone from 'dayjs/plugin/timezone';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear'
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import _ from './translate';
 
 dayjs.extend(utc);
@@ -11,10 +12,11 @@ dayjs.extend(timezone);
 dayjs.extend(advancedFormat);
 dayjs.extend(relativeTime);
 dayjs.extend(quarterOfYear);
+dayjs.extend(customParseFormat);
 
 const FRAPPE_DATE_FORMAT = "YYYY-MM-DD"
 
-const getUserDateFormat = () => {
+export const getUserDateFormat = () => {
 
     return window?.frappe?.boot?.user?.defaults?.date_format.toUpperCase() || window?.frappe.boot.sysdefaults.date_format.toUpperCase()
 
@@ -166,4 +168,14 @@ export const formatDate = (date?: string | Date, format?: string) => {
         return dayjs(date).format(format)
     }
     return ''
+}
+
+/**
+ * Utility function to convert a date string to a Date object
+ * @param date 
+ * @returns 
+ */
+export const toDate = (date: string, format: string = "YYYY-MM-DD") => {
+    console.log(format, date, dayjs(date, format).toDate())
+    return dayjs(date, format).toDate()
 }

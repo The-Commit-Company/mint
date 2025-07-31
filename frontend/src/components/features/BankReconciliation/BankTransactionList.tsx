@@ -25,7 +25,6 @@ const BankTransactions = () => {
 
     return <>
         <BankTransactionListView />
-        {/* <BankTransactionUnreconcileModal /> */}
     </>
 }
 
@@ -82,13 +81,17 @@ const BankTransactionListView = () => {
                             <TableCell className="text-right">{formatCurrency(row.unallocated_amount, bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</TableCell>
                             <TableCell><Badge variant={'outline'}>{row.transaction_type}</Badge></TableCell>
                             <TableCell>
-                                {row.status === 'Unreconciled' ?
-                                    <Badge variant="destructive" className="bg-destructive/10 text-destructive">
-                                        <XCircle className="-mt-0.5 text-destructive" />
-                                        {_("Not Reconciled")}</Badge> :
-                                    <Badge variant="outline" className="text-foreground px-1.5">
-                                        <CheckCircle2 width={16} height={16} className="text-green-600 dark:text-green-500" />
-                                        {_("Unreconciled")}</Badge>}
+                                {(!row.allocated_amount || (row.allocated_amount && row.allocated_amount === 0)) ?
+                                    <div className="bg-transparent border border-border flex items-center justify-center gap-1.5 px-2 py-1 text-xs w-fit rounded-md">
+                                        <XCircle className="-mt-[1px] text-destructive" size={14} />
+                                        {_("Not Reconciled")}</div> :
+                                    (row.allocated_amount && row.allocated_amount > 0 && row.unallocated_amount !== 0) ?
+                                        <div className="bg-transparent border border-border flex items-center gap-1.5 px-2 py-1 text-xs w-fit rounded-md">
+                                            <CheckCircle2 size={14} className="-mt-[1px] text-yellow-500 dark:text-yellow-400" />
+                                            {_("Partially Reconciled")}</div> :
+                                        <div className="bg-transparent border border-border flex items-center gap-1.5 px-2 py-1 text-xs w-fit rounded-md">
+                                            <CheckCircle2 size={14} className="-mt-[1px] text-green-600 dark:text-green-500" />
+                                            {_("Reconciled")}</div>}
                             </TableCell>
                             <TableCell>
                                 <div className="flex gap-2">
@@ -102,14 +105,14 @@ const BankTransactionListView = () => {
                                             </a>
                                         </Button>
                                     </div>
-                                    {row.status === 'Reconciled' && <Button
+                                    {(row.allocated_amount && row.allocated_amount > 0) ? <Button
                                         variant='link'
                                         onClick={() => onUndo(row)}
                                         size='sm'
                                         className="text-destructive px-0">
                                         <Undo2 />
                                         {_("Undo")}
-                                    </Button>}
+                                    </Button> : null}
                                 </div>
                             </TableCell>
                         </TableRow>

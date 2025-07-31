@@ -35,7 +35,7 @@ const BankPicker = () => {
         return <ErrorBanner error={error} />
     }
     return (
-        <div className="flex gap-2 items-stretch w-full flex-wrap overflow-x-auto">
+        <div className="flex gap-3 items-stretch w-full flex-wrap overflow-x-auto">
             {
                 banks?.map((bank) => (
                     <BankPickerItem key={bank.name} bank={bank} />

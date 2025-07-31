@@ -25,6 +25,7 @@ def get_bank_transactions(bank_account, from_date=None, to_date=None, all_transa
             "name",
             "bank_account",
             "company",
+            "allocated_amount",
             "unallocated_amount",
             "reference_number",
             "party_type",

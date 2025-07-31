@@ -66,3 +66,67 @@ def unreconcile_transaction(transaction_name: str):
 
     for voucher in vouchers_to_cancel:
         frappe.get_doc(voucher["doctype"], voucher["name"]).cancel()
+
+
+@frappe.whitelist()
+def create_internal_transfer(bank_transaction_name: str, 
+                             posting_date: str, 
+                             reference_date: str, 
+                             reference_no: str, 
+                             paid_from: str, 
+                             paid_to: str,
+                             custom_remarks: bool = False,
+                             remarks: str = None,
+                             dimensions: dict = None):
+    """
+    Create an internal transfer payment entry
+    """
+
+    bank_transaction = frappe.get_doc("Bank Transaction", bank_transaction_name)
+
+    bank_account = frappe.get_cached_value("Bank Account", bank_transaction.bank_account, "account")
+    company = frappe.get_cached_value("Account", bank_account, "company")
+
+    is_withdrawal = bank_transaction.withdrawal > 0.0
+
+    pe = frappe.new_doc("Payment Entry")
+
+    pe.company = company
+    pe.payment_type = "Internal Transfer"
+    pe.posting_date = posting_date
+    pe.reference_date = reference_date
+    pe.reference_no = reference_no
+    pe.custom_remarks = custom_remarks
+    pe.paid_amount = bank_transaction.unallocated_amount
+    pe.received_amount = bank_transaction.unallocated_amount
+
+    # TODO: Support multi-currency transactions
+    pe.target_exchange_rate = 1.0
+
+    if custom_remarks:
+        pe.remarks = remarks
+    
+    if dimensions:
+        pe.update(dimensions)
+
+    if is_withdrawal:
+         pe.paid_to = paid_to
+         pe.paid_from = bank_account
+    else:
+         pe.paid_from = paid_from
+         pe.paid_to = bank_account
+    
+    pe.insert()
+    pe.submit()
+
+    vouchers = json.dumps(
+		[
+			{
+				"payment_doctype": "Payment Entry",
+				"payment_name": pe.name,
+				"amount": bank_transaction.unallocated_amount,
+			}
+		]
+	)
+
+    return reconcile_vouchers(bank_transaction_name, vouchers, is_new_voucher=True)

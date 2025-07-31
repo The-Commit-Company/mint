@@ -93,12 +93,12 @@ const BankTransactionUnreconcileModalContent = () => {
                                     rel="noopener noreferrer"
                                     href={`/app/${slug(voucher.payment_document as string)}/${voucher.payment_entry}`}
                                 >
-                                    {`${_(voucher.payment_document)} - ${voucher.payment_entry}`}
+                                    {`${_(voucher.payment_document)}: ${voucher.payment_entry}`}
                                 </a>
                             </TableCell>
                             <TableCell>{formatCurrency(voucher.allocated_amount)}</TableCell>
                             <TableCell>{voucher.reconciliation_type === 'Voucher Created' ?
-                                <Badge className="bg-green-500 text-white rounded-sm">{_(voucher.reconciliation_type)}</Badge> :
+                                <Badge className="bg-green-600 text-white rounded-sm">{_(voucher.reconciliation_type)}</Badge> :
                                 <Badge className="rounded-sm">{_(voucher.reconciliation_type ?? "Matched")}</Badge>}</TableCell>
                         </TableRow>
                     })}
@@ -106,9 +106,9 @@ const BankTransactionUnreconcileModalContent = () => {
             </Table>
             <div className="py-4">
                 {vouchersWhichWillBeCancelled && vouchersWhichWillBeCancelled?.length > 0 && <span>The following documents will be <strong>cancelled</strong>:</span>}
-                {vouchersWhichWillBeCancelled && vouchersWhichWillBeCancelled?.length > 0 && <ol className="my-6 ml-6 list-disc [&>li]:mt-2">
+                {vouchersWhichWillBeCancelled && vouchersWhichWillBeCancelled?.length > 0 && <ol className="ml-6 list-disc [&>li]:mt-2">
                     {vouchersWhichWillBeCancelled?.map((voucher) => {
-                        return <li key={voucher.name}>{voucher.payment_document} - {voucher.payment_entry}</li>
+                        return <li key={voucher.name}>{_(voucher.payment_document)}: {voucher.payment_entry}</li>
                     })}
                 </ol>}
             </div>
