@@ -114,6 +114,22 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
 
     }, [searchIndex, search, typeFilter, amountFilter.value, unreconciledTransactions?.message])
 
+    const setSelectedTransaction = useSetAtom(bankRecSelectedTransactionAtom(bankAccount?.name || ''))
+
+    const onFilterChange = () => {
+        setSelectedTransaction([])
+    }
+
+    const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value)
+        onFilterChange()
+    }
+
+    const onTypeFilterChange = (type: string) => {
+        setTypeFilter(type)
+        onFilterChange()
+    }
+
     if (isLoading) {
         return <div className="text-sm text-center p-4 text-muted-foreground">{_("Loading")}...</div>
     }
@@ -126,7 +142,7 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
                 "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
             )}>
                 <Search className="w-5 h-5 text-muted-foreground" />
-                <Input placeholder={_("Search")} type='search' onChange={(e) => setSearch(e.target.value)}
+                <Input placeholder={_("Search")} type='search' onChange={onSearchChange}
                     className="border-none px-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0" />
                 <div>
                     <span className="text-sm text-muted-foreground text-nowrap whitespace-nowrap">{results?.length} {_(results?.length === 1 ? "result" : "results")}</span>
@@ -153,6 +169,7 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
                             value: Number(newValue),
                             stringValue: newValue
                         })
+                        onFilterChange()
                     }}
                     customInput={Input}
                 />
@@ -167,9 +184,9 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem onClick={() => setTypeFilter('All')}><DollarSign /> {_("All")}</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTypeFilter('Debits')}><ArrowUpRight className="text-destructive" /> {_("Debits")}</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTypeFilter('Credits')}><ArrowDownRight className="text-green-500" /> {_("Credits")}</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onTypeFilterChange('All')}><DollarSign /> {_("All")}</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onTypeFilterChange('Debits')}><ArrowUpRight className="text-destructive" /> {_("Debits")}</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onTypeFilterChange('Credits')}><ArrowDownRight className="text-green-500" /> {_("Credits")}</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
@@ -325,13 +342,13 @@ const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transacti
 
 const VouchersForTransaction = ({ transaction, contentHeight }: { transaction: UnreconciledTransaction, contentHeight: number }) => {
 
-    const { data: vouchers, isLoading, isValidating, error } = useGetVouchersForTransaction(transaction)
+    const { data: vouchers, isLoading, error } = useGetVouchersForTransaction(transaction)
 
     if (error) {
         return <ErrorBanner error={error} />
     }
 
-    if (isLoading || isValidating) {
+    if (isLoading) {
         return <div className="flex flex-col gap-2">
             <Skeleton className="h-16 w-full" />
             <Skeleton className="h-16 w-full" />
