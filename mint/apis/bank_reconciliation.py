@@ -150,7 +150,7 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
     bank_transaction = frappe.db.get_values(
         "Bank Transaction",
         bank_transaction_name,
-        fieldname=["name", "deposit", "withdrawal", "bank_account", "currency"],
+        fieldname=["name", "deposit", "withdrawal", "bank_account", "currency", "unallocated_amount"],
         as_dict=True,
     )[0]
 
@@ -172,12 +172,14 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
     # Compute accounts for JE 
     is_withdrawal = bank_transaction.withdrawal > 0.0
 
+    print(is_withdrawal, bank_transaction.unallocated_amount)
+
     if is_withdrawal:
         bank_entry.append("accounts", {
             "account": bank_account,
             "bank_account": bank_transaction.bank_account,
-            "credit_in_account_currency": bank_transaction.withdrawal,
-            "credit": bank_transaction.withdrawal,
+            "credit_in_account_currency": bank_transaction.unallocated_amount,
+            "credit": bank_transaction.unallocated_amount,
             "debit_in_account_currency": 0,
             "debit": 0,
         })
@@ -185,8 +187,8 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
         bank_entry.append("accounts", {
             "account": bank_account,
             "bank_account": bank_transaction.bank_account,
-            "debit_in_account_currency": bank_transaction.deposit,
-            "debit": bank_transaction.deposit,
+            "debit_in_account_currency": bank_transaction.unallocated_amount,
+            "debit": bank_transaction.unallocated_amount,
             "credit_in_account_currency": 0,
             "debit": 0,
         })
@@ -234,3 +236,13 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
         "payment_name": bank_entry.name,
         "amount": paid_amount,
     }]), is_new_voucher=True)
+
+
+@frappe.whitelist(methods=['GET'])
+def get_account_defaults(account: str):
+    """
+        Get the default cost center and write off account for an account
+    """
+    company, report_type = frappe.db.get_value("Account", account, ["company", "report_type"])
+
+    return get_default_cost_center(company) if report_type == "Profit and Loss" else  ""

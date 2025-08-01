@@ -1,8 +1,8 @@
 import { FieldValues, RegisterOptions, useFormContext } from "react-hook-form"
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./form"
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, useFormField } from "./form"
 import _ from "@/lib/translate"
 import { Input } from "./input"
-import { ComponentProps, useState } from "react"
+import { ComponentProps, FocusEventHandler, useCallback, useState } from "react"
 import { parseDate } from "chrono-node"
 import { formatDate, getUserDateFormat, toDate } from "@/lib/date"
 import { Popover, PopoverContent, PopoverTrigger } from "./popover"
@@ -11,7 +11,12 @@ import { CalendarIcon } from "lucide-react"
 import { Calendar } from "./calendar"
 import dayjs from "dayjs"
 import { Textarea } from "./textarea"
-import AccountsDropdown, { AccountsDropdownProps } from "../features/BankReconciliation/AccountsDropdown"
+import AccountsDropdown, { AccountsDropdownProps } from "../common/AccountsDropdown"
+import PartyTypeDropdown, { PartyTypeDropdownProps } from "../common/PartyTypeDropdown"
+import CurrencyInput from "react-currency-input-field"
+import { getSystemDefault } from "@/lib/frappe"
+import { getCurrencySymbol } from "@/lib/currency"
+import LinkFieldCombobox, { LinkFieldComboboxProps } from "../common/LinkFieldCombobox"
 
 interface FormElementProps {
     name: string,
@@ -19,6 +24,7 @@ interface FormElementProps {
     label: string,
     isRequired?: boolean,
     formDescription?: string,
+    hideLabel?: boolean,
 
 }
 
@@ -26,7 +32,7 @@ interface DataFieldProps extends FormElementProps {
     inputProps?: Omit<ComponentProps<"input">, "value" | "onChange" | "onBlur" | "name" | "ref">
 }
 
-export const DataField = ({ name, rules, label, isRequired, formDescription, inputProps }: DataFieldProps) => {
+export const DataField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel }: DataFieldProps) => {
 
     const { control } = useFormContext()
     return <FormField
@@ -35,7 +41,7 @@ export const DataField = ({ name, rules, label, isRequired, formDescription, inp
         rules={rules}
         render={({ field }) => (
             <FormItem className='flex flex-col'>
-                <FormLabel>{_(label)}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
+                <FormLabel className={hideLabel ? 'sr-only' : ''}>{_(label)}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
                 <FormControl>
                     <Input {...field} maxLength={140} {...inputProps} />
                 </FormControl>
@@ -50,7 +56,7 @@ interface DateFieldProps extends FormElementProps {
     inputProps?: Omit<ComponentProps<"input">, "value" | "onChange" | "onBlur" | "name" | "ref">
 }
 
-export const DateField = ({ name, rules, label, isRequired, formDescription, inputProps }: DateFieldProps) => {
+export const DateField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel }: DateFieldProps) => {
 
     const { control } = useFormContext()
 
@@ -139,7 +145,7 @@ export const DateField = ({ name, rules, label, isRequired, formDescription, inp
         rules={rules}
         render={({ field }) => (
             <FormItem className='flex flex-col'>
-                <FormLabel>{_(label)}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
+                <FormLabel className={hideLabel ? 'sr-only' : ''}>{_(label)}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
                 <DatePicker field={field} />
                 {formDescription && <FormDescription>{_(formDescription)}</FormDescription>}
                 <FormMessage />
@@ -153,7 +159,7 @@ interface SmallTextFieldProps extends FormElementProps {
     inputProps?: Omit<ComponentProps<"textarea">, "value" | "onChange" | "onBlur" | "name" | "ref">
 }
 
-export const SmallTextField = ({ name, rules, label, isRequired, formDescription, inputProps }: SmallTextFieldProps) => {
+export const SmallTextField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel }: SmallTextFieldProps) => {
 
     const { control } = useFormContext()
     return <FormField
@@ -162,7 +168,7 @@ export const SmallTextField = ({ name, rules, label, isRequired, formDescription
         rules={rules}
         render={({ field }) => (
             <FormItem className='flex flex-col'>
-                <FormLabel>{_(label)}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
+                <FormLabel className={hideLabel ? 'sr-only' : ''}>{_(label)}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
                 <FormControl>
                     <Textarea {...field} {...inputProps} />
                 </FormControl>
@@ -186,11 +192,129 @@ export const AccountFormField = (props: AccountFormFieldProps) => {
         rules={props.rules}
         render={({ field }) => (
             <FormItem className='flex flex-col'>
-                <FormLabel>{_(props.label)}{props.isRequired && <span className="text-destructive">*</span>}</FormLabel>
-                <FormControl>
-                    <AccountsDropdown {...props} value={field.value} onChange={field.onChange} />
-                </FormControl>
+                <FormLabel className={props.hideLabel ? 'sr-only' : ''}>{_(props.label)}{props.isRequired && <span className="text-destructive">*</span>}</FormLabel>
+                <AccountsDropdown {...props} value={field.value} onChange={field.onChange} useInForm />
                 {props.formDescription && <FormDescription>{_(props.formDescription)}</FormDescription>}
+                <FormMessage />
+            </FormItem>
+        )}
+    />
+}
+
+interface PartyTypeFormField extends FormElementProps {
+    inputProps?: Omit<PartyTypeDropdownProps, 'value' | 'onChange'>
+}
+
+export const PartyTypeFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, inputProps }: PartyTypeFormField) => {
+
+    const { control } = useFormContext()
+
+    return <FormField
+        control={control}
+        name={name}
+        rules={rules}
+        render={({ field }) => (
+            <FormItem className='flex flex-col'>
+                <FormLabel className={hideLabel ? 'sr-only' : ''}>{_(label)}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
+                <PartyTypeDropdown {...inputProps} value={field.value} onChange={field.onChange} useInForm />
+                {formDescription && <FormDescription>{_(formDescription)}</FormDescription>}
+                <FormMessage />
+            </FormItem>
+        )}
+    />
+}
+
+
+interface CurrencyFormFieldProps extends FormElementProps {
+    currency?: string
+}
+
+export const CurrencyFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, currency }: CurrencyFormFieldProps) => {
+
+    const { control } = useFormContext()
+
+    const defaultCurrency = getSystemDefault("currency")
+    const currencySymbol = getCurrencySymbol(currency ?? defaultCurrency)
+
+
+    const CurrencyField = ({ field }: { field: FieldValues }) => {
+
+        const onFocus: FocusEventHandler<HTMLInputElement> = useCallback((e) => {
+            // When the input is focused, select the text
+            // A short timeout is needed so that the input selects the text after the focus event
+            setTimeout(() => {
+                // Check if the input is focused - do not select text if the input is not focused
+                if (e.target.contains(document.activeElement)) {
+                    e.target.select()
+                }
+            }, 100)
+        }, [])
+
+        const { formItemId } = useFormField()
+
+        return <CurrencyInput
+            ref={field.ref}
+            name={field.name}
+            style={{
+                textAlign: 'right',
+            }}
+            id={formItemId}
+            onBlur={field.onBlur}
+            onFocus={onFocus}
+            groupSeparator=","
+            placeholder={`${currencySymbol} 0.00`}
+            decimalsLimit={2}
+            value={field.value}
+            maxLength={12}
+            decimalScale={2}
+            prefix={currencySymbol + " "}
+            onValueChange={(v, _n, values) => {
+                // If the input ends with a decimal or a decimal with trailing zeroes, store the string since we need the user to be able to type the decimals.
+                // When the user eventually types the decimals or blurs out, the value is formatted anyway.
+                // Otherwise store the float value
+                // Check if the value ends with a decimal or a decimal with trailing zeroes
+                const isDecimal = v?.endsWith('.') || v?.endsWith('.0')
+                const newValue = isDecimal ? v : values?.float ?? ''
+                field.onChange(newValue)
+            }}
+            customInput={Input}
+        />
+    }
+
+    return <FormField
+        control={control}
+        name={name}
+        rules={rules}
+        render={({ field }) => (
+            <FormItem className='flex flex-col'>
+                <FormLabel className={hideLabel ? 'sr-only' : ''}>{_(label)}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
+                <FormControl>
+                    <CurrencyField field={field} />
+                </FormControl>
+                {formDescription && <FormDescription>{_(formDescription)}</FormDescription>}
+                <FormMessage />
+            </FormItem>
+        )}
+    />
+}
+
+interface LinkFormFieldProps extends FormElementProps, Omit<LinkFieldComboboxProps, 'value' | 'onChange'> {
+}
+
+export const LinkFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, ...inputProps }: LinkFormFieldProps) => {
+
+    const { control } = useFormContext()
+
+    return <FormField
+        control={control}
+        name={name}
+        disabled={inputProps.disabled}
+        rules={rules}
+        render={({ field }) => (
+            <FormItem className='flex flex-col'>
+                <FormLabel className={hideLabel ? 'sr-only' : ''}>{_(label)}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
+                <LinkFieldCombobox {...inputProps} value={field.value} onChange={field.onChange} useInForm />
+                {formDescription && <FormDescription>{_(formDescription)}</FormDescription>}
                 <FormMessage />
             </FormItem>
         )}

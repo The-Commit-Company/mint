@@ -8,6 +8,7 @@ import { useFrappeGetDocList } from "frappe-react-sdk"
 import Fuse from "fuse.js"
 import { ChevronsUpDownIcon } from "lucide-react"
 import { useLayoutEffect, useMemo, useRef, useState } from "react"
+import { FormControl } from "../ui/form"
 
 
 export interface AccountsDropdownProps {
@@ -19,7 +20,10 @@ export interface AccountsDropdownProps {
     readOnly?: boolean,
     disabled?: boolean,
     company?: string,
-    filterFunction?: (account: Account) => boolean
+    filterFunction?: (account: Account) => boolean,
+    // If true, the component will be wrapped in a FormControl component
+    useInForm?: boolean,
+    buttonClassName?: string
 }
 /**
  * Component to select an account - supports fuzzy search
@@ -30,7 +34,7 @@ export interface AccountsDropdownProps {
  * @param onChange - The function to call when the value changes
  * @returns 
  */
-const AccountsDropdown = ({ root_type, report_type, account_type, value, onChange, readOnly, disabled, company, filterFunction }: AccountsDropdownProps) => {
+const AccountsDropdown = ({ root_type, report_type, account_type, value, onChange, readOnly, disabled, company, filterFunction, useInForm, buttonClassName }: AccountsDropdownProps) => {
 
     const { data } = useGetAccounts(root_type, report_type, account_type, company, filterFunction)
 
@@ -108,24 +112,39 @@ const AccountsDropdown = ({ root_type, report_type, account_type, value, onChang
     }, [])
 
     return (
-        <Popover open={open} onOpenChange={onOpenChange}>
+        <Popover open={open} onOpenChange={onOpenChange} modal={true}>
             <PopoverTrigger asChild>
-                <Button
-                    variant="outline"
-                    role="combobox"
-                    ref={buttonRef}
-                    disabled={disabled}
-                    aria-expanded={open}
-                    className={cn("w-full justify-between font-normal",
-                        readOnly ? "bg-muted" : ""
-                    )}>
-                    {value || _('Select Account')}
+                {useInForm ? <FormControl>
+                    <Button
+                        variant="outline"
+                        role="combobox"
+                        ref={buttonRef}
+                        tabIndex={0}
+                        disabled={disabled}
+                        aria-expanded={open}
+                        className={cn("w-full justify-between font-normal",
+                            readOnly ? "bg-muted" : ""
+                            , buttonClassName)}>
+                        {value || _('Select Account')}
 
-                    <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
+                        <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                </FormControl>
+                    : <Button
+                        variant="outline"
+                        role="combobox"
+                        ref={buttonRef}
+                        disabled={disabled}
+                        aria-expanded={open}
+                        className={cn("w-full justify-between font-normal",
+                            readOnly ? "bg-muted" : ""
+                        )}>
+                        {value || _('Select Account')}
 
+                        <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>}
             </PopoverTrigger>
-            <PopoverContent className="p-0" style={{ minWidth: width + 32 }}>
+            <PopoverContent className="p-0" style={{ minWidth: width + 32 }} align="start">
                 <Command shouldFilter={false} className="w-full">
                     <CommandInput placeholder={_("Search account...")} onValueChange={setSearch} value={search} />
                     <CommandList>
