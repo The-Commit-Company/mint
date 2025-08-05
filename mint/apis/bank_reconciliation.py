@@ -1,4 +1,5 @@
 import frappe
+from frappe import _
 import json
 from erpnext.accounts.doctype.bank_reconciliation_tool.bank_reconciliation_tool import create_payment_entry_bts, create_journal_entry_bts
 from erpnext.accounts.party import get_party_account
@@ -237,6 +238,25 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
         "amount": paid_amount,
     }]), is_new_voucher=True)
 
+    
+@frappe.whitelist(methods=['POST'])
+def create_payment_entry_and_reconcile(bank_transaction_name: str, 
+                                       payment_entry_doc: dict):
+    """
+        Create a payment entry and reconcile it with the bank transaction
+    """
+    payment_entry = frappe.get_doc({
+        **payment_entry_doc,
+        "doctype": "Payment Entry",
+    })
+    payment_entry.insert()
+    payment_entry.submit()
+    return reconcile_vouchers(bank_transaction_name, json.dumps([{
+        "payment_doctype": "Payment Entry",
+        "payment_name": payment_entry.name,
+        "amount": payment_entry.paid_amount,
+    }]), is_new_voucher=True)
+
 
 @frappe.whitelist(methods=['GET'])
 def get_account_defaults(account: str):
@@ -246,3 +266,20 @@ def get_account_defaults(account: str):
     company, report_type = frappe.db.get_value("Account", account, ["company", "report_type"])
 
     return get_default_cost_center(company) if report_type == "Profit and Loss" else  ""
+
+
+@frappe.whitelist(methods=["GET"])
+def get_party_details(company: str, party_type: str, party: str):
+
+    if not frappe.db.exists(party_type, party):
+        frappe.throw(_("{0} {1} does not exist").format(party_type, party))
+
+    party_account = get_party_account(party_type, party, company)
+    _party_name = "title" if party_type == "Shareholder" else party_type.lower() + "_name"
+    party_name = frappe.db.get_value(party_type, party, _party_name)
+
+    return {
+        "party_account": party_account,
+        "party_name": party_name,
+    }
+    

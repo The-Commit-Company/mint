@@ -27,7 +27,7 @@ const BankEntryModal = () => {
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogContent className='min-w-[90rem]'>
+            <DialogContent className='min-w-[95vw]'>
                 <DialogHeader>
                     <DialogTitle>{_("Bank Entry")}</DialogTitle>
                     <DialogDescription>
@@ -437,15 +437,15 @@ const Summary = ({ amount, currency, addRow }: { amount?: number, currency: stri
 
     return <div className="flex flex-col gap-2 items-end">
         <div className="flex gap-2 justify-between">
-            <TextComponent>Split amount</TextComponent>
+            <TextComponent>{_("Split amount")}</TextComponent>
             <TextComponent>{formatCurrency(total, currency)}</TextComponent>
         </div>
         <div className="flex gap-2 justify-between">
-            <TextComponent>Original amount</TextComponent>
+            <TextComponent>{_("Original amount")}</TextComponent>
             <TextComponent>{formatCurrency(amount, currency)}</TextComponent>
         </div>
         {(amount ?? 0) !== total && <div className="flex gap-2 justify-between">
-            <TextComponent>Difference</TextComponent>
+            <TextComponent>{_("Difference")}</TextComponent>
             <Tooltip>
                 <TooltipTrigger asChild>
                     <Button type='button' variant='link' className="p-0 text-destructive underline h-fit" role='button' onClick={onAddRow}>

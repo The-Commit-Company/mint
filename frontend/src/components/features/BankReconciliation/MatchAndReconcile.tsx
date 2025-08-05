@@ -26,6 +26,7 @@ import { slug } from "@/lib/frappe"
 import _ from "@/lib/translate"
 import TransferModal from "./TransferModal"
 import BankEntryModal from "./BankEntryModal"
+import RecordPaymentModal from "./RecordPaymentModal"
 
 const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
     const selectedBank = useAtomValue(selectedBankAccountAtom)
@@ -48,6 +49,7 @@ const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
         </div>
         <TransferModal />
         <BankEntryModal />
+        <RecordPaymentModal />
     </>
 }
 

@@ -11,15 +11,15 @@ app_license = "agpl-3.0"
 # required_apps = []
 
 # Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "mint",
-# 		"logo": "/assets/mint/logo.png",
-# 		"title": "Mint",
-# 		"route": "/mint",
-# 		"has_permission": "mint.api.permission.has_app_permission"
-# 	}
-# ]
+add_to_apps_screen = [
+	{
+		"name": "mint",
+		"logo": "/assets/mint/mint/assets/apple-touch-icon.png",
+		"title": "Mint",
+		"route": "/mint",
+		"has_permission": "erpnext.check_app_permission",
+	}
+]
 
 # Includes in <head>
 # ------------------

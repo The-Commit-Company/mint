@@ -213,8 +213,6 @@ const LinkFieldCombobox = ({
 
     const items = filterFn ? data?.message?.slice(0, 50).filter((item) => filterFn(item, searchInput)) : data?.message
 
-    console.log(value)
-
     return (
         <Popover open={open} onOpenChange={onOpenChange} modal={true}>
             <PopoverTrigger asChild>
@@ -253,7 +251,7 @@ const LinkFieldCombobox = ({
                         <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>}
             </PopoverTrigger>
-            <PopoverContent className="p-0" style={{ minWidth: width + 32 }} align="start">
+            <PopoverContent className="p-0" style={{ minWidth: width }} align="start">
                 {error && <ErrorBanner error={error} />}
                 <Command shouldFilter={false} className="w-full">
                     <CommandInput placeholder={_(placeholder)} onValueChange={setSearchInput} defaultValue={searchInput} />
