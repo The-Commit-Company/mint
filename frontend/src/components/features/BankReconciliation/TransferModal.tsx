@@ -6,7 +6,7 @@ import { UnreconciledTransaction, useGetBankAccounts, useRefreshUnreconciledTran
 import { Button } from '@/components/ui/button'
 import SelectedTransactionDetails from './SelectedTransactionDetails'
 import { PaymentEntry } from '@/types/Accounts/PaymentEntry'
-import { useForm, useFormContext, useWatch } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { useFrappeGetCall, useFrappePostCall } from 'frappe-react-sdk'
 import { toast } from 'sonner'
 import ErrorBanner from '@/components/ui/error-banner'
@@ -16,6 +16,7 @@ import { ArrowRight, Banknote, Landmark } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { Form } from '@/components/ui/form'
 import { AccountFormField, DataField, DateField, SmallTextField } from '@/components/ui/form-elements'
+import SelectedTransactionsTable from './SelectedTransactionsTable'
 
 const TransferModal = () => {
 
@@ -48,10 +49,70 @@ const TransferModalContent = () => {
         </div>
     }
 
-    return <InternalTransferForm
-        selectedBankAccount={selectedBankAccount}
-        selectedTransaction={selectedTransaction[0]} />
+    if (selectedTransaction.length === 1) {
+        return <InternalTransferForm
+            selectedBankAccount={selectedBankAccount}
+            selectedTransaction={selectedTransaction[0]} />
+    }
 
+    return <BulkInternalTransferForm transactions={selectedTransaction} />
+
+}
+
+const BulkInternalTransferForm = ({ transactions }: { transactions: UnreconciledTransaction[] }) => {
+
+    const form = useForm<{
+        bank_account: string
+    }>()
+
+    const setIsOpen = useSetAtom(bankRecTransferModalAtom)
+
+    const { call: createPaymentEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_bulk_internal_transfer')
+
+    const onReconcile = useRefreshUnreconciledTransactions()
+
+    const onSubmit = (data: { bank_account: string }) => {
+
+        createPaymentEntry({
+            bank_transaction_names: transactions.map((transaction) => transaction.name),
+            bank_account: data.bank_account
+        }).then(() => {
+            toast.success(_("Transfer Recorded"), {
+                duration: 4000,
+                closeButton: true,
+            })
+            onReconcile(transactions[transactions.length - 1])
+            setIsOpen(false)
+        })
+
+    }
+
+    const onAccountChange = (account: string) => {
+        form.setValue('bank_account', account)
+    }
+
+    const selectedAccount = useWatch({ control: form.control, name: 'bank_account' })
+
+    return <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className='flex flex-col gap-4'>
+
+                {error && <ErrorBanner error={error} />}
+
+                <SelectedTransactionsTable />
+
+                <BankOrCashPicker company={transactions[0].company ?? ''} bankAccount={transactions[0].bank_account ?? ''} onAccountChange={onAccountChange} selectedAccount={selectedAccount} />
+
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button variant={'outline'} disabled={loading}>{_("Cancel")}</Button>
+                    </DialogClose>
+                    <Button type='submit' disabled={loading}>{_("Transfer")}</Button>
+                </DialogFooter>
+            </div>
+        </form>
+
+    </Form>
 }
 
 const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { selectedBankAccount: SelectedBank, selectedTransaction: UnreconciledTransaction }) => {
@@ -111,6 +172,17 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
         })
     }
 
+    const onAccountChange = (account: string) => {
+        //If the transaction is a withdrawal, set the paid to to the selected account - since this is the account where the money is deposited into
+        if (selectedTransaction.withdrawal && selectedTransaction.withdrawal > 0) {
+            form.setValue('paid_to', account)
+        } else {
+            form.setValue('paid_from', account)
+        }
+    }
+
+    const selectedAccount = useWatch({ control: form.control, name: (selectedTransaction.deposit && selectedTransaction.deposit > 0) ? 'paid_from' : 'paid_to' })
+
     return <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className='flex flex-col gap-4'>
@@ -139,7 +211,7 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
 
                 <div className='flex flex-col gap-2'>
                     <H4 className='text-base'>{isWithdrawal ? _('Transferred to') : _('Transferred from')}</H4>
-                    <BankOrCashPicker selectedTransaction={selectedTransaction} />
+                    <BankOrCashPicker company={selectedTransaction.company ?? ''} bankAccount={selectedTransaction.bank_account ?? ''} onAccountChange={onAccountChange} selectedAccount={selectedAccount} />
                 </div>
                 <div className='flex flex-col gap-2 py-2'>
                     <div className='flex items-end justify-between gap-4'>
@@ -193,22 +265,9 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
 }
 
 
-const BankOrCashPicker = ({ selectedTransaction }: { selectedTransaction: UnreconciledTransaction }) => {
+const BankOrCashPicker = ({ bankAccount, onAccountChange, selectedAccount, company }: { selectedAccount: string, bankAccount: string, onAccountChange: (account: string) => void, company: string }) => {
 
-    const { setValue, control } = useFormContext()
-
-    const selectedAccount = useWatch({ control, name: (selectedTransaction.deposit && selectedTransaction.deposit > 0) ? 'paid_from' : 'paid_to' })
-
-    const { banks } = useGetBankAccounts(undefined, (bank) => bank.name !== selectedTransaction.bank_account)
-
-    const onClick = (account: string) => {
-        //If the transaction is a withdrawal, set the paid to to the selected account - since this is the account where the money is deposited into
-        if (selectedTransaction.withdrawal && selectedTransaction.withdrawal > 0) {
-            setValue('paid_to', account)
-        } else {
-            setValue('paid_from', account)
-        }
-    }
+    const { banks } = useGetBankAccounts(undefined, (bank) => bank.name !== bankAccount)
 
     return <div className='grid grid-cols-4 gap-4'>
         {banks.map((bank) => (
@@ -217,7 +276,7 @@ const BankOrCashPicker = ({ selectedTransaction }: { selectedTransaction: Unreco
                     selectedAccount === bank.account ? 'border-blue-500 bg-blue-50 outline-blue-500 hover:bg-blue-100/70' : 'border-gray-200 outline-gray-200 hover:bg-gray-50'
                 )}
                 role='button'
-                onClick={() => onClick(bank.account ?? '')}
+                onClick={() => onAccountChange(bank.account ?? '')}
             >
                 {bank.logo ?
                     <img
@@ -234,7 +293,7 @@ const BankOrCashPicker = ({ selectedTransaction }: { selectedTransaction: Unreco
                 </div>
             </div>
         ))}
-        <CashPicker company={selectedTransaction.company ?? ''} selectedAccount={selectedAccount} setSelectedAccount={onClick} />
+        <CashPicker company={company ?? ''} selectedAccount={selectedAccount} setSelectedAccount={onAccountChange} />
     </div>
 
 }

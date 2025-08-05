@@ -72,11 +72,40 @@ def unreconcile_transaction(transaction_name: str):
     for voucher in vouchers_to_cancel:
         frappe.get_doc(voucher["doctype"], voucher["name"]).cancel()
 
+@frappe.whitelist(methods=["POST"])
+def create_bulk_internal_transfer(bank_transaction_names: list, 
+                                  bank_account: str):
+    """
+        Create an internal transfer for multiple bank transactions
+    """
+    for bank_transaction_name in bank_transaction_names:
+
+        bank_transaction = frappe.db.get_value("Bank Transaction", bank_transaction_name, ["name", "withdrawal", "bank_account", "date", "reference_number", "description"], as_dict=True)
+
+        transaction_account = frappe.get_cached_value("Bank Account", bank_transaction.bank_account, "account")
+
+        is_withdrawal = bank_transaction.withdrawal > 0.0
+
+        if is_withdrawal:
+            paid_from = transaction_account
+            paid_to = bank_account
+        else:
+            paid_from = bank_account
+            paid_to = transaction_account
+        
+        reference_no = (bank_transaction.reference_number or bank_transaction.description or '')[:140]
+        
+        create_internal_transfer(bank_transaction_name=bank_transaction.name,
+                                 posting_date=bank_transaction.date,
+                                 reference_date=bank_transaction.date,
+                                 reference_no=reference_no,
+                                 paid_from=paid_from,
+                                 paid_to=paid_to,)
 
 @frappe.whitelist()
 def create_internal_transfer(bank_transaction_name: str, 
-                             posting_date: str, 
-                             reference_date: str, 
+                             posting_date: str | datetime.date, 
+                             reference_date: str | datetime.date, 
                              reference_no: str, 
                              paid_from: str, 
                              paid_to: str,
