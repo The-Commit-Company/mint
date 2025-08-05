@@ -29,6 +29,7 @@ import MarkdownRenderer from "@/components/ui/markdown"
 import { Separator } from "@/components/ui/separator"
 import { PaymentEntryDeduction } from "@/types/Accounts/PaymentEntryDeduction"
 import { TableLoader } from "@/components/ui/loaders"
+import SelectedTransactionsTable from "./SelectedTransactionsTable"
 
 const RecordPaymentModal = () => {
 
@@ -62,9 +63,165 @@ const RecordPaymentModalContent = () => {
         </div>
     }
 
-    return <PaymentEntryForm
-        selectedBankAccount={selectedBankAccount}
-        selectedTransaction={selectedTransaction[0]} />
+    if (selectedTransaction.length === 1) {
+        return <PaymentEntryForm
+            selectedBankAccount={selectedBankAccount}
+            selectedTransaction={selectedTransaction[0]} />
+    }
+
+    return <BulkPaymentEntryForm
+        transactions={selectedTransaction} />
+
+}
+
+const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTransaction[] }) => {
+
+
+    const setIsOpen = useSetAtom(bankRecRecordPaymentModalAtom)
+
+    const form = useForm<{
+        party_type: PaymentEntry['party_type'],
+        party: PaymentEntry['party'],
+        party_name: PaymentEntry['party_name'],
+        /** GL account that's paid from or paid to */
+        account: string
+    }>()
+
+    const { call: createPaymentEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_bulk_payment_entry_and_reconcile')
+
+    const onReconcile = useRefreshUnreconciledTransactions()
+
+    const onSubmit = (data: { party_type: PaymentEntry['party_type'], party: PaymentEntry['party'], account: string }) => {
+
+        createPaymentEntry({
+            bank_transaction_names: transactions.map((transaction) => transaction.name),
+            party_type: data.party_type,
+            party: data.party,
+            account: data.account
+        }).then(() => {
+            toast.success(_("Payment Recorded"), {
+                duration: 4000,
+                closeButton: true,
+            })
+            onReconcile(transactions[transactions.length - 1])
+            setIsOpen(false)
+        })
+    }
+
+    const party_type = useWatch({ control: form.control, name: 'party_type' })
+
+    const party_name = useWatch({ control: form.control, name: 'party_name' })
+
+    const party = useWatch({ control: form.control, name: 'party' })
+
+    const { call } = useContext(FrappeContext) as FrappeConfig
+
+    const company = transactions[0].company
+
+    const onPartyChange = (event: ChangeEvent<HTMLInputElement>) => {
+        // Fetch the party and account
+        if (event.target.value) {
+            call.get('mint.apis.bank_reconciliation.get_party_details', {
+                company: company,
+                party_type: party_type,
+                party: event.target.value
+            }).then((res) => {
+                form.setValue('party_name', res.message.party_name)
+                form.setValue('account', res.message.party_account)
+            })
+        } else {
+            // Clear the party and account
+            form.setValue('party_name', '')
+            form.setValue('account', '')
+        }
+
+    }
+
+    return <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className='flex flex-col gap-4'>
+
+                {error && <ErrorBanner error={error} />}
+
+                <SelectedTransactionsTable />
+
+                <div className='grid grid-cols-6 gap-4'>
+                    <div className="col-span-1">
+                        <PartyTypeFormField
+                            name='party_type'
+                            label={"Party Type"}
+                            isRequired
+                            inputProps={{
+                                triggerProps: {
+                                    className: 'w-full'
+                                },
+                            }}
+                            rules={{
+                                required: "Party Type is required"
+                            }}
+                        />
+                    </div>
+                    <div className="col-span-3">
+                        {party_type ? <LinkFormField
+                            name={`party`}
+                            label={"Party"}
+                            isRequired
+                            rules={{
+                                onChange: onPartyChange,
+                                required: _('Party is required')
+                            }}
+                            // Show the party name if it's different from the party - usually the case when a naming series is used
+                            formDescription={party_name !== party ? party_name : undefined}
+                            doctype={party_type}
+
+                        /> : <DataField
+                            name={`party`}
+                            label={"Party"}
+                            rules={{
+                                required: _('Party is required')
+                            }}
+                            isRequired
+                            inputProps={{
+                                disabled: true,
+                            }}
+                        />
+                        }
+
+
+                    </div>
+
+                    <div className="col-span-2">
+                        <AccountFormField
+                            name='account'
+                            label='Account'
+                            isRequired
+                            rules={{
+                                required: _('Account is required')
+                            }}
+                            account_type={['Payable', 'Receivable']}
+                            filterFunction={(acc) => {
+                                if (party_type === 'Supplier' || party_type === 'Employee' || party_type === 'Shareholder') {
+                                    return acc.account_type === 'Payable'
+                                } else if (party_type === 'Customer') {
+                                    return acc.account_type === 'Receivable'
+                                }
+                                return true
+                            }}
+                        />
+                    </div>
+
+                </div>
+
+
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button variant={'outline'} disabled={loading}>{_("Cancel")}</Button>
+                    </DialogClose>
+                    <Button type='submit' disabled={loading}>{_("Submit")}</Button>
+                </DialogFooter>
+            </div>
+        </form>
+    </Form>
 
 }
 
@@ -164,12 +321,8 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
                             </div>
 
                             <div className="col-span-4">
-
                                 <AccountDropdown isWithdrawal={isWithdrawal} />
                             </div>
-
-
-
 
                         </div>
 
