@@ -125,6 +125,7 @@ export const useRefreshUnreconciledTransactions = () => {
 
     const selectedBank = useAtomValue(selectedBankAccountAtom)
     const dates = useAtomValue(bankRecDateAtom)
+    const matchFilters = useAtomValue(bankRecMatchFilters)
     const setSelectedTransaction = useSetAtom(bankRecSelectedTransactionAtom(selectedBank?.name || ''))
 
     const { mutate } = useSWRConfig()
@@ -143,7 +144,7 @@ export const useRefreshUnreconciledTransactions = () => {
             mutate(`bank-reconciliation-unreconciled-transactions-${selectedBank?.name}-${dates.fromDate}-${dates.toDate}`)
             mutate(`bank-reconciliation-account-closing-balance-${selectedBank?.name}-${dates.toDate}`)
             // Update the matching vouchers for the selected transaction
-            mutate(`bank-reconciliation-vouchers-${transaction.name}-${dates.fromDate}-${dates.toDate}`)
+            mutate(`bank-reconciliation-vouchers-${transaction.name}-${dates.fromDate}-${dates.toDate}-${matchFilters.join(',')}`)
             return
         }
 
