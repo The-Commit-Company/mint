@@ -145,7 +145,7 @@ def create_bulk_bank_entry_and_reconcile(bank_transactions: list,
     for bank_transaction in bank_transactions:
         transactions_details = frappe.db.get_value("Bank Transaction", bank_transaction, ["name", "deposit", "withdrawal", "bank_account", "currency", "unallocated_amount", "date", "reference_number", "description"], as_dict=True)
 
-        print(transactions_details)
+        is_credit_card = frappe.get_cached_value("Bank Account", transactions_details.bank_account, "is_credit_card")
 
         # Check Number will be limited to 140 characters
         cheque_no = (transactions_details.reference_number or transactions_details.description or '')[:140]
@@ -158,8 +158,8 @@ def create_bulk_bank_entry_and_reconcile(bank_transactions: list,
                                         entries=[{
                                             "account": account,
                                             "amount": transactions_details.unallocated_amount,
-
-                                        }])
+                                        }],
+                                        voucher_type=("Credit Card Entry" if is_credit_card else "Bank Entry"))
 
 @frappe.whitelist(methods=['POST'])
 def create_bank_entry_and_reconcile(bank_transaction_name: str, 
@@ -168,6 +168,7 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
                                     cheque_no: str,
                                     user_remark: str,
                                     entries: list,
+                                    voucher_type: str = "Bank Entry",
                                     dimensions: dict = None):
     """
         Create a bank entry and reconcile it with the bank transaction
@@ -187,7 +188,7 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
 
     bank_entry = frappe.get_doc({
         "doctype": "Journal Entry",
-        "voucher_type": "Bank Entry",
+        "voucher_type": voucher_type,
         "company": company,
         "cheque_date": cheque_date,
         "posting_date": posting_date,

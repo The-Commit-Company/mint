@@ -38,6 +38,8 @@ export interface BankAccount{
 	branch_code?: string
 	/**	Bank Account No : Data	*/
 	bank_account_no?: string
+	/**	Is Credit Card : Check	*/
+	is_credit_card?: 0 | 1
 	/**	Integration ID : Data	*/
 	integration_id?: string
 	/**	Last Integration Date : Date - Change this date manually to setup the next synchronization start date	*/

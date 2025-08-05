@@ -13,5 +13,14 @@ def after_install():
 				"read_only": 1,
 				"default": "Matched",
 			}
+		],
+        "Bank Account": [
+            {
+                "fieldname": "is_credit_card",
+                "fieldtype": "Check",
+                "label": "Is Credit Card",
+                "insert_after": "bank_account_no",
+                "default": 0,
+			}
 		]
         })

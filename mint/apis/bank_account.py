@@ -18,7 +18,7 @@ def get_list(company: str, show_disabled: bool = False):
                      bank_account.account_name, bank_account.is_default,
                      bank_account.bank, bank_account.account_type,
                      bank_account.account_subtype, bank_account.bank_account_no,
-                     bank_account.last_integration_date 
+                     bank_account.last_integration_date, bank_account.is_credit_card
                      )
             .where(bank_account.is_company_account == 1)
             .where(bank_account.company == company)

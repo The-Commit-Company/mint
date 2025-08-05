@@ -141,6 +141,8 @@ interface BankEntryFormData extends Pick<JournalEntry, 'voucher_type' | 'cheque_
 
 const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: UnreconciledTransaction }) => {
 
+    const selectedBankAccount = useAtomValue(selectedBankAccountAtom)
+
     const setIsOpen = useSetAtom(bankRecRecordJournalEntryModalAtom)
 
     const onClose = () => {
@@ -151,7 +153,7 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
 
     const form = useForm<BankEntryFormData>({
         defaultValues: {
-            voucher_type: 'Bank Entry',
+            voucher_type: selectedBankAccount?.is_credit_card ? 'Credit Card Entry' : 'Bank Entry',
             cheque_date: selectedTransaction.date,
             posting_date: selectedTransaction.date,
             cheque_no: (selectedTransaction.reference_number || selectedTransaction.description || '').slice(0, 140),
