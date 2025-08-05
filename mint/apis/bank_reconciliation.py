@@ -1,6 +1,7 @@
 import frappe
 from frappe import _
 import json
+import datetime
 from erpnext.accounts.doctype.bank_reconciliation_tool.bank_reconciliation_tool import create_payment_entry_bts, create_journal_entry_bts
 from erpnext.accounts.party import get_party_account
 from erpnext import get_default_cost_center
@@ -135,11 +136,35 @@ def create_internal_transfer(bank_transaction_name: str,
 
     return reconcile_vouchers(bank_transaction_name, vouchers, is_new_voucher=True)
 
+@frappe.whitelist(methods=['POST'])
+def create_bulk_bank_entry_and_reconcile(bank_transactions: list, 
+                                         account: str):
+    """
+     Create bank entries for all transactions and reconcile them
+    """
+    for bank_transaction in bank_transactions:
+        transactions_details = frappe.db.get_value("Bank Transaction", bank_transaction, ["name", "deposit", "withdrawal", "bank_account", "currency", "unallocated_amount", "date", "reference_number", "description"], as_dict=True)
+
+        print(transactions_details)
+
+        # Check Number will be limited to 140 characters
+        cheque_no = (transactions_details.reference_number or transactions_details.description or '')[:140]
+
+        create_bank_entry_and_reconcile(bank_transaction_name=bank_transaction,
+                                        cheque_date=transactions_details.date,
+                                        posting_date=transactions_details.date,
+                                        cheque_no=cheque_no,
+                                        user_remark=transactions_details.description,
+                                        entries=[{
+                                            "account": account,
+                                            "amount": transactions_details.unallocated_amount,
+
+                                        }])
 
 @frappe.whitelist(methods=['POST'])
 def create_bank_entry_and_reconcile(bank_transaction_name: str, 
-                                    cheque_date: str,
-                                    posting_date: str,
+                                    cheque_date: str | datetime.date,
+                                    posting_date: str | datetime.date,
                                     cheque_no: str,
                                     user_remark: str,
                                     entries: list,
@@ -172,8 +197,6 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
 
     # Compute accounts for JE 
     is_withdrawal = bank_transaction.withdrawal > 0.0
-
-    print(is_withdrawal, bank_transaction.unallocated_amount)
 
     if is_withdrawal:
         bank_entry.append("accounts", {

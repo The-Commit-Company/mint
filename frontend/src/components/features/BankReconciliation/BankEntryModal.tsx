@@ -20,6 +20,7 @@ import { Plus, Trash2 } from "lucide-react"
 import { formatCurrency } from "@/lib/numbers"
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import SelectedTransactionsTable from "./SelectedTransactionsTable"
 
 const BankEntryModal = () => {
 
@@ -52,9 +53,77 @@ const RecordBankEntryModalContent = () => {
         </div>
     }
 
-    return <BankEntryForm
-        selectedTransaction={selectedTransaction[0]} />
+    if (selectedTransaction.length === 1) {
+        return <BankEntryForm
+            selectedTransaction={selectedTransaction[0]} />
+    }
 
+    return <BulkBankEntryForm
+        selectedTransactions={selectedTransaction}
+    />
+
+}
+
+const BulkBankEntryForm = ({ selectedTransactions }: { selectedTransactions: UnreconciledTransaction[] }) => {
+
+    const form = useForm<{
+        account: string
+    }>({
+        defaultValues: {
+            account: ''
+        }
+    })
+
+    const { call, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_bulk_bank_entry_and_reconcile')
+
+    const onReconcile = useRefreshUnreconciledTransactions()
+
+    const setIsOpen = useSetAtom(bankRecRecordJournalEntryModalAtom)
+
+    const onSubmit = (data: { account: string }) => {
+
+        call({
+            bank_transactions: selectedTransactions.map(transaction => transaction.name),
+            account: data.account
+        }).then(() => {
+
+            toast.success(_("Bank Entries Created"), {
+                duration: 4000,
+            })
+
+            // Set this to the last selected transaction
+            onReconcile(selectedTransactions[selectedTransactions.length - 1])
+            setIsOpen(false)
+        })
+    }
+
+    return <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="flex flex-col gap-4">
+                {error && <ErrorBanner error={error} />}
+                <SelectedTransactionsTable />
+
+                <div className="grid grid-cols-3 gap-4">
+                    <AccountFormField
+                        name='account'
+                        filterFunction={(acc) => {
+                            // Do not allow payable and receivable accounts
+                            return acc.account_type !== 'Payable' && acc.account_type !== 'Receivable'
+                        }}
+                        label='Account'
+                        isRequired
+                    />
+                </div>
+
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button variant={'outline'} disabled={loading}>{_("Cancel")}</Button>
+                    </DialogClose>
+                    <Button type='submit' disabled={loading}>{_("Submit")}</Button>
+                </DialogFooter>
+            </div>
+        </form>
+    </Form>
 }
 
 

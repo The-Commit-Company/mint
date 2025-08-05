@@ -27,6 +27,8 @@ import _ from "@/lib/translate"
 import TransferModal from "./TransferModal"
 import BankEntryModal from "./BankEntryModal"
 import RecordPaymentModal from "./RecordPaymentModal"
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import SelectedTransactionsTable from "./SelectedTransactionsTable"
 
 const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
     const selectedBank = useAtomValue(selectedBankAccountAtom)
@@ -274,11 +276,91 @@ const VouchersSection = ({ contentHeight }: { contentHeight: number }) => {
     }
 
     if (selectedTransactions.length > 1) {
-        return <div className="text-sm text-muted-foreground">{_("Multiple transactions selected")}</div>
+        return <OptionsForMultipleTransactions transactions={selectedTransactions} />
     }
 
     return <div style={{ minHeight: contentHeight }} className="mt-2">
         <OptionsForSingleTransaction transaction={selectedTransactions[0]} contentHeight={contentHeight} />
+    </div>
+}
+
+const OptionsForMultipleTransactions = ({ transactions }: { transactions: UnreconciledTransaction[] }) => {
+
+    const setTransferModalOpen = useSetAtom(bankRecTransferModalAtom)
+    const setRecordPaymentModalOpen = useSetAtom(bankRecRecordPaymentModalAtom)
+    const setRecordJournalEntryModalOpen = useSetAtom(bankRecRecordJournalEntryModalAtom)
+
+    return <div className="flex flex-col py-4">
+        <Card className="gap-2">
+            <CardHeader>
+                <CardTitle>
+                    <div className="flex items-center justify-between">
+                        <span className="text-lg">{transactions.length} {_(transactions.length === 1 ? _("transaction selected") : _("transactions selected"))}</span>
+                        <span className="text-lg font-semibold font-mono">
+                            {formatCurrency(transactions.reduce((acc, transaction) => acc + (transaction.unallocated_amount ?? 0), 0), transactions[0].currency ?? '')}
+                        </span>
+                    </div>
+                </CardTitle>
+            </CardHeader>
+            <CardContent>
+
+                <SelectedTransactionsTable />
+
+                <CardAction className="mt-4">
+                    <div className="flex gap-3 justify-center">
+
+                        <TooltipProvider>
+                            <div className="flex gap-4 justify-center">
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            size='lg'
+                                            aria-label={_("Record a bank journal entry for expenses, income or split transactions")}
+                                            onClick={() => setRecordJournalEntryModalOpen(true)}>
+                                            <Landmark /> {_("Bank Entry")}
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        {_("Record a journal entry for expenses, income or split transactions")}
+                                    </TooltipContent>
+                                </Tooltip>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant='outline'
+                                            size='lg'
+                                            aria-label={_("Record a payment entry against a customer or supplier")}
+                                            onClick={() => setRecordPaymentModalOpen(true)}>
+                                            <Receipt /> {_("Record Payment")}
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        {_("Record a payment entry against a customer or supplier")}
+                                    </TooltipContent>
+                                </Tooltip>
+
+                                <Tooltip >
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant='outline'
+                                            size='lg'
+                                            aria-label={_("Record an internal transfer to another bank/credit card/cash account")}
+                                            onClick={() => setTransferModalOpen(true)}>
+                                            <ArrowRightLeft /> {_("Transfer")}
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        {_("Record an internal transfer to another bank/credit card/cash account")}
+                                    </TooltipContent>
+                                </Tooltip>
+
+                            </div>
+                        </TooltipProvider>
+                    </div>
+                </CardAction>
+            </CardContent>
+        </Card>
+
     </div>
 }
 
