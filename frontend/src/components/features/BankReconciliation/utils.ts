@@ -1,4 +1,4 @@
-import { bankRecDateAtom, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
+import { bankRecDateAtom, bankRecMatchFilters, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { useFrappeGetCall, useFrappePostCall, useSWRConfig } from 'frappe-react-sdk'
@@ -104,15 +104,15 @@ export const useGetVouchersForTransaction = (transaction: UnreconciledTransactio
 
     const dates = useAtomValue(bankRecDateAtom)
 
+    const matchFilters = useAtomValue(bankRecMatchFilters)
+
     return useFrappeGetCall<{ message: LinkedPayment[] }>('erpnext.accounts.doctype.bank_reconciliation_tool.bank_reconciliation_tool.get_linked_payments', {
         bank_transaction_name: transaction.name,
-
-        // TODO: Add support for other document types
-        document_types: ['payment_entry', 'journal_entry'],
+        document_types: matchFilters ?? ['payment_entry', 'journal_entry'],
         from_date: dates.fromDate,
         to_date: dates.toDate,
         filter_by_reference_date: 0
-    }, `bank-reconciliation-vouchers-${transaction.name}-${dates.fromDate}-${dates.toDate}`, {
+    }, `bank-reconciliation-vouchers-${transaction.name}-${dates.fromDate}-${dates.toDate}-${matchFilters.join(',')}`, {
         revalidateOnFocus: false
     })
 }

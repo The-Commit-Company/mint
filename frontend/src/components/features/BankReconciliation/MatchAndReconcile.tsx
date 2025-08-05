@@ -29,6 +29,7 @@ import BankEntryModal from "./BankEntryModal"
 import RecordPaymentModal from "./RecordPaymentModal"
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import SelectedTransactionsTable from "./SelectedTransactionsTable"
+import MatchFilters from "./MatchFilters"
 
 const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
     const selectedBank = useAtomValue(selectedBankAccountAtom)
@@ -373,47 +374,49 @@ const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transacti
 
     return <div className="flex flex-col gap-3">
         <TooltipProvider>
-            <div className="flex gap-4 justify-center">
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <Button
-                            variant='outline'
-                            aria-label={_("Record a payment entry against a customer or supplier")}
-                            onClick={() => setRecordPaymentModalOpen(true)}>
-                            <Receipt /> {_("Record Payment")}
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        {_("Record a payment entry against a customer or supplier")}
-                    </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <Button
-                            variant='outline'
-                            aria-label={_("Record a bank journal entry for expenses, income or split transactions")}
-                            onClick={() => setRecordJournalEntryModalOpen(true)}>
-                            <Landmark /> {_("Bank Entry")}
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        {_("Record a journal entry for expenses, income or split transactions")}
-                    </TooltipContent>
-                </Tooltip>
-                <Tooltip >
-                    <TooltipTrigger asChild>
-                        <Button
-                            variant='outline'
-                            aria-label={_("Record an internal transfer to another bank/credit card/cash account")}
-                            onClick={() => setTransferModalOpen(true)}>
-                            <ArrowRightLeft /> {_("Transfer")}
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        {_("Record an internal transfer to another bank/credit card/cash account")}
-                    </TooltipContent>
-                </Tooltip>
-
+            <div className="flex items-center justify-between pt-2">
+                <div className="flex gap-4 justify-center">
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                variant='outline'
+                                aria-label={_("Record a payment entry against a customer or supplier")}
+                                onClick={() => setRecordPaymentModalOpen(true)}>
+                                <Receipt /> {_("Record Payment")}
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {_("Record a payment entry against a customer or supplier")}
+                        </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                variant='outline'
+                                aria-label={_("Record a bank journal entry for expenses, income or split transactions")}
+                                onClick={() => setRecordJournalEntryModalOpen(true)}>
+                                <Landmark /> {_("Bank Entry")}
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {_("Record a journal entry for expenses, income or split transactions")}
+                        </TooltipContent>
+                    </Tooltip>
+                    <Tooltip >
+                        <TooltipTrigger asChild>
+                            <Button
+                                variant='outline'
+                                aria-label={_("Record an internal transfer to another bank/credit card/cash account")}
+                                onClick={() => setTransferModalOpen(true)}>
+                                <ArrowRightLeft /> {_("Transfer")}
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {_("Record an internal transfer to another bank/credit card/cash account")}
+                        </TooltipContent>
+                    </Tooltip>
+                </div>
+                <MatchFilters />
             </div>
         </TooltipProvider>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -421,7 +424,6 @@ const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transacti
             <span>or</span>
             <Separator className="flex-1" />
         </div>
-
         <VouchersForTransaction transaction={transaction} contentHeight={contentHeight} />
     </div>
 }
