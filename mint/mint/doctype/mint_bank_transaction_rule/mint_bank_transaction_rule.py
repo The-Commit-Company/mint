@@ -31,6 +31,20 @@ class MintBankTransactionRule(Document):
 		transaction_type: DF.Literal["Any", "Withdrawal", "Deposit"]
 	# end: auto-generated types
 	
+	def before_insert(self):
+		"""Assign the next priority number for the new rule"""
+		if not self.priority:
+			# Get the highest priority for rules in the same company
+			highest_priority = frappe.db.get_value(
+				"Mint Bank Transaction Rule",
+				filters={"company": self.company},
+				fieldname="MAX(priority)",
+				order_by="priority DESC"
+			)
+			
+			# Set priority to 1 if no rules exist, otherwise increment by 1
+			self.priority = (highest_priority or 0) + 1
+	
 	def validate(self):
 
 		if self.min_amount and self.max_amount:
