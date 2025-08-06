@@ -1,0 +1,71 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-08-06 15:24:34.392310",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "google_document_ai_section",
+  "google_project_id",
+  "google_processor_location",
+  "google_service_account_json_key",
+  "bank_statement_gdoc_processor"
+ ],
+ "fields": [
+  {
+   "fieldname": "google_document_ai_section",
+   "fieldtype": "Section Break",
+   "label": "Google Document AI"
+  },
+  {
+   "default": "us",
+   "fieldname": "google_processor_location",
+   "fieldtype": "Select",
+   "label": "Google Processor Location",
+   "options": "us\neu"
+  },
+  {
+   "fieldname": "google_project_id",
+   "fieldtype": "Data",
+   "label": "Google Project ID",
+   "length": 300
+  },
+  {
+   "fieldname": "google_service_account_json_key",
+   "fieldtype": "Password",
+   "label": "Google Service Account JSON Key",
+   "length": 800
+  },
+  {
+   "fieldname": "bank_statement_gdoc_processor",
+   "fieldtype": "Data",
+   "label": "Google Document Processor - Bank Statement",
+   "length": 400
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-08-06 15:58:10.410765",
+ "modified_by": "Administrator",
+ "module": "Mint",
+ "name": "Mint Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
