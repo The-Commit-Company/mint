@@ -35,7 +35,15 @@ const BankPicker = () => {
         return <ErrorBanner error={error} />
     }
     return (
-        <div className="flex gap-3 items-stretch w-full flex-wrap overflow-x-auto">
+        <div
+            className={cn("flex gap-3 items-stretch w-full overflow-x-auto bank-picker-scrollbar pr-4",
+                banks?.length > 4 ? 'pb-2' : ''
+            )}
+            style={{
+                scrollbarWidth: 'thin',
+                scrollbarColor: 'rgb(209 213 219) rgb(243 244 246)',
+            }}
+        >
             {
                 banks?.map((bank) => (
                     <BankPickerItem key={bank.name} bank={bank} />
