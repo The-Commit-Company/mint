@@ -148,23 +148,11 @@ after_install = "mint.setup.install.after_install"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"mint.tasks.all"
-# 	],
-# 	"daily": [
-# 		"mint.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"mint.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"mint.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"mint.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	"hourly": [
+		"mint.apis.scheduler.scheduler_run_rule_evaluation"
+	],
+}
 
 # Testing
 # -------

@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "google_document_ai_section",
+  "automatically_run_rules_on_unreconciled_transactions",
   "google_project_id",
   "google_processor_location",
   "google_service_account_json_key",
@@ -41,13 +42,20 @@
    "fieldtype": "Data",
    "label": "Google Document Processor - Bank Statement",
    "length": 400
+  },
+  {
+   "default": "0",
+   "description": "If checked, this job will run every 30 minutes",
+   "fieldname": "automatically_run_rules_on_unreconciled_transactions",
+   "fieldtype": "Check",
+   "label": "Automatically run rules on unreconciled transactions"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-06 15:58:10.410765",
+ "modified": "2025-08-06 18:49:18.518794",
  "modified_by": "Administrator",
  "module": "Mint",
  "name": "Mint Settings",

@@ -22,5 +22,24 @@ def after_install():
                 "insert_after": "bank_account_no",
                 "default": 0,
 			}
+		],
+        "Bank Transaction": [
+            {
+                "fieldname": "is_rule_evaluated",
+                "fieldtype": "Check",
+                "label": "Is Rule Evaluated",
+                "default": 0,
+                "allow_on_submit": 1,
+                "insert_after": "party",
+			},
+            {
+                "fieldname": "matched_rule",
+                "insert_after": "is_rule_evaluated",
+                "fieldtype": "Link",
+                "label": "Matched Rule",
+                "options": "Mint Bank Transaction Rule",
+                "read_only": 1,
+                "allow_on_submit": 1,
+			}
 		]
         })
