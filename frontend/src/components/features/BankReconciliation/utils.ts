@@ -1,7 +1,7 @@
 import { bankRecDateAtom, bankRecMatchFilters, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
-import { useFrappeGetCall, useFrappePostCall, useSWRConfig } from 'frappe-react-sdk'
+import { useFrappeGetCall, useFrappeGetDoc, useFrappePostCall, useSWRConfig } from 'frappe-react-sdk'
 import { BankTransaction } from '@/types/Accounts/BankTransaction'
 import { BankAccount } from '@/types/Accounts/BankAccount'
 import dayjs from 'dayjs'
@@ -10,6 +10,7 @@ import { BANK_LOGOS } from './logos'
 import { getErrorMessage } from '@/lib/frappe'
 import { useCurrentCompany } from '@/hooks/useCurrentCompany'
 import _ from '@/lib/translate'
+import { MintBankTransactionRule } from '@/types/Mint/MintBankTransactionRule'
 
 export const useGetAccountOpeningBalance = () => {
 
@@ -59,7 +60,7 @@ export const useGetAccountClosingBalance = () => {
 
 }
 
-export type UnreconciledTransaction = Pick<BankTransaction, 'name' | 'date' | 'withdrawal' | 'deposit' | 'currency' | 'description' | 'status' | 'transaction_type' | 'reference_number' | 'party_type' | 'party' | 'bank_account' | 'company' | 'unallocated_amount'>
+export type UnreconciledTransaction = Pick<BankTransaction, 'name' | 'matched_rule' | 'date' | 'withdrawal' | 'deposit' | 'currency' | 'description' | 'status' | 'transaction_type' | 'reference_number' | 'party_type' | 'party' | 'bank_account' | 'company' | 'unallocated_amount'>
 
 
 export const useGetUnreconciledTransactions = () => {
@@ -289,4 +290,14 @@ export const useIsTransactionWithdrawal = (transaction: UnreconciledTransaction)
             isDeposit
         }
     }, [transaction])
+}
+
+export const useGetRuleForTransaction = (transaction: UnreconciledTransaction) => {
+
+    return useFrappeGetDoc<MintBankTransactionRule>('Mint Bank Transaction Rule', transaction.matched_rule,
+        transaction.matched_rule ? undefined : null, {
+        revalidateOnFocus: false,
+        revalidateIfStale: false
+    }
+    )
 }

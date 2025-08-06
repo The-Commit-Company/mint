@@ -30,7 +30,8 @@ def get_bank_transactions(bank_account, from_date=None, to_date=None, all_transa
             "reference_number",
             "party_type",
             "party",
-            "status"
+            "status",
+            "matched_rule"
         ],
         filters=filters,
         order_by="date",

@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import _ from "@/lib/translate"
 import { MintBankTransactionRule } from "@/types/Mint/MintBankTransactionRule"
 import { FrappeConfig, FrappeContext, useFrappeGetDocList, useFrappePostCall } from "frappe-react-sdk"
-import { ArrowDownRight, ArrowDownUp, ArrowLeftIcon, ArrowUpRight, MoreVertical, Trash2, WorkflowIcon, GripVertical, Play, RefreshCw } from "lucide-react"
+import { ArrowDownRight, ArrowDownUp, ArrowLeftIcon, ArrowUpRight, MoreVertical, Trash2, GripVertical, Play, RefreshCw, ZapIcon } from "lucide-react"
 import { useContext, useState } from "react"
 import CreateNewRule from "./CreateNewRule"
 import EditRule from "./EditRule"
@@ -52,7 +52,7 @@ const RuleConfigureButton = () => {
         <Sheet open={isOpen} onOpenChange={onOpenChange}>
             <SheetTrigger asChild>
                 <Button size='icon' variant='outline' title={_("Transaction Matching Rules")}>
-                    <WorkflowIcon />
+                    <ZapIcon />
                 </Button>
             </SheetTrigger>
             <SheetContent className="min-w-xl">

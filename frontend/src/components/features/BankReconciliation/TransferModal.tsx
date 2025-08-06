@@ -2,7 +2,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { bankRecSelectedTransactionAtom, bankRecTransferModalAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogClose, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import _ from '@/lib/translate'
-import { UnreconciledTransaction, useGetBankAccounts, useRefreshUnreconciledTransactions } from './utils'
+import { UnreconciledTransaction, useGetBankAccounts, useGetRuleForTransaction, useRefreshUnreconciledTransactions } from './utils'
 import { Button } from '@/components/ui/button'
 import SelectedTransactionDetails from './SelectedTransactionDetails'
 import { PaymentEntry } from '@/types/Accounts/PaymentEntry'
@@ -124,6 +124,8 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
         setIsOpen(false)
     }
 
+    const { data: rule } = useGetRuleForTransaction(selectedTransaction)
+
     const isWithdrawal = (selectedTransaction.withdrawal && selectedTransaction.withdrawal > 0) ? true : false
 
     const form = useForm<PaymentEntry>({
@@ -131,9 +133,9 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
             payment_type: 'Internal Transfer',
             company: selectedTransaction?.company,
             // If the transaction is a withdrawal, set the paid from to the selected bank account
-            paid_from: isWithdrawal ? selectedBankAccount.account : '',
+            paid_from: isWithdrawal ? selectedBankAccount.account : (rule?.account ?? ''),
             // If the transaction is a deposit, set the paid to to the selected bank account
-            paid_to: !isWithdrawal ? selectedBankAccount.account : '',
+            paid_to: !isWithdrawal ? selectedBankAccount.account : (rule?.account ?? ''),
             // Set the amount to the amount of the selected transaction
             paid_amount: selectedTransaction.unallocated_amount,
             received_amount: selectedTransaction.unallocated_amount,

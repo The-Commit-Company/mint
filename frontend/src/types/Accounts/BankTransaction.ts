@@ -11,6 +11,10 @@ export interface BankTransaction{
 	parentfield?: string
 	parenttype?: string
 	idx?: number
+	/**	Is Rule Evaluated : Check	*/
+	is_rule_evaluated?: 0 | 1
+	/**	Matched Rule : Link - Mint Bank Transaction Rule	*/
+	matched_rule?: string
 	/**	Series : Select	*/
 	naming_series: "ACC-BTN-.YYYY.-"
 	/**	Date : Date	*/

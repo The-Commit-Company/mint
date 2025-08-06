@@ -2,7 +2,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { bankRecRecordJournalEntryModalAtom, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, selectedBankAccountAtom } from "./bankRecAtoms"
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogClose } from "@/components/ui/dialog"
 import _ from "@/lib/translate"
-import { UnreconciledTransaction, useRefreshUnreconciledTransactions } from "./utils"
+import { UnreconciledTransaction, useGetRuleForTransaction, useRefreshUnreconciledTransactions } from "./utils"
 import { useFieldArray, useForm, useFormContext, useWatch } from "react-hook-form"
 import { JournalEntry } from "@/types/Accounts/JournalEntry"
 import { getCompanyCostCenter, getCompanyCurrency } from "@/lib/company"
@@ -143,6 +143,8 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
 
     const selectedBankAccount = useAtomValue(selectedBankAccountAtom)
 
+    const { data: rule } = useGetRuleForTransaction(selectedTransaction)
+
     const setIsOpen = useSetAtom(bankRecRecordJournalEntryModalAtom)
 
     const onClose = () => {
@@ -160,7 +162,7 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
             user_remark: selectedTransaction.description,
             entries: [
                 {
-                    account: '',
+                    account: rule?.account ?? '',
                     amount: selectedTransaction.unallocated_amount,
                     party_type: '',
                     cost_center: getCompanyCostCenter(selectedTransaction.company ?? '') ?? ''

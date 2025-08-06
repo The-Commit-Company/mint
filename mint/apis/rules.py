@@ -31,10 +31,9 @@ def _run_rule_evaluation(force_evaluate=False):
     if not force_evaluate:
         filters["is_rule_evaluated"] = 0
 
-    # Run this for 50 transactions at a time
     unreconciled_transactions = frappe.get_all("Bank Transaction", 
                                                filters=filters, 
-                                               fields=["name", "bank_account","company", "date", "withdrawal", "deposit", "description", "reference_number"], limit=50)
+                                               fields=["name", "bank_account","company", "date", "withdrawal", "deposit", "description", "reference_number"])
     
     if not unreconciled_transactions:
         return

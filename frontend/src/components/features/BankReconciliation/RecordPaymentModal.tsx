@@ -2,7 +2,7 @@ import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
 import { bankRecRecordPaymentModalAtom, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from "./bankRecAtoms"
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogClose, DialogTrigger } from "@/components/ui/dialog"
 import _ from "@/lib/translate"
-import { UnreconciledTransaction, useRefreshUnreconciledTransactions } from "./utils"
+import { UnreconciledTransaction, useGetRuleForTransaction, useRefreshUnreconciledTransactions } from "./utils"
 import { useFieldArray, useForm, useFormContext, useWatch } from "react-hook-form"
 import { getCompanyCostCenter, getCompanyCurrency } from "@/lib/company"
 import { FrappeConfig, FrappeContext, useFrappeGetCall, useFrappePostCall } from "frappe-react-sdk"
@@ -233,6 +233,8 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
         setIsOpen(false)
     }
 
+    const { data: rule } = useGetRuleForTransaction(selectedTransaction)
+
     const isWithdrawal = (selectedTransaction.withdrawal && selectedTransaction.withdrawal > 0) ? true : false
 
     const form = useForm<PaymentEntry>({
@@ -241,11 +243,12 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
             bank_account: selectedBankAccount.account,
             company: selectedTransaction?.company,
             // If the money is paid, it's usually to a supplier. If it's received, it's usually from a customer
-            party_type: isWithdrawal ? 'Supplier' : 'Customer',
+            party_type: rule?.party_type ?? (isWithdrawal ? 'Supplier' : 'Customer'),
+            party: rule?.party ?? '',
             // If the transaction is a withdrawal, set the paid from to the selected bank account
-            paid_from: isWithdrawal ? selectedBankAccount.account : '',
+            paid_from: isWithdrawal ? selectedBankAccount.account : (rule?.account ?? ''),
             // If the transaction is a deposit, set the paid to to the selected bank account
-            paid_to: !isWithdrawal ? selectedBankAccount.account : '',
+            paid_to: !isWithdrawal ? selectedBankAccount.account : (rule?.account ?? ''),
             // Set the amount to the amount of the selected transaction
             paid_amount: selectedTransaction.unallocated_amount,
             base_paid_amount: selectedTransaction.unallocated_amount,
@@ -722,13 +725,14 @@ const GetUnpaidInvoicesButton = () => {
     const { control } = useFormContext<PaymentEntry>()
 
     const partyType = useWatch({ control, name: 'party_type' })
+    const party = useWatch({ control, name: 'party' })
     const partyName = useWatch({ control, name: 'party_name' })
     const amount = useWatch({ control, name: 'paid_amount' })
 
     return <>
 
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            {partyType && partyName && <DialogTrigger asChild>
+            {partyType && party && <DialogTrigger asChild>
                 <Button variant='outline' size='sm' type='button'>Get Unpaid Invoices</Button>
             </DialogTrigger>}
             <DialogContent className="min-w-[75vw]">

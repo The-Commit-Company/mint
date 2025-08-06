@@ -7,10 +7,10 @@ import { getCompanyCurrency } from "@/lib/company"
 import ErrorBanner from "@/components/ui/error-banner"
 import { Separator } from "@/components/ui/separator"
 import Fuse from 'fuse.js'
-import { LinkedPayment, UnreconciledTransaction, useGetUnreconciledTransactions, useGetVouchersForTransaction, useIsTransactionWithdrawal, useReconcileTransaction } from "./utils"
+import { LinkedPayment, UnreconciledTransaction, useGetRuleForTransaction, useGetUnreconciledTransactions, useGetVouchersForTransaction, useIsTransactionWithdrawal, useReconcileTransaction } from "./utils"
 import { useDebounceValue } from 'usehooks-ts'
 import { Input } from "@/components/ui/input"
-import { ArrowDownRight, ArrowRightLeft, ArrowUpRight, BadgeCheck, ChevronDown, DollarSign, Landmark, Loader2, Receipt, Search, User, XCircle } from "lucide-react"
+import { ArrowDownRight, ArrowRightLeft, ArrowUpRight, BadgeCheck, ChevronDown, DollarSign, Landmark, Loader2, Receipt, Search, User, XCircle, ZapIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
@@ -252,6 +252,12 @@ const UnreconciledTransactionItem = ({ transaction }: { transaction: Unreconcile
                             className="inline-block max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap bg-primary-foreground rounded-sm text-primary"
                         >
                             {_("Ref")}: {transaction.reference_number}</Badge>}
+
+                        {transaction.matched_rule && <Badge
+                            variant='secondary'
+                            title={_("Matched by rule")}
+                            className="text-xs py-0.5 px-1 rounded-sm bg-primary-foreground text-primary">
+                            <ZapIcon className="w-4 h-4" /> {transaction.matched_rule}</Badge>}
                     </div>
                     <span className="text-sm">{transaction.description}</span>
                 </div>
@@ -419,6 +425,7 @@ const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transacti
                 <MatchFilters />
             </div>
         </TooltipProvider>
+        {transaction.matched_rule && <RuleAction transaction={transaction} />}
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Separator className="flex-1" />
             <span>or</span>
@@ -426,6 +433,161 @@ const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transacti
         </div>
         <VouchersForTransaction transaction={transaction} contentHeight={contentHeight} />
     </div>
+}
+
+const RuleAction = ({ transaction }: { transaction: UnreconciledTransaction }) => {
+
+    const { data: rule } = useGetRuleForTransaction(transaction)
+    const setTransferModalOpen = useSetAtom(bankRecTransferModalAtom)
+    const setRecordPaymentModalOpen = useSetAtom(bankRecRecordPaymentModalAtom)
+    const setRecordJournalEntryModalOpen = useSetAtom(bankRecRecordJournalEntryModalAtom)
+
+    if (!rule) {
+        return null
+    }
+
+    const getActionIcon = () => {
+        switch (rule.classify_as) {
+            case "Bank Entry":
+                return <Landmark className="w-6 h-6" />
+            case "Payment Entry":
+                return <Receipt className="w-6 h-6" />
+            case "Transfer":
+                return <ArrowRightLeft className="w-6 h-6" />
+            default:
+                return <ZapIcon className="w-6 h-6" />
+        }
+    }
+
+    const getActionStyles = () => {
+        switch (rule.classify_as) {
+            case "Bank Entry":
+                return {
+                    border: "border-blue-200",
+                    bg: "bg-blue-50/30",
+                    text: "text-blue-700",
+                    button: "bg-blue-600 hover:bg-blue-700 text-white border-blue-600"
+                }
+            case "Payment Entry":
+                return {
+                    border: "border-green-200",
+                    bg: "bg-green-50/30",
+                    text: "text-green-700",
+                    button: "bg-green-600 hover:bg-green-700 text-white border-green-600"
+                }
+            case "Transfer":
+                return {
+                    border: "border-purple-200",
+                    bg: "bg-purple-50/30",
+                    text: "text-purple-700",
+                    button: "bg-purple-600 hover:bg-purple-700 text-white border-purple-600"
+                }
+            default:
+                return {
+                    border: "border-amber-200",
+                    bg: "bg-amber-50/30",
+                    text: "text-amber-700",
+                    button: "bg-amber-600 hover:bg-amber-700 text-white border-amber-600"
+                }
+        }
+    }
+
+    const handleActionClick = () => {
+        switch (rule.classify_as) {
+            case "Bank Entry":
+                setRecordJournalEntryModalOpen(true)
+                break
+            case "Payment Entry":
+                setRecordPaymentModalOpen(true)
+                break
+            case "Transfer":
+                setTransferModalOpen(true)
+                break
+        }
+    }
+
+    const getActionDescription = () => {
+        switch (rule.classify_as) {
+            case "Bank Entry":
+                return _("Create a journal entry for expenses, income or split transactions")
+            case "Payment Entry":
+                return _("Record a payment entry against a customer or supplier")
+            case "Transfer":
+                return _("Record an internal transfer to another bank/credit card/cash account")
+            default:
+                return _("Create a new entry based on the rule")
+        }
+    }
+
+    const styles = getActionStyles()
+
+    return (
+        <Card className={`border ${styles.border} ${styles.bg} shadow-sm hover:shadow-md transition-all duration-200`}>
+            <CardHeader className="pb-0">
+                <CardTitle className="flex items-center gap-3">
+                    <div className={`p-2.5 rounded-lg ${styles.bg} ${styles.text}`}>
+                        {getActionIcon()}
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                        <span className="font-semibold text-lg">{rule.rule_name}</span>
+                        <span className="text-sm text-muted-foreground font-normal">
+                            {rule.rule_description || _("Rule matched based on transaction description and other criteria.")}
+                        </span>
+                    </div>
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0 space-y-3">
+                <div className="flex items-center justify-between p-2.5 bg-background/60 rounded-lg border border-border/50">
+                    <div className="flex items-center gap-2">
+                        <BadgeCheck className="w-4 h-4 text-green-600" />
+                        <span className="text-sm font-medium text-foreground">{_("Recommended Action")}</span>
+                    </div>
+                    <Badge variant="outline" className="text-xs font-medium">
+                        {_("Priority")} {rule.priority}
+                    </Badge>
+                </div>
+
+                <div className="space-y-2">
+                    <div className="flex items-center gap-0.5">
+                        <span className="text-sm font-medium text-foreground">{_("Action Type")}:</span>
+                        <Badge variant="secondary" className={`text-sm font-medium ${styles.text} bg-opacity-10`}>
+                            {rule.classify_as}
+                        </Badge>
+                    </div>
+
+                    {rule.account && (
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-foreground">{_("Account")}:</span>
+                            <span className="text-sm">{rule.account}</span>
+                        </div>
+                    )}
+
+                    {rule.party_type && rule.party && (
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-foreground">{_("Party")}:</span>
+                            <span className="text-sm">{rule.party} ({_(rule.party_type)})</span>
+                        </div>
+                    )}
+                </div>
+
+                <div className="pt-1">
+                    <Button
+                        onClick={handleActionClick}
+                        className={`w-full ${styles.button} hover:scale-[1.01] transition-all duration-200 font-medium`}
+                        size="lg"
+                    >
+                        <div className="flex items-center gap-2">
+                            {getActionIcon()}
+                            <span>{_("Create")} {rule.classify_as}</span>
+                        </div>
+                    </Button>
+                    <p className="text-sm text-muted-foreground mt-2 text-center leading-relaxed">
+                        {getActionDescription()}
+                    </p>
+                </div>
+            </CardContent>
+        </Card>
+    )
 }
 
 const VouchersForTransaction = ({ transaction, contentHeight }: { transaction: UnreconciledTransaction, contentHeight: number }) => {
