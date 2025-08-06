@@ -17,11 +17,11 @@ type Props = {
 
 const EditRule = ({ onClose, ruleID }: Props) => {
 
-    const { data: rule, isLoading, error } = useFrappeGetDoc<MintBankTransactionRule>("Mint Bank Transaction Rule", ruleID, undefined, {
+    const { data: rule, isValidating, error } = useFrappeGetDoc<MintBankTransactionRule>("Mint Bank Transaction Rule", ruleID, undefined, {
         revalidateOnMount: true
     })
 
-    if (isLoading) {
+    if (isValidating) {
 
         return <div className="px-4 flex flex-col gap-4 h-full">
             <Skeleton className="h-10 w-full" />

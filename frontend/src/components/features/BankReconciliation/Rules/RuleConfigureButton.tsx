@@ -4,11 +4,13 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHe
 import { Skeleton } from "@/components/ui/skeleton"
 import _ from "@/lib/translate"
 import { MintBankTransactionRule } from "@/types/Mint/MintBankTransactionRule"
-import { useFrappeGetDocList } from "frappe-react-sdk"
-import { ArrowDownRight, ArrowDownUp, ArrowLeftIcon, ArrowUpRight, WorkflowIcon } from "lucide-react"
-import { useState } from "react"
+import { FrappeConfig, FrappeContext, useFrappeGetDocList } from "frappe-react-sdk"
+import { ArrowDownRight, ArrowDownUp, ArrowLeftIcon, ArrowUpRight, MoreVertical, Trash2, WorkflowIcon } from "lucide-react"
+import { useContext, useState } from "react"
 import CreateNewRule from "./CreateNewRule"
 import EditRule from "./EditRule"
+import { toast } from "sonner"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 const RuleConfigureButton = () => {
 
@@ -63,6 +65,17 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
         }
     })
 
+    const { db } = useContext(FrappeContext) as FrappeConfig
+
+    const onDeleteRule = (ruleID: string) => {
+
+        toast.promise(db.deleteDoc("Mint Bank Transaction Rule", ruleID), {
+            loading: _("Deleting rule..."),
+            success: _("Rule deleted."),
+            error: _("Failed to delete rule.")
+        })
+    }
+
     return (
         <>
             <div className="px-4">
@@ -87,25 +100,38 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
                 {data && data.length > 0 && <ul className="space-2 divide-y divide-border">
                     {data?.map((rule) => (
                         <li key={rule.name}>
-                            <div className="flex justify-between items-center py-2">
+                            <div className="flex justify-between items-center py-2 h-full">
                                 <div className="flex flex-col gap-1">
-                                    <div>
+                                    <div className="flex items-center gap-2">
                                         <Button
                                             variant='link'
                                             className="p-0 h-fit text-foreground text-left font-medium cursor-pointer"
                                             onClick={() => setSelectedRule(rule.name)}>
                                             {rule.rule_name}
                                         </Button>
+                                        <div title={rule.transaction_type === "Any" ? _("Any") : rule.transaction_type === "Withdrawal" ? _("Withdrawal") : _("Deposit")}>
+                                            {rule.transaction_type === "Any" ? <ArrowDownUp className="text-muted-foreground w-5 h-5" /> : rule.transaction_type === "Withdrawal" ? <ArrowDownRight className="text-destructive w-5 h-5" /> : <ArrowUpRight className="text-green-500 w-5 h-5" />}
+                                        </div>
                                     </div>
                                     <span className="text-sm text-muted-foreground">
                                         {rule.rule_description}
                                     </span>
                                 </div>
 
-                                <div
-                                    title={rule.transaction_type === "Any" ? _("Any") : rule.transaction_type === "Withdrawal" ? _("Withdrawal") : _("Deposit")}
-                                >
-                                    {rule.transaction_type === "Any" ? <ArrowDownUp /> : rule.transaction_type === "Withdrawal" ? <ArrowDownRight className="text-destructive" /> : <ArrowUpRight className="text-green-500" />}
+                                <div className="flex items-center gap-2 h-full justify-center">
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant='ghost' size='icon'>
+                                                <MoreVertical />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                            <DropdownMenuItem variant="destructive" onClick={() => onDeleteRule(rule.name)}>
+                                                <Trash2 />
+                                                {_("Delete")}
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </div>
                             </div>
                         </li>
