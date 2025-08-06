@@ -16,6 +16,8 @@ export interface MintBankStatementImportTransactions{
 	amount: number
 	/**	Type : Select	*/
 	type: "Withdrawal" | "Deposit"
+	/**	Imported : Check	*/
+	imported?: 0 | 1
 	/**	Description : Small Text	*/
 	description?: string
 	/**	Reference : Data	*/

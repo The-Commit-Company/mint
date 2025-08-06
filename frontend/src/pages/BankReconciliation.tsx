@@ -8,7 +8,7 @@ import BankTransactionUnreconcileModal from "@/components/features/BankReconcili
 import CompanySelector from "@/components/features/BankReconciliation/CompanySelector"
 import IncorrectlyClearedEntries from "@/components/features/BankReconciliation/IncorrectlyClearedEntries"
 import MatchAndReconcile from "@/components/features/BankReconciliation/MatchAndReconcile"
-import Settings from "@/components/features/Settings/Settings"
+// import Settings from "@/components/features/Settings/Settings"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { H1 } from "@/components/ui/typography"
 import _ from "@/lib/translate"
@@ -35,7 +35,7 @@ const BankReconciliation = () => {
                 <div className="flex justify-between">
                     <H1 className="text-base font-medium"><span className="text-4xl font-extrabold text-emerald-500">mint</span>&nbsp; {_("Bank Reconciliation")}</H1>
                     <div className="flex items-center gap-2">
-                        <Settings />
+                        {/* <Settings /> */}
                         <CompanySelector />
                         <BankRecDateFilter />
                     </div>
