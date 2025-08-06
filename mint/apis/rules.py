@@ -6,10 +6,13 @@ def scheduler_run_rule_evaluation():
     automatically_run_rules_on_unreconciled_transactions = frappe.db.get_single_value("Mint Settings", "automatically_run_rules_on_unreconciled_transactions")
 
     if automatically_run_rules_on_unreconciled_transactions:
-        run_rule_evaluation(force_evaluate=False)
+        _run_rule_evaluation(force_evaluate=False)
 
 @frappe.whitelist(methods=["POST"])
 def run_rule_evaluation(force_evaluate=False):
+    frappe.enqueue(method=_run_rule_evaluation, force_evaluate=force_evaluate)
+
+def _run_rule_evaluation(force_evaluate=False):
     """
     Run the rule evaluation for all bank transactions
 

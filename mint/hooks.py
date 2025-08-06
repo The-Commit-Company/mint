@@ -150,7 +150,7 @@ after_install = "mint.setup.install.after_install"
 
 scheduler_events = {
 	"hourly": [
-		"mint.apis.scheduler.scheduler_run_rule_evaluation"
+		"mint.apis.rules.scheduler_run_rule_evaluation"
 	],
 }
 

@@ -5,13 +5,13 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import _ from "@/lib/translate"
 import { MintBankTransactionRule } from "@/types/Mint/MintBankTransactionRule"
-import { FrappeConfig, FrappeContext, useFrappeGetDocList } from "frappe-react-sdk"
-import { ArrowDownRight, ArrowDownUp, ArrowLeftIcon, ArrowUpRight, MoreVertical, Trash2, WorkflowIcon, GripVertical } from "lucide-react"
+import { FrappeConfig, FrappeContext, useFrappeGetDocList, useFrappePostCall } from "frappe-react-sdk"
+import { ArrowDownRight, ArrowDownUp, ArrowLeftIcon, ArrowUpRight, MoreVertical, Trash2, WorkflowIcon, GripVertical, Play, RefreshCw } from "lucide-react"
 import { useContext, useState } from "react"
 import CreateNewRule from "./CreateNewRule"
 import EditRule from "./EditRule"
 import { toast } from "sonner"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
 import {
     DndContext,
     closestCenter,
@@ -89,6 +89,7 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
     })
 
     const { db } = useContext(FrappeContext) as FrappeConfig
+    const { call: runRuleEvaluation, loading: isRunningRules } = useFrappePostCall('mint.apis.rules.run_rule_evaluation')
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -103,6 +104,18 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
             success: _("Rule deleted."),
             error: _("Failed to delete rule.")
         })
+    }
+
+    const handleRunRules = async (forceEvaluate: boolean = false) => {
+        try {
+            await runRuleEvaluation({
+                force_evaluate: forceEvaluate
+            })
+            toast.success(forceEvaluate ? _("Rules evaluation started") : _("Rules evaluation completed"))
+        } catch (error) {
+            toast.error(_("Failed to run rules evaluation"))
+            console.error("Error running rules evaluation:", error)
+        }
     }
 
     const handleDragEnd = async (event: DragEndEvent) => {
@@ -137,6 +150,33 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
     return (
         <>
             <div className="px-4">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-base font-medium">{_("Rules")}</h3>
+                    {data && data.length > 0 && <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="sm" disabled={isRunningRules}>
+                                {isRunningRules ? (
+                                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                                ) : (
+                                    <Play className="w-4 h-4 mr-2" />
+                                )}
+                                {isRunningRules ? _("Running...") : _("Run Rules")}
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handleRunRules(false)} disabled={isRunningRules} title={_("Run rules on unreconciled transactions that haven't been evaluated yet")}>
+                                <Play className="w-4 h-4 mr-2" />
+                                {_("Run on new transactions")}
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => handleRunRules(true)} disabled={isRunningRules} title={_("Force re-evaluate all unreconciled transactions, even if they were previously evaluated")}>
+                                <RefreshCw className="w-4 h-4 mr-2" />
+                                {_("Force Evaluate All")}
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>}
+                </div>
+
                 {isLoading && <div className="flex flex-col gap-2">
                     <Skeleton className="w-full h-10" />
                     <Skeleton className="w-full h-10" />
