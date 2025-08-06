@@ -144,7 +144,7 @@ const AccountsDropdown = ({ root_type, report_type, account_type, value, onChang
                         <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>}
             </PopoverTrigger>
-            <PopoverContent className="p-0" style={{ minWidth: width + 32 }} align="start">
+            <PopoverContent className="p-0" style={{ minWidth: width }} align="start">
                 <Command shouldFilter={false} className="w-full">
                     <CommandInput placeholder={_("Search account...")} onValueChange={setSearch} value={search} />
                     <CommandList>

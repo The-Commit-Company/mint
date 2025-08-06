@@ -13,6 +13,7 @@
   "max_amount",
   "column_break_zcez",
   "rule_description",
+  "company",
   "section_break_licn",
   "description_rules",
   "action_section",
@@ -107,16 +108,23 @@
    "options": "party_type"
   },
   {
-    "fieldname": "priority",
-    "fieldtype": "Int",
-    "label": "Priority",
-    "reqd": 1
+   "fieldname": "priority",
+   "fieldtype": "Int",
+   "label": "Priority",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-08-06 18:24:55.794352",
+ "modified": "2025-08-06 20:59:32.877552",
  "modified_by": "Administrator",
  "module": "Mint",
  "name": "Mint Bank Transaction Rule",

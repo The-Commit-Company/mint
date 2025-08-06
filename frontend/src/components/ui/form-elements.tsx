@@ -17,12 +17,14 @@ import CurrencyInput from "react-currency-input-field"
 import { getSystemDefault } from "@/lib/frappe"
 import { getCurrencySymbol } from "@/lib/currency"
 import LinkFieldCombobox, { LinkFieldComboboxProps } from "../common/LinkFieldCombobox"
+import { Select, SelectContent, SelectTrigger, SelectValue } from "./select"
 
 interface FormElementProps {
     name: string,
     rules?: Omit<RegisterOptions<FieldValues, string>, "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs">,
     label: string,
     isRequired?: boolean,
+    disabled?: boolean,
     formDescription?: string,
     hideLabel?: boolean,
 
@@ -32,11 +34,12 @@ interface DataFieldProps extends FormElementProps {
     inputProps?: Omit<ComponentProps<"input">, "value" | "onChange" | "onBlur" | "name" | "ref">
 }
 
-export const DataField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel }: DataFieldProps) => {
+export const DataField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel, disabled }: DataFieldProps) => {
 
     const { control } = useFormContext()
     return <FormField
         control={control}
+        disabled={disabled}
         name={name}
         rules={rules}
         render={({ field }) => (
@@ -52,15 +55,48 @@ export const DataField = ({ name, rules, label, isRequired, formDescription, inp
     />
 }
 
+interface SelectFieldProps extends FormElementProps {
+    children: React.ReactNode
+}
+
+export const SelectFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, children, disabled }: SelectFieldProps) => {
+
+    const { control } = useFormContext()
+
+    return <FormField
+        control={control}
+        name={name}
+        disabled={disabled}
+        rules={rules}
+        render={({ field }) => (
+            <FormItem>
+                <FormLabel className={hideLabel ? 'sr-only' : ''}>{_(label)}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
+                <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                            <SelectTrigger className="w-full">
+                                <SelectValue />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {children}
+                        </SelectContent>
+                    </Select>
+                </FormControl>
+                {formDescription && <FormDescription>{_(formDescription)}</FormDescription>}
+                <FormMessage />
+            </FormItem>
+        )}
+    />
+}
+
 interface DateFieldProps extends FormElementProps {
     inputProps?: Omit<ComponentProps<"input">, "value" | "onChange" | "onBlur" | "name" | "ref">
 }
 
-export const DateField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel }: DateFieldProps) => {
+export const DateField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel, disabled }: DateFieldProps) => {
 
     const { control } = useFormContext()
-
-
 
     const DatePicker = ({ field }: { field: FieldValues }) => {
 
@@ -142,6 +178,7 @@ export const DateField = ({ name, rules, label, isRequired, formDescription, inp
     return <FormField
         control={control}
         name={name}
+        disabled={disabled}
         rules={rules}
         render={({ field }) => (
             <FormItem className='flex flex-col'>
@@ -159,12 +196,13 @@ interface SmallTextFieldProps extends FormElementProps {
     inputProps?: Omit<ComponentProps<"textarea">, "value" | "onChange" | "onBlur" | "name" | "ref">
 }
 
-export const SmallTextField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel }: SmallTextFieldProps) => {
+export const SmallTextField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel, disabled }: SmallTextFieldProps) => {
 
     const { control } = useFormContext()
     return <FormField
         control={control}
         name={name}
+        disabled={disabled}
         rules={rules}
         render={({ field }) => (
             <FormItem className='flex flex-col'>
@@ -188,6 +226,7 @@ export const AccountFormField = (props: AccountFormFieldProps) => {
 
     return <FormField
         control={control}
+        disabled={props.disabled}
         name={props.name}
         rules={props.rules}
         render={({ field }) => (
@@ -205,12 +244,13 @@ interface PartyTypeFormField extends FormElementProps {
     inputProps?: Omit<PartyTypeDropdownProps, 'value' | 'onChange'>
 }
 
-export const PartyTypeFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, inputProps }: PartyTypeFormField) => {
+export const PartyTypeFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, inputProps, disabled }: PartyTypeFormField) => {
 
     const { control } = useFormContext()
 
     return <FormField
         control={control}
+        disabled={disabled}
         name={name}
         rules={rules}
         render={({ field }) => (
@@ -229,7 +269,7 @@ interface CurrencyFormFieldProps extends FormElementProps {
     currency?: string
 }
 
-export const CurrencyFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, currency }: CurrencyFormFieldProps) => {
+export const CurrencyFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, currency, disabled }: CurrencyFormFieldProps) => {
 
     const { control } = useFormContext()
 
@@ -283,6 +323,7 @@ export const CurrencyFormField = ({ name, rules, label, isRequired, formDescript
 
     return <FormField
         control={control}
+        disabled={disabled}
         name={name}
         rules={rules}
         render={({ field }) => (
@@ -301,14 +342,14 @@ export const CurrencyFormField = ({ name, rules, label, isRequired, formDescript
 interface LinkFormFieldProps extends FormElementProps, Omit<LinkFieldComboboxProps, 'value' | 'onChange'> {
 }
 
-export const LinkFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, ...inputProps }: LinkFormFieldProps) => {
+export const LinkFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, disabled, ...inputProps }: LinkFormFieldProps) => {
 
     const { control } = useFormContext()
 
     return <FormField
         control={control}
         name={name}
-        disabled={inputProps.disabled}
+        disabled={disabled}
         rules={rules}
         render={({ field }) => (
             <FormItem className='flex flex-col'>

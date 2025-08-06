@@ -15,12 +15,16 @@ export interface MintBankTransactionRule{
 	rule_name: string
 	/**	Transaction Type : Select	*/
 	transaction_type: "Any" | "Withdrawal" | "Deposit"
+	/**	Priority : Int	*/
+	priority: number
 	/**	Min Amount : Currency	*/
 	min_amount?: number
 	/**	Max Amount : Currency	*/
 	max_amount?: number
 	/**	Rule Description : Small Text	*/
 	rule_description?: string
+	/**	Company : Link - Company	*/
+	company: string
 	/**	Description Rules : Table - Mint Bank Transaction Description Rules	*/
 	description_rules: MintBankTransactionDescriptionRules[]
 	/**	Classify As : Select	*/
