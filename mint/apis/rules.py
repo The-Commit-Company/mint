@@ -77,24 +77,26 @@ def evaluate_transaction(transaction, rule_docs):
         
         # Description rule
         for rule_desc_rule in rule.description_rules:
+            desc = (transaction.description or "").lower()
+            value = (rule_desc_rule.value or "").lower()
             # If we find a match - we can assign the rule to the transaction because type and amount matches
             if rule_desc_rule.check == "Contains":
-                if rule_desc_rule.value.lower() in transaction.description.lower():
+                if value in desc:
                     matched_rule = rule
                     break
             
             if rule_desc_rule.check == "Starts With":
-                if transaction.description.lower().startswith(rule_desc_rule.value.lower()):
+                if desc.startswith(value):
                     matched_rule = rule
                     break
             
             if rule_desc_rule.check == "Ends With":
-                if transaction.description.lower().endswith(rule_desc_rule.value.lower()):
+                if desc.endswith(value):
                     matched_rule = rule
                     break
             
             if rule_desc_rule.check == "Regex":
-                if re.search(rule_desc_rule.value, transaction.description):
+                if re.search(value, desc):
                     matched_rule = rule
                     break
         
