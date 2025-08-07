@@ -247,7 +247,7 @@ const AutoRunRuleItem = () => {
         "field": "automatically_run_rules_on_unreconciled_transactions"
     })
 
-    const automaticallyRunRulesOnUnreconciledTransactions = mintSetting?.message?.automatically_run_rules_on_unreconciled_transactions ? true : false
+    const automaticallyRunRulesOnUnreconciledTransactions = mintSetting?.message ? true : false
 
     const onAutoClassifyTransactions = (checked: boolean) => {
         toast.promise(db.setValue("Mint Settings", "Mint Settings", "automatically_run_rules_on_unreconciled_transactions", checked ? 1 : 0).then(() => {
