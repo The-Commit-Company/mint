@@ -79,7 +79,7 @@ const BankRecDateFilter = () => {
                 label: `Last Fiscal Year`,
                 translatedLabel: `${_("Last Fiscal Year")}`,
                 fromDate: dayjs(fiscalYearStart).subtract(1, 'year').format('YYYY-MM-DD'),
-                toDate: dayjs(fiscalYearStart).subtract(1, 'year').format('YYYY-MM-DD'),
+                toDate: dayjs(fiscalYearEnd).subtract(1, 'year').format('YYYY-MM-DD'),
                 format: 'MMM YYYY'
             }
             // Sort the options so that we get "This Month", "Last Month", quarters, fiscal year, then the rest of the standard options
