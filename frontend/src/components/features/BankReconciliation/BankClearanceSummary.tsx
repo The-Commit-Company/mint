@@ -16,6 +16,9 @@ import { AlertCircle, CheckCircle2, XCircle } from "lucide-react"
 import ErrorBanner from "@/components/ui/error-banner"
 import { Badge } from "@/components/ui/badge"
 import _ from "@/lib/translate"
+import { useCopyToClipboard } from "usehooks-ts"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { toast } from "sonner"
 
 const BankClearanceSummary = () => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
@@ -65,6 +68,15 @@ const BankClearanceSummaryView = () => {
     const formattedFromDate = formatDate(dates.fromDate)
     const formattedToDate = formatDate(dates.toDate)
 
+    const [, copyToClipboard] = useCopyToClipboard()
+
+    const onCopy = (text: string) => {
+        copyToClipboard(text)
+            .then(() => {
+                toast.success(_("Copied to clipboard"))
+            })
+    }
+
     return <div className="space-y-4 py-2">
 
         <div>
@@ -96,7 +108,16 @@ const BankClearanceSummaryView = () => {
                             <TableCell>{_(row.payment_document_type)}</TableCell>
                             <TableCell><a target="_blank" className="underline underline-offset-4" href={`/app/${slug(row.payment_document_type)}/${row.payment_entry}`}>{row.payment_entry}</a></TableCell>
                             <TableCell>{formatDate(row.posting_date)}</TableCell>
-                            <TableCell>{row.cheque_no}</TableCell>
+                            <TableCell title={row.cheque_no}>
+                                <Tooltip delayDuration={500}>
+                                    <TooltipTrigger onClick={() => onCopy(row.cheque_no)}>
+                                        {row.cheque_no.slice(0, 40)}{row.cheque_no.length > 40 ? "..." : ""}
+                                    </TooltipTrigger>
+                                    <TooltipContent align='start'>
+                                        {_("Copy to clipboard")}
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TableCell>
                             <TableCell>{formatDate(row.clearance_date)}</TableCell>
                             <TableCell><a target="_blank" className="underline underline-offset-4" href={`/app/account/${row.against}`}>{row.against}</a></TableCell>
                             <TableCell className="text-right">{formatCurrency(row.amount, bankAccount?.account_currency ?? getCompanyCurrency(companyID))}</TableCell>

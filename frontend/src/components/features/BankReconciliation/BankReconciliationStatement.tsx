@@ -16,6 +16,9 @@ import { AlertCircle } from "lucide-react"
 import ErrorBanner from "@/components/ui/error-banner"
 import { StatContainer, StatLabel, StatValue } from "@/components/ui/stats"
 import _ from "@/lib/translate"
+import { toast } from "sonner"
+import { useCopyToClipboard } from "usehooks-ts"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 const BankReconciliationStatement = () => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
@@ -65,6 +68,16 @@ const BankReconciliationStatementView = () => {
         are_default_filters: false,
     }, `Report-Bank Reconciliation Statement-${filters}`, { keepPreviousData: true, revalidateOnFocus: false }, 'POST')
 
+    const [, copyToClipboard] = useCopyToClipboard()
+
+    const onCopy = (text: string) => {
+        copyToClipboard(text)
+            .then(() => {
+                toast.success(_("Copied to clipboard"))
+            })
+    }
+
+
     return <div className="space-y-4 py-2">
 
         <div>
@@ -110,7 +123,16 @@ const BankReconciliationStatementView = () => {
                             <TableCell className="text-right">{formatCurrency(row.debit, row.account_currency)}</TableCell>
                             <TableCell className="text-right">{formatCurrency(row.credit, row.account_currency)}</TableCell>
                             <TableCell><a target="_blank" className="underline underline-offset-4" href={`/app/account/${row.against_account}`}>{row.against_account}</a></TableCell>
-                            <TableCell>{row.reference_no}</TableCell>
+                            <TableCell>
+                                <Tooltip delayDuration={500}>
+                                    <TooltipTrigger onClick={() => onCopy(row.reference_no)}>
+                                        {row.reference_no?.slice(0, 40)}{row.reference_no?.length > 40 ? "..." : ""}
+                                    </TooltipTrigger>
+                                    <TooltipContent align='start'>
+                                        {_("Copy to clipboard")}
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TableCell>
                             <TableCell>{formatDate(row.ref_date)}</TableCell>
                             <TableCell>{formatDate(row.clearance_date)}</TableCell>
                         </TableRow>
