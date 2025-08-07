@@ -30,6 +30,7 @@ import { Separator } from "@/components/ui/separator"
 import { PaymentEntryDeduction } from "@/types/Accounts/PaymentEntryDeduction"
 import { TableLoader } from "@/components/ui/loaders"
 import SelectedTransactionsTable from "./SelectedTransactionsTable"
+import { useCurrentCompany } from "@/hooks/useCurrentCompany"
 
 const RecordPaymentModal = () => {
 
@@ -116,7 +117,9 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
 
     const { call } = useContext(FrappeContext) as FrappeConfig
 
-    const company = transactions[0].company
+    const currentCompany = useCurrentCompany()
+
+    const company = transactions && transactions.length > 0 ? transactions[0].company : (currentCompany ?? '')
 
     const onPartyChange = (event: ChangeEvent<HTMLInputElement>) => {
         // Fetch the party and account
@@ -635,6 +638,8 @@ const InvoicesSection = ({ currency }: { currency: string }) => {
 
 const DifferenceButton = ({ index, currency }: { index: number, currency: string }) => {
 
+    const { setTotalAllocatedAmount } = usePaymentEntryCalculations()
+
     const { control, setValue } = useFormContext<PaymentEntry>()
 
     const outstandingAmount = useWatch({
@@ -650,8 +655,9 @@ const DifferenceButton = ({ index, currency }: { index: number, currency: string
     const difference = flt(outstandingAmount - allocatedAmount, 2)
 
     const onPayInFull = useCallback(() => {
-        setValue(`references.${index}.allocated_amount`, outstandingAmount)
-    }, [outstandingAmount, index, setValue])
+        setValue(`references.${index}.allocated_amount`, outstandingAmount, { shouldDirty: true })
+        setTotalAllocatedAmount()
+    }, [outstandingAmount, index, setValue, setTotalAllocatedAmount])
 
     if (difference !== 0) {
 
