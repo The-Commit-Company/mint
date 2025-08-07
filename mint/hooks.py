@@ -14,7 +14,7 @@ app_license = "agpl-3.0"
 add_to_apps_screen = [
 	{
 		"name": "mint",
-		"logo": "/assets/mint/mint/assets/apple-touch-icon.png",
+		"logo": "/assets/mint/mint/assets/mint-logo.png",
 		"title": "Mint",
 		"route": "/mint",
 		"has_permission": "erpnext.check_app_permission",
