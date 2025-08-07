@@ -15,8 +15,8 @@ import { Form } from "@/components/ui/form"
 import { ChangeEvent, useCallback, useContext, useMemo, useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Plus, Trash2 } from "lucide-react"
-import { formatCurrency } from "@/lib/numbers"
+import { AlertCircleIcon, Plus, Trash2 } from "lucide-react"
+import { flt, formatCurrency } from "@/lib/numbers"
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { PaymentEntry } from "@/types/Accounts/PaymentEntry"
@@ -569,6 +569,7 @@ const InvoicesSection = ({ currency }: { currency: string }) => {
                     <TableHead className="text-right">{_("Grand Total")}</TableHead>
                     <TableHead className="text-right">{_("Outstanding")}</TableHead>
                     <TableHead className="text-right">{_("Allocated")}</TableHead>
+                    <TableHead className='w-14'></TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -596,10 +597,10 @@ const InvoicesSection = ({ currency }: { currency: string }) => {
                             {formatDate(field.due_date)}
                         </TableCell>
                         <TableCell className="text-right">
-                            {formatCurrency(field.total_amount)}
+                            {formatCurrency(field.total_amount, currency)}
                         </TableCell>
                         <TableCell className="text-right">
-                            {formatCurrency(field.outstanding_amount)}
+                            {formatCurrency(field.outstanding_amount, currency)}
                         </TableCell>
                         <TableCell className="text-right max-w-36">
                             <CurrencyFormField
@@ -612,6 +613,9 @@ const InvoicesSection = ({ currency }: { currency: string }) => {
                                 hideLabel
                                 currency={currency}
                             />
+                        </TableCell>
+                        <TableCell>
+                            <DifferenceButton index={index} currency={currency} />
                         </TableCell>
                     </TableRow>
                 ))}
@@ -627,6 +631,50 @@ const InvoicesSection = ({ currency }: { currency: string }) => {
         </div>
     </div>
 
+}
+
+const DifferenceButton = ({ index, currency }: { index: number, currency: string }) => {
+
+    const { control, setValue } = useFormContext<PaymentEntry>()
+
+    const outstandingAmount = useWatch({
+        control,
+        name: `references.${index}.outstanding_amount`
+    }) ?? 0
+
+    const allocatedAmount = useWatch({
+        control,
+        name: `references.${index}.allocated_amount`
+    }) ?? 0
+
+    const difference = flt(outstandingAmount - allocatedAmount, 2)
+
+    const onPayInFull = useCallback(() => {
+        setValue(`references.${index}.allocated_amount`, outstandingAmount)
+    }, [outstandingAmount, index, setValue])
+
+    if (difference !== 0) {
+
+        return <Tooltip>
+            <TooltipTrigger asChild>
+                <Button
+                    variant='ghost'
+                    onClick={onPayInFull}
+                    size='icon'
+                    className="text-muted-foreground">
+                    <AlertCircleIcon />
+                </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+                {_("The invoice is not fully allocated as there is a difference of {0}.", [formatCurrency(difference, currency) ?? ''])}
+                <br />
+                {_("Click to pay in full.")}
+            </TooltipContent>
+        </Tooltip>
+
+    }
+
+    return null
 }
 
 const Summary = ({ currency }: { currency: string }) => {
@@ -881,13 +929,15 @@ const FetchInvoicesModal = ({ onClose }: { onClose: () => void }) => {
             </TableHeader>
             <TableBody>
                 {data.message.map((ref) => (
-                    <TableRow onClick={(e) => {
-                        const target = e.target as HTMLElement
-                        // Do not select the checkbox if the user clicks on the checkbox or the link
-                        if (target.tagName !== 'INPUT' && !target.className.includes('chakra-checkbox') && !target.className.includes('chakra-link')) {
-                            onSelectRow(ref)
-                        }
-                    }}
+                    <TableRow
+                        key={ref.voucher_no}
+                        onClick={(e) => {
+                            const target = e.target as HTMLElement
+                            // Do not select the checkbox if the user clicks on the checkbox or the link
+                            if (target.tagName !== 'INPUT' && !target.className.includes('chakra-checkbox') && !target.className.includes('chakra-link')) {
+                                onSelectRow(ref)
+                            }
+                        }}
                         className="cursor-pointer">
                         <TableCell>
                             <Checkbox checked={selectedInvoices.includes(ref)}

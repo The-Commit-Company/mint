@@ -4,11 +4,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 export const TableLoader = ({ rows = 10, columns = 5 }: { rows?: number, columns?: number }) => {
     return <Table>
         <TableHeader>
-            {Array.from({ length: columns }).map((_, index) => (
-                <TableHead key={index}>
-                    <Skeleton className="h-4 w-full" />
-                </TableHead>
-            ))}
+            <TableRow>
+                {Array.from({ length: columns }).map((_, index) => (
+                    <TableHead key={index}>
+                        <Skeleton className="h-4 w-full" />
+                    </TableHead>
+                ))}
+            </TableRow>
         </TableHeader>
         <TableBody>
             {Array.from({ length: rows }).map((_, index) => (
