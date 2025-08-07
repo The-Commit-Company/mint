@@ -3,10 +3,14 @@ import { getCurrencyNumberFormat, getCurrencyProperty, getCurrencySymbol } from 
 import { getSystemDefault } from "./frappe";
 import _ from "./translate";
 
-export const formatCurrency = (value?: number, currency: string = 'USD', decimals: number = 2) => {
+export const formatCurrency = (value?: number, currency: string = '', decimals: number = 2) => {
 
     if (!value) {
         value = 0
+    }
+
+    if (!currency) {
+        currency = getSystemDefault('currency') ?? ''
     }
     const format = get_number_format(currency);
     const symbol = getCurrencySymbol(currency);
