@@ -111,6 +111,7 @@ def create_internal_transfer(bank_transaction_name: str,
                              paid_to: str,
                              custom_remarks: bool = False,
                              remarks: str = None,
+                             mirror_transaction_name: str = None,
                              dimensions: dict = None):
     """
     Create an internal transfer payment entry
@@ -163,7 +164,13 @@ def create_internal_transfer(bank_transaction_name: str,
 		]
 	)
 
-    return reconcile_vouchers(bank_transaction_name, vouchers, is_new_voucher=True)
+    transaction_id = reconcile_vouchers(bank_transaction_name, vouchers, is_new_voucher=True)
+
+    if mirror_transaction_name:
+        # Reconcile the mirror transaction
+        reconcile_vouchers(mirror_transaction_name, vouchers, is_new_voucher=False)
+
+    return transaction_id
 
 @frappe.whitelist(methods=['POST'])
 def create_bulk_bank_entry_and_reconcile(bank_transactions: list, 
@@ -387,4 +394,39 @@ def get_party_details(company: str, party_type: str, party: str):
         "party_account": party_account,
         "party_name": party_name,
     }
-    
+
+@frappe.whitelist(methods=["GET"])
+def search_for_transfer_transaction(transaction_id: str):
+    """
+    When users try to create a transfer, we could help them by searching for the mirror transaction.
+
+    So for a withdrawal of 1000, we could search for a deposit of 1000 on the same date.
+
+    If the mirror transaction is found, we return the bank account and account details.
+    """
+    company, withdrawal, deposit, date = frappe.db.get_value("Bank Transaction", transaction_id, ["company", "withdrawal", "deposit", "date"])
+
+    mirror_tx = frappe.db.get_list("Bank Transaction", filters={
+        "company": company,
+        "date": date,
+        "withdrawal": deposit,
+        "deposit": withdrawal,
+        "docstatus": 1,
+        "status": "Unreconciled",
+    }, fields=["name", "bank_account", "reference_number", "date", "description", "withdrawal", "deposit", "currency"])
+
+    if len(mirror_tx) == 1:
+        return {
+            "name": mirror_tx[0].name,
+            "reference_number": mirror_tx[0].reference_number,
+            "description": mirror_tx[0].description,
+            "currency": mirror_tx[0].currency,
+            "withdrawal": mirror_tx[0].withdrawal,
+            "deposit": mirror_tx[0].deposit,
+            "date": mirror_tx[0].date,
+            "bank_account": mirror_tx[0].bank_account,
+            "account": frappe.get_cached_value("Bank Account", mirror_tx[0].bank_account, "account"),
+        }
+
+    return None
+

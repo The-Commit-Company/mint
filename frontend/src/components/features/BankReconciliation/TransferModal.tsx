@@ -6,18 +6,22 @@ import { UnreconciledTransaction, useGetBankAccounts, useGetRuleForTransaction, 
 import { Button } from '@/components/ui/button'
 import SelectedTransactionDetails from './SelectedTransactionDetails'
 import { PaymentEntry } from '@/types/Accounts/PaymentEntry'
-import { useForm, useWatch } from 'react-hook-form'
+import { useForm, useFormContext, useWatch } from 'react-hook-form'
 import { useFrappeGetCall, useFrappePostCall } from 'frappe-react-sdk'
 import { toast } from 'sonner'
 import ErrorBanner from '@/components/ui/error-banner'
 import { H4 } from '@/components/ui/typography'
 import { cn } from '@/lib/utils'
-import { ArrowRight, Banknote, Landmark } from 'lucide-react'
+import { ArrowRight, Banknote, Landmark, BadgeCheck, Calendar, ArrowUpRight, ArrowDownRight, CheckIcon, CheckCircle } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { Form } from '@/components/ui/form'
 import { AccountFormField, DataField, DateField, SmallTextField } from '@/components/ui/form-elements'
 import SelectedTransactionsTable from './SelectedTransactionsTable'
 import { useCurrentCompany } from '@/hooks/useCurrentCompany'
+import { formatDate } from '@/lib/date'
+import { useMemo } from 'react'
+import { BANK_LOGOS } from './logos'
+import { formatCurrency } from '@/lib/numbers'
 
 const TransferModal = () => {
 
@@ -120,6 +124,10 @@ const BulkInternalTransferForm = ({ transactions }: { transactions: Unreconciled
     </Form>
 }
 
+interface InternalTransferFormFields extends PaymentEntry {
+    mirror_transaction_name?: string
+}
+
 const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { selectedBankAccount: SelectedBank, selectedTransaction: UnreconciledTransaction }) => {
 
 
@@ -133,7 +141,7 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
 
     const isWithdrawal = (selectedTransaction.withdrawal && selectedTransaction.withdrawal > 0) ? true : false
 
-    const form = useForm<PaymentEntry>({
+    const form = useForm<InternalTransferFormFields>({
         defaultValues: {
             payment_type: 'Internal Transfer',
             company: selectedTransaction?.company,
@@ -156,12 +164,14 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
 
     const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
 
-    const onSubmit = (data: PaymentEntry) => {
+    const onSubmit = (data: InternalTransferFormFields) => {
 
         createPaymentEntry({
             bank_transaction_name: selectedTransaction.name,
             ...data,
-            custom_remarks: data.remarks ? true : false
+            custom_remarks: data.remarks ? true : false,
+            // Pass this to reconcile both at the same time
+            mirror_transaction_name: data.mirror_transaction_name
         }).then(() => {
             toast.success(_("Transfer Recorded"), {
                 duration: 4000,
@@ -179,12 +189,17 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
         })
     }
 
-    const onAccountChange = (account: string) => {
+    const onAccountChange = (account: string, is_mirror: boolean = false) => {
         //If the transaction is a withdrawal, set the paid to to the selected account - since this is the account where the money is deposited into
         if (selectedTransaction.withdrawal && selectedTransaction.withdrawal > 0) {
             form.setValue('paid_to', account)
         } else {
             form.setValue('paid_from', account)
+        }
+
+        if (!is_mirror) {
+            // Reset the mirror transaction name
+            form.setValue('mirror_transaction_name', '')
         }
     }
 
@@ -218,6 +233,7 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
 
                 <div className='flex flex-col gap-2'>
                     <H4 className='text-base'>{isWithdrawal ? _('Transferred to') : _('Transferred from')}</H4>
+                    <RecommendedTransferAccount transaction={selectedTransaction} onAccountChange={onAccountChange} />
                     <BankOrCashPicker company={selectedTransaction.company ?? ''} bankAccount={selectedTransaction.bank_account ?? ''} onAccountChange={onAccountChange} selectedAccount={selectedAccount} />
                 </div>
                 <div className='flex flex-col gap-2 py-2'>
@@ -283,13 +299,14 @@ const BankOrCashPicker = ({ bankAccount, onAccountChange, selectedAccount, compa
                     selectedAccount === bank.account ? 'border-blue-500 bg-blue-50 outline-blue-500 hover:bg-blue-100/70' : 'border-gray-200 outline-gray-200 hover:bg-gray-50'
                 )}
                 role='button'
+                key={bank.account}
                 onClick={() => onAccountChange(bank.account ?? '')}
             >
                 {bank.logo ?
                     <img
                         src={`/assets/mint/mint/${bank.logo}`}
                         alt={bank.bank || ''}
-                        className='w-10 h-10 object-contain'
+                        className='w-12 h-12 object-contain'
                     /> : <div className='flex items-center justify-center h-10 w-10'>
                         <Landmark size='24px' />
                     </div>
@@ -333,6 +350,125 @@ const CashPicker = ({ company, selectedAccount, setSelectedAccount }: { company:
                 <span className='text-xs text-muted-foreground'>{data?.message?.default_cash_account}</span>
             </div>
         </div>
+    }
+
+    return null
+}
+
+
+const RecommendedTransferAccount = ({ transaction, onAccountChange }: { transaction: UnreconciledTransaction, onAccountChange: (account: string, is_mirror: boolean) => void }) => {
+
+    const { setValue, watch } = useFormContext<InternalTransferFormFields>()
+
+    const mirrorTransactionName = watch('mirror_transaction_name')
+    const paid_from = watch('paid_from')
+    const paid_to = watch('paid_to')
+
+    const { data } = useFrappeGetCall('mint.apis.bank_reconciliation.search_for_transfer_transaction', {
+        transaction_id: transaction.name
+    }, undefined, {
+        revalidateOnFocus: false,
+        revalidateIfStale: false,
+    })
+
+    // Get bank accounts to find the logo
+    const { banks } = useGetBankAccounts()
+
+    const bankLogo = useMemo(() => {
+        if (data?.message?.bank_account && banks) {
+            const bankAccount = banks.find(bank => bank.name === data.message.bank_account)
+            if (bankAccount?.bank) {
+                return BANK_LOGOS.find((logo) =>
+                    logo.keywords.some((keyword) =>
+                        bankAccount.bank?.toLowerCase().includes(keyword.toLowerCase())
+                    )
+                )
+            }
+        }
+        return null
+    }, [data?.message?.bank_account, banks])
+
+    const selectTransaction = () => {
+        if (data?.message) {
+            setValue('mirror_transaction_name', data.message.name)
+            onAccountChange(data.message.account, true)
+        }
+    }
+
+    if (data?.message) {
+
+        const isWithdrawal = data.message.withdrawal && data.message.withdrawal > 0
+
+        const amount = isWithdrawal ? data.message.withdrawal : data.message.deposit
+        const currency = data.message.currency
+
+        const isAccountSelected = isWithdrawal ? paid_from === data.message.account : paid_to === data.message.account
+
+        const isSuggested = mirrorTransactionName === data?.message?.name && isAccountSelected
+
+        return (<div className='pb-2'>
+            <div className={cn("flex justify-between items-start gap-3 p-3 border rounded-lg shadow-sm",
+                isSuggested ? "border-green-200 bg-green-50/30" : "border-purple-200 bg-purple-50/30")}>
+                <div className='px-1'>
+                    <div className='flex flex-col gap-3'>
+                        <div className={cn("flex items-center gap-2 shrink-0",
+                            isSuggested ? "text-green-700" : "text-purple-700"
+                        )}>
+                            <BadgeCheck className="w-4 h-4" />
+                            <span className="text-sm font-medium">{_("Suggested Transfer to {0}", [data.message.account])}</span>
+                        </div>
+                        <div className='flex flex-col gap-1'>
+                            <span className='text-sm'>{_("The system found a mirror transaction ({0}) in another account with the same amount and date.", [data.message.name])}</span>
+                            <span className='text-sm'>{_("Accepting the suggestion will reconcile both transactions.")}</span>
+                        </div>
+
+                        <div className='flex flex-col gap-1.5'>
+                            <div className='flex items-center gap-1'>
+                                <Calendar size='16px' />
+                                <span className='text-sm'>{formatDate(data.message.date, 'Do MMM YYYY')}</span>
+                            </div>
+                            <span className='text-sm line-clamp-1' title={data.message.description}>{data.message.description}</span>
+                        </div>
+                    </div>
+                </div>
+                <div className='flex flex-col items-end justify-between gap-2 h-full w-[30%]'>
+                    <div className="flex items-center gap-2">
+                        {bankLogo ? (
+                            <img
+                                src={`/assets/mint/mint/${bankLogo.logo}`}
+                                alt={bankLogo.keywords.join(', ') || ''}
+                                className="h-8 max-w-24 object-contain"
+                            />
+                        ) : (
+                            <Landmark className={cn("w-8 h-8", isSuggested ? "text-green-600" : "text-purple-600")} />
+                        )}
+                    </div>
+                    <div className='flex gap-1'>
+                        <div className={cn('flex items-center gap-1 text-right px-0 justify-end py-1 rounded-sm',
+                            isWithdrawal ? 'text-destructive' : 'text-green-600'
+                        )}>
+                            {isWithdrawal ? <ArrowUpRight className="w-5 h-5 text-destructive" /> : <ArrowDownRight className="w-5 h-5 text-green-600" />}
+                            <span className='text-sm font-semibold uppercase'>{isWithdrawal ? _('Transferred Out') : _('Received')}</span>
+                        </div>
+                    </div>
+                    <span className='font-semibold font-mono text-lg text-right pr-0.5'>{formatCurrency(amount, currency)}</span>
+                    <div>
+                        <Button
+                            onClick={selectTransaction}
+                            className={cn("text-white hover:scale-[1.02] transition-all duration-200 font-medium",
+                                isSuggested ? "bg-green-600 hover:bg-green-700 border-green-600" : "bg-purple-600 hover:bg-purple-700 border-purple-600"
+                            )}
+                            size="sm"
+                            type='button'
+                        >
+                            {isSuggested ? <CheckCircle className="w-4 h-4 mr-2" /> : <CheckIcon className="w-4 h-4 mr-2" />}
+                            {isSuggested ? _("Accepted") : _("Use Suggestion")}
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        )
     }
 
     return null
