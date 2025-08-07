@@ -45,7 +45,7 @@ const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
                 <UnreconciledTransactions contentHeight={contentHeight} />
             </div>
             <Separator orientation="vertical" style={{ minHeight: `${contentHeight}px` }} />
-            <div className="flex-1">
+            <div className="flex-1 px-1">
                 <H4 className="text-sm font-medium">{_("Match or Create")}</H4>
                 <VouchersSection contentHeight={contentHeight} />
             </div>
@@ -426,11 +426,6 @@ const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transacti
             </div>
         </TooltipProvider>
         {transaction.matched_rule && <RuleAction transaction={transaction} />}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Separator className="flex-1" />
-            <span>or</span>
-            <Separator className="flex-1" />
-        </div>
         <VouchersForTransaction transaction={transaction} contentHeight={contentHeight} />
     </div>
 }
@@ -600,6 +595,11 @@ const VouchersForTransaction = ({ transaction, contentHeight }: { transaction: U
 
     if (isLoading) {
         return <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Separator className="flex-1" />
+                <span>or</span>
+                <Separator className="flex-1" />
+            </div>
             <Skeleton className="h-16 w-full" />
             <Skeleton className="h-16 w-full" />
             <Skeleton className="h-16 w-full" />
@@ -611,6 +611,11 @@ const VouchersForTransaction = ({ transaction, contentHeight }: { transaction: U
 
     return <div className="relative space-y-2">
         {vouchers?.message.length === 0 && <MissingFiltersBanner text={_("No vouchers found for this transaction")} />}
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Separator className="flex-1" />
+            <span>or</span>
+            <Separator className="flex-1" />
+        </div>
         <Virtuoso
             data={vouchers?.message}
             itemContent={(index, voucher) => (
