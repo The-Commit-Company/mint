@@ -413,9 +413,9 @@ def search_for_transfer_transaction(transaction_id: str):
         "deposit": withdrawal,
         "docstatus": 1,
         "status": "Unreconciled",
-    }, limit=1, fields=["name", "bank_account", "reference_number", "date", "description", "withdrawal", "deposit", "currency"])
+    }, fields=["name", "bank_account", "reference_number", "date", "description", "withdrawal", "deposit", "currency"])
 
-    if mirror_tx:
+    if len(mirror_tx) == 1:
         return {
             "name": mirror_tx[0].name,
             "reference_number": mirror_tx[0].reference_number,
