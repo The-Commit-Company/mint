@@ -9,7 +9,7 @@ import _ from "@/lib/translate"
 import { cn } from "@/lib/utils"
 import { MintBankTransactionRule } from "@/types/Mint/MintBankTransactionRule"
 import { FrappeConfig, FrappeContext } from "frappe-react-sdk"
-import { ArrowDownRight, ArrowDownUp, ArrowUpRight, PlusCircleIcon, Trash2 } from "lucide-react"
+import { ArrowDownRight, ArrowDownUp, ArrowRightLeftIcon, ArrowUpRight, LandmarkIcon, PlusCircleIcon, ReceiptIcon, Trash2 } from "lucide-react"
 import { ChangeEvent, useContext, useMemo } from "react"
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form"
 
@@ -257,9 +257,9 @@ const RuleAction = () => {
                     required: _("This is required")
                 }}
             >
-                <SelectItem value="Bank Entry">{_("Bank Entry")}</SelectItem>
-                <SelectItem value="Payment Entry">{_("Payment Entry")}</SelectItem>
-                <SelectItem value="Transfer">{_("Transfer")}</SelectItem>
+                <SelectItem value="Bank Entry"><LandmarkIcon /> {_("Bank Entry")}</SelectItem>
+                <SelectItem value="Payment Entry"><ReceiptIcon /> {_("Payment Entry")}</SelectItem>
+                <SelectItem value="Transfer"><ArrowRightLeftIcon /> {_("Transfer")}</SelectItem>
             </SelectFormField>
 
 
