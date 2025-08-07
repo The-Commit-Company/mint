@@ -17,6 +17,7 @@ import { Separator } from '@/components/ui/separator'
 import { Form } from '@/components/ui/form'
 import { AccountFormField, DataField, DateField, SmallTextField } from '@/components/ui/form-elements'
 import SelectedTransactionsTable from './SelectedTransactionsTable'
+import { useCurrentCompany } from '@/hooks/useCurrentCompany'
 
 const TransferModal = () => {
 
@@ -93,6 +94,10 @@ const BulkInternalTransferForm = ({ transactions }: { transactions: Unreconciled
 
     const selectedAccount = useWatch({ control: form.control, name: 'bank_account' })
 
+    const currentCompany = useCurrentCompany()
+
+    const company = transactions && transactions.length > 0 ? transactions[0].company : (currentCompany ?? '')
+
     return <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className='flex flex-col gap-4'>
@@ -101,7 +106,7 @@ const BulkInternalTransferForm = ({ transactions }: { transactions: Unreconciled
 
                 <SelectedTransactionsTable />
 
-                <BankOrCashPicker company={transactions[0].company ?? ''} bankAccount={transactions[0].bank_account ?? ''} onAccountChange={onAccountChange} selectedAccount={selectedAccount} />
+                <BankOrCashPicker company={company} bankAccount={transactions[0].bank_account ?? ''} onAccountChange={onAccountChange} selectedAccount={selectedAccount} />
 
                 <DialogFooter>
                     <DialogClose asChild>

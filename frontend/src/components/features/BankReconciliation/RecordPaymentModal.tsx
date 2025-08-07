@@ -30,6 +30,7 @@ import { Separator } from "@/components/ui/separator"
 import { PaymentEntryDeduction } from "@/types/Accounts/PaymentEntryDeduction"
 import { TableLoader } from "@/components/ui/loaders"
 import SelectedTransactionsTable from "./SelectedTransactionsTable"
+import { useCurrentCompany } from "@/hooks/useCurrentCompany"
 
 const RecordPaymentModal = () => {
 
@@ -116,7 +117,9 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
 
     const { call } = useContext(FrappeContext) as FrappeConfig
 
-    const company = transactions[0].company
+    const currentCompany = useCurrentCompany()
+
+    const company = transactions && transactions.length > 0 ? transactions[0].company : (currentCompany ?? '')
 
     const onPartyChange = (event: ChangeEvent<HTMLInputElement>) => {
         // Fetch the party and account
