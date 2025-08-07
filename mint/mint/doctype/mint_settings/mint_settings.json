@@ -44,7 +44,7 @@
    "length": 400
   },
   {
-   "default": "0",
+   "default": "1",
    "description": "If checked, this job will run every 30 minutes",
    "fieldname": "automatically_run_rules_on_unreconciled_transactions",
    "fieldtype": "Check",

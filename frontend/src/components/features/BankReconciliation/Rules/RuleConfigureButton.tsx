@@ -5,13 +5,13 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Badge } from "@/components/ui/badge"
 import _ from "@/lib/translate"
 import { MintBankTransactionRule } from "@/types/Mint/MintBankTransactionRule"
-import { FrappeConfig, FrappeContext, useFrappeGetDocList, useFrappePostCall } from "frappe-react-sdk"
+import { FrappeConfig, FrappeContext, useFrappeGetCall, useFrappeGetDocList, useFrappePostCall } from "frappe-react-sdk"
 import { ArrowDownRight, ArrowDownUp, ArrowLeftIcon, ArrowUpRight, MoreVertical, Trash2, GripVertical, Play, RefreshCw, ZapIcon } from "lucide-react"
 import { useContext, useState } from "react"
 import CreateNewRule from "./CreateNewRule"
 import EditRule from "./EditRule"
 import { toast } from "sonner"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu"
 import {
     DndContext,
     closestCenter,
@@ -173,6 +173,10 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
                                 <RefreshCw className="w-4 h-4 mr-2" />
                                 {_("Force Evaluate All")}
                             </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+
+                            <AutoRunRuleItem />
+
                         </DropdownMenuContent>
                     </DropdownMenu>}
                 </div>
@@ -231,6 +235,46 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
             </SheetFooter>
         </>
     )
+}
+
+const AutoRunRuleItem = () => {
+
+    const { db } = useContext(FrappeContext) as FrappeConfig
+
+    const { data: mintSetting, mutate: setAutomaticallyRunRulesOnUnreconciledTransactions } = useFrappeGetCall("frappe.client.get_single_value", {
+        "doctype": "Mint Settings",
+        "field": "automatically_run_rules_on_unreconciled_transactions"
+    })
+
+    const automaticallyRunRulesOnUnreconciledTransactions = mintSetting?.message?.automatically_run_rules_on_unreconciled_transactions ? true : false
+
+    const onAutoClassifyTransactions = (checked: boolean) => {
+        toast.promise(db.setValue("Mint Settings", "Mint Settings", "automatically_run_rules_on_unreconciled_transactions", checked ? 1 : 0).then(() => {
+            setAutomaticallyRunRulesOnUnreconciledTransactions({
+                message: {
+                    automatically_run_rules_on_unreconciled_transactions: checked ? 1 : 0,
+                }
+            }, {
+                revalidate: false
+            })
+        }), {
+            loading: _("Updating..."),
+            success: checked ? _("Scheduled job enabled. Transactions will be auto classified.") : _("Scheduled job disabled. Transactions will not be auto classified."),
+            error: _("Failed to update auto classify transactions settings")
+        })
+    }
+
+
+    return <DropdownMenuCheckboxItem
+        checked={automaticallyRunRulesOnUnreconciledTransactions}
+        onCheckedChange={onAutoClassifyTransactions}>
+        {_("Run rules automatically")}
+        {automaticallyRunRulesOnUnreconciledTransactions ? <Badge variant="secondary" className="flex items-center justify-center text-xs font-mono bg-green-50 text-green-600">
+            {_("Enabled")}
+        </Badge> : <Badge variant="secondary" className="flex items-center justify-center text-xs font-mono bg-red-50 text-red-600">
+            {_("Disabled")}
+        </Badge>}
+    </DropdownMenuCheckboxItem>
 }
 
 const SortableRuleItem = ({
