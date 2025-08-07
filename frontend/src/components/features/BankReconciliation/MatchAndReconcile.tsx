@@ -691,7 +691,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                     </div>}
                     <TooltipProvider>
                         <div className="flex items-center gap-1">
-                            <span>{_("Amount")}: <span className="font-bold font-mono">{formatCurrency(voucher.paid_amount)}</span></span>
+                            <span>{_("Amount")}: <span className="font-bold font-mono">{formatCurrency(voucher.paid_amount, voucher.currency)}</span></span>
                             {amountMatches ?
                                 <MatchBadge matchType="full" label="Amount matches the selected transaction" />
                                 :
