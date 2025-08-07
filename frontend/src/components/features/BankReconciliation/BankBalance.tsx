@@ -155,12 +155,14 @@ const ReconcileProgress = () => {
 
     const reconciledCount = (totalCount ?? 0) - (unreconciledTransactions?.message?.length ?? 0)
 
+    const progress = (totalCount ? reconciledCount / totalCount : 0) * 100
+
     return <div className="w-[18%] flex flex-col gap-1 items-end">
         <div>
             <span className="text-right font-medium text-sm">{_("Your Progress")}: {reconciledCount} / {totalCount} {_("reconciled")}</span>
         </div>
         <div className="w-full">
-            <Progress value={reconciledCount} max={totalCount ? totalCount : 100} />
+            <Progress value={progress} max={100} />
         </div>
     </div>
 }
