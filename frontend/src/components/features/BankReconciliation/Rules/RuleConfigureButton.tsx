@@ -85,7 +85,8 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
         orderBy: {
             field: 'priority',
             order: 'asc'
-        }
+        },
+        limit: 100
     })
 
     const { db } = useContext(FrappeContext) as FrappeConfig
@@ -149,7 +150,7 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
 
     return (
         <>
-            <div className="px-4">
+            <div className="px-4 overflow-y-auto">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-base font-medium">{_("Rules")}</h3>
                     {data && data.length > 0 && <DropdownMenu>
@@ -325,7 +326,7 @@ const SortableRuleItem = ({
                                 {rule.rule_name}
                             </Button>
                             <div title={rule.transaction_type === "Any" ? _("Any") : rule.transaction_type === "Withdrawal" ? _("Withdrawal") : _("Deposit")}>
-                                {rule.transaction_type === "Any" ? <ArrowDownUp className="text-muted-foreground w-5 h-5" /> : rule.transaction_type === "Withdrawal" ? <ArrowDownRight className="text-destructive w-5 h-5" /> : <ArrowUpRight className="text-green-500 w-5 h-5" />}
+                                {rule.transaction_type === "Any" ? <ArrowDownUp className="text-muted-foreground w-4 h-4" /> : rule.transaction_type === "Withdrawal" ? <ArrowUpRight className="text-destructive w-5 h-5" /> : <ArrowDownRight className="text-green-500 w-5 h-5" />}
                             </div>
                         </div>
                         <span className="text-sm text-muted-foreground">
