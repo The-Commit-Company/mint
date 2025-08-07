@@ -254,7 +254,7 @@ const LinkFieldCombobox = ({
             <PopoverContent className="p-0" style={{ minWidth: width }} align="start">
                 {error && <ErrorBanner error={error} />}
                 <Command shouldFilter={false} className="w-full">
-                    <CommandInput placeholder={_(placeholder)} onValueChange={setSearchInput} value={searchInput} />
+                    <CommandInput placeholder={_(placeholder)} onValueChange={setSearchInput} />
                     <CommandList>
                         <CommandEmpty>{isLoading ? _("Loading...") : _("No results found.")}</CommandEmpty>
                         <CommandGroup>
