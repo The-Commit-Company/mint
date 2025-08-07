@@ -195,8 +195,8 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
                                     cheque_date: str | datetime.date,
                                     posting_date: str | datetime.date,
                                     cheque_no: str,
-                                    user_remark: str,
                                     entries: list,
+                                    user_remark: str = None,
                                     voucher_type: str = "Bank Entry",
                                     dimensions: dict = None):
     """
