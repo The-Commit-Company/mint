@@ -3,7 +3,7 @@ import { ArrowDownRight, ArrowUpRight, Calendar, Landmark } from 'lucide-react'
 import { formatCurrency } from '@/lib/numbers'
 import { formatDate } from '@/lib/date'
 import { BANK_LOGOS } from './logos'
-import { UnreconciledTransaction } from './utils'
+import { UnreconciledTransaction, useGetBankAccounts } from './utils'
 import { getCompanyCurrency } from '@/lib/company'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
@@ -19,12 +19,15 @@ const SelectedTransactionDetails = ({ transaction, showAccount = false, account 
 
     const isWithdrawal = transaction.withdrawal && transaction.withdrawal > 0
 
+    const { banks } = useGetBankAccounts()
+
     const bankLogo = useMemo(() => {
         if (transaction.bank_account) {
-            return BANK_LOGOS.find((logo) => logo.keywords.some((keyword) => transaction.bank_account?.toLowerCase().includes(keyword.toLowerCase())))
+            const bankName = banks?.find((bank) => bank.account === transaction.bank_account)?.bank ?? ''
+            return BANK_LOGOS.find((logo) => logo.keywords.some((keyword) => bankName?.toLowerCase().includes(keyword.toLowerCase())))
         }
         return null
-    }, [transaction.bank_account])
+    }, [transaction.bank_account, banks])
 
     const amount = transaction.withdrawal ? transaction.withdrawal : transaction.deposit
 
