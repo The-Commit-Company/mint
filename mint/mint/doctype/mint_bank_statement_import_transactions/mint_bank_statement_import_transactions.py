@@ -22,6 +22,7 @@ class MintBankStatementImportTransactions(Document):
 		parentfield: DF.Data
 		parenttype: DF.Data
 		reference: DF.Data | None
+		string_amount: DF.Data | None
 		type: DF.Literal["Withdrawal", "Deposit"]
 	# end: auto-generated types
 	pass

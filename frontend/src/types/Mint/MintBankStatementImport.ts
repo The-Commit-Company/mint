@@ -16,7 +16,7 @@ export interface MintBankStatementImport{
 	/**	Status : Select	*/
 	status: "Not Started" | "Completed" | "Error"
 	/**	File : Attach	*/
-	file: string
+	file?: string
 	/**	File Type : Select	*/
 	file_type?: "PDF"
 	/**	Transactions : Table - Mint Bank Statement Import Transactions	*/

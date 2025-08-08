@@ -19,14 +19,36 @@ class MintBankStatementImport(Document):
 		amended_from: DF.Link | None
 		bank_account: DF.Link
 		error: DF.Code | None
-		file: DF.Attach
+		file: DF.Attach | None
 		file_type: DF.Literal["PDF"]
 		status: DF.Literal["Not Started", "Completed", "Error"]
 		transactions: DF.Table[MintBankStatementImportTransactions]
 	# end: auto-generated types
+
+	def before_validate(self):
+		# For all string amounts, compute the actual amount and type
+		for transaction in self.transactions:
+			if transaction.string_amount:
+				amount, tx_type = self.parse_string_amount(transaction.string_amount)
+				transaction.amount = amount
+				transaction.type = tx_type
+
+	def parse_string_amount(self, string_amount: str):
+		"""
+		Parse the string amount and return the amount and type
+		"""
+		# If the string has "cr" - then it's a deposit. Else it's a withdrawal
+		if "cr" in string_amount.lower():
+			return string_amount.lower().replace("cr", "").replace(" ", ""), "Deposit"
+		else:
+			return string_amount.lower().replace("dr", "").replace(" ", ""), "Withdrawal"
+
 	
 	@frappe.whitelist()
 	def process_file(self):
+
+		if not self.file:
+			frappe.throw(_("Please upload a file"))
 
 		if self.file_type == "PDF":
 			self.process_pdf()
@@ -50,6 +72,12 @@ class MintBankStatementImport(Document):
 				"type": transaction.get("type"),
 				"description": transaction.get("description")
 			})
+	
+	def before_submit(self):
+		# Validate all rows have an amount and a type
+		for transaction in self.transactions:
+			if not transaction.get("amount") or not transaction.get("type"):
+				frappe.throw(_("All rows must have an amount and a type. Missing in row {0}").format(transaction.get("idx")))
 		
 	def on_submit(self):
 		if not self.transactions:
