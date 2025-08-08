@@ -43,7 +43,8 @@ For a complete walkthrough of the features, you can refer to the following YouTu
 ##### View all reports related to banking in one place
 
 This includes Bank Reconciliation Statement, all Bank Transactions, Bank Clearancy Summary and Incorrectly Cleared Entries
-<img width="3262" height="824" alt="CleanShot 2025-08-08 at 16 02 53@2x" src="https://github.com/user-attachments/assets/cec9b266-ae65-47f5-bbeb-4fece73423b1" />
+
+<img width="3928" height="1634" alt="CleanShot 2025-08-08 at 16 03 14@2x" src="https://github.com/user-attachments/assets/ae4b4962-1bf6-4b0f-85a8-be5dfbb7c81d" />
 
 ##### Search unreconciled transactions for the given time period
 This supports fuzzy searching as well as filters for type (Debit/Credit) and amount.
