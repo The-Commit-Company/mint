@@ -280,7 +280,7 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
                 custom_remarks: data.remarks ? true : false
             }
         }).then(() => {
-            toast.success(_("Bank Entry Created"), {
+            toast.success(_("Payment Entry Created"), {
                 duration: 4000,
                 closeButton: true,
                 action: {

@@ -1,7 +1,7 @@
 import { useAtom, useSetAtom } from "jotai"
 import { SelectedBank, selectedBankAccountAtom } from "./bankRecAtoms"
 import { useCallback } from "react"
-import { useGetBankAccounts } from "./utils"
+import { useGetBankAccounts, useGetUnreconciledTransactions } from "./utils"
 import { cn } from "@/lib/utils"
 import { Landmark } from "lucide-react"
 import { H4 } from "@/components/ui/typography"
@@ -59,10 +59,17 @@ const BankPickerItem = ({ bank }: { bank: SelectedBank }) => {
 
     const isSelected = selectedBank?.name === bank.name
 
+    const { mutate } = useGetUnreconciledTransactions()
+
+    const onSelect = () => {
+        setSelectedBank(bank)
+        mutate()
+    }
+
     return <div
         role="button"
         title={`Select ${bank.account_name}`}
-        onClick={() => setSelectedBank(bank)}
+        onClick={onSelect}
         className={cn('rounded-md border-2 border-gray-200 min-w-80 relative p-2 bg-card overflow-hidden cursor-pointer',
             isSelected ? 'border-primary bg-primary-foreground' : 'hover:bg-gray-50'
         )}
