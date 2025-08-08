@@ -615,7 +615,7 @@ const VouchersForTransaction = ({ transaction, contentHeight }: { transaction: U
             <span>or</span>
             <Separator className="flex-1" />
         </div>
-        {vouchers?.message.length === 0 && <MissingFiltersBanner text={_("No vouchers found for this transaction")} />}
+        {vouchers?.message.length === 0 && <MissingFiltersBanner text={_("No vouchers found for this transaction")} className="min-h-[10vh]" />}
         <Virtuoso
             data={vouchers?.message}
             itemContent={(index, voucher) => (
