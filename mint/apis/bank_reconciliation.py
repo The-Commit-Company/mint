@@ -404,12 +404,13 @@ def search_for_transfer_transaction(transaction_id: str):
 
     If the mirror transaction is found, we return the bank account and account details.
     """
-    company, withdrawal, deposit, date = frappe.db.get_value("Bank Transaction", transaction_id, ["company", "withdrawal", "deposit", "date"])
+    company, withdrawal, deposit, date, bank_account = frappe.db.get_value("Bank Transaction", transaction_id, ["company", "withdrawal", "deposit", "date", "bank_account"])
 
     mirror_tx = frappe.db.get_list("Bank Transaction", filters={
         "company": company,
         "date": date,
         "withdrawal": deposit,
+        "bank_account": ["!=", bank_account],
         "deposit": withdrawal,
         "docstatus": 1,
         "status": "Unreconciled",
