@@ -42,8 +42,7 @@
    "fieldname": "file",
    "fieldtype": "Attach",
    "in_list_view": 1,
-   "label": "File",
-   "reqd": 1
+   "label": "File"
   },
   {
    "fieldname": "file_type",
@@ -79,7 +78,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-06 18:00:54.990899",
+ "modified": "2025-08-08 14:11:44.187244",
  "modified_by": "Administrator",
  "module": "Mint",
  "name": "Mint Bank Statement Import",
