@@ -23,7 +23,7 @@ const SelectedTransactionDetails = ({ transaction, showAccount = false, account 
 
     const bankLogo = useMemo(() => {
         if (transaction.bank_account) {
-            const bankName = banks?.find((bank) => bank.account === transaction.bank_account)?.bank ?? ''
+            const bankName = banks?.find((bank) => bank.name === transaction.bank_account)?.bank ?? ''
             return BANK_LOGOS.find((logo) => logo.keywords.some((keyword) => bankName?.toLowerCase().includes(keyword.toLowerCase())))
         }
         return null
