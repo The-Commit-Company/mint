@@ -43,7 +43,8 @@ For a complete walkthrough of the features, you can refer to the following YouTu
 ##### View all reports related to banking in one place
 
 This includes Bank Reconciliation Statement, all Bank Transactions, Bank Clearancy Summary and Incorrectly Cleared Entries
-<img width="3262" height="824" alt="CleanShot 2025-08-08 at 16 02 53@2x" src="https://github.com/user-attachments/assets/cec9b266-ae65-47f5-bbeb-4fece73423b1" />
+
+<img width="3928" height="1634" alt="CleanShot 2025-08-08 at 16 03 14@2x" src="https://github.com/user-attachments/assets/ae4b4962-1bf6-4b0f-85a8-be5dfbb7c81d" />
 
 ##### Search unreconciled transactions for the given time period
 This supports fuzzy searching as well as filters for type (Debit/Credit) and amount.
@@ -105,6 +106,12 @@ You could have multiple rules and order them by dragging them.
 <img width="1298" height="2034" alt="CleanShot 2025-08-08 at 16 19 51@2x" src="https://github.com/user-attachments/assets/e2a1bbf9-efd5-4956-a063-694f7f1f69ed" />
 <img width="3924" height="1086" alt="CleanShot 2025-08-08 at 16 18 03@2x" src="https://github.com/user-attachments/assets/ea1dc6ee-23f8-45d2-b2f7-7e274e13afa4" />
 
+##### Bank Statement Importer
+Some credit cards and banks give credit card statements with amount fields that contain a "CR" or "DR" to denote deposits and withdrawals. The "Mint Bank Transaction Import" doctype can be used to import bank transactions - the string value will be evaluated and classified as "Withdrawal" or "Deposit". We recommend using the child table to import all transactions.
+
+You can also try uploading PDFs in the "file" field and then have Google Cloud's Document AI try to parse it, but we haven't gotten good results with it so we do not recommend it yet.
+
+<img width="3826" height="2038" alt="CleanShot 2025-08-08 at 18 45 54@2x" src="https://github.com/user-attachments/assets/d51a35a0-9846-4d4e-ac78-a8e5e5d88505" />
 
 ##### Translations
 All strings on the frontend are wrapped in translation functions - and most words are already available in other languages. Please feel free to contribute to translations (you might need to get in touch to set up Crowdin or equivalent)
