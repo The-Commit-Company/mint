@@ -19,7 +19,7 @@ import { getCurrencySymbol } from "@/lib/currency"
 import { Virtuoso } from 'react-virtuoso'
 import { formatDate } from "@/lib/date"
 import { Badge } from "@/components/ui/badge"
-import { formatCurrency } from "@/lib/numbers"
+import { formatCurrency, getCurrencyFormatInfo } from "@/lib/numbers"
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { Skeleton } from "@/components/ui/skeleton"
 import { slug } from "@/lib/frappe"
@@ -60,7 +60,12 @@ const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
 const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
 
-    const currencySymbol = getCurrencySymbol(bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))
+    const currency = bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? '')
+    const currencySymbol = getCurrencySymbol(currency)
+    
+    const formatInfo = getCurrencyFormatInfo(currency)
+    const groupSeparator = formatInfo.group_sep || ","
+    const decimalSeparator = formatInfo.decimal_str || "."
 
     const { data: unreconciledTransactions, isLoading, error } = useGetUnreconciledTransactions()
 
@@ -158,8 +163,9 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
             <div>
                 <label className="sr-only">{_("Filter by amount")}</label>
                 <CurrencyInput
-                    groupSeparator=","
-                    placeholder={`${currencySymbol}0.00`}
+                    groupSeparator={groupSeparator}
+                    decimalSeparator={decimalSeparator}
+                    placeholder={`${currencySymbol}0${decimalSeparator}00`}
                     decimalsLimit={2}
                     // value={amountFilter.stringValue}
                     maxLength={12}
@@ -170,7 +176,7 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
                         // When the user eventually types the decimals or blurs out, the value is formatted anyway.
                         // Otherwise store the float value
                         // Check if the value ends with a decimal or a decimal with trailing zeroes
-                        const isDecimal = v?.endsWith('.') || v?.endsWith('.0')
+                        const isDecimal = v?.endsWith(decimalSeparator) || v?.endsWith(decimalSeparator + '0')
                         const newValue = isDecimal ? v : values?.float ?? ''
                         setAmountFilter({
                             value: Number(newValue),

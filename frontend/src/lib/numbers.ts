@@ -240,3 +240,8 @@ export const lstrip = (s: string, chars?: string[]) => {
     }
     return s;
 };
+
+export const getCurrencyFormatInfo = (currency?: string) => {
+    const format = get_number_format(currency);
+    return get_number_format_info(format);
+  };

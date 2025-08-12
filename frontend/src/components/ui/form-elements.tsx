@@ -16,6 +16,7 @@ import PartyTypeDropdown, { PartyTypeDropdownProps } from "../common/PartyTypeDr
 import CurrencyInput from "react-currency-input-field"
 import { getSystemDefault } from "@/lib/frappe"
 import { getCurrencySymbol } from "@/lib/currency"
+import { getCurrencyFormatInfo } from "@/lib/numbers"
 import LinkFieldCombobox, { LinkFieldComboboxProps } from "../common/LinkFieldCombobox"
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./select"
 
@@ -291,6 +292,11 @@ export const CurrencyFormField = ({ name, rules, label, isRequired, formDescript
         }, [])
 
         const { formItemId } = useFormField()
+        
+        // Get the correct separators for the currency
+        const formatInfo = getCurrencyFormatInfo(currency ?? defaultCurrency)
+        const groupSeparator = formatInfo.group_sep || ","
+        const decimalSeparator = formatInfo.decimal_str || "."
 
         return <CurrencyInput
             ref={field.ref}
@@ -301,8 +307,9 @@ export const CurrencyFormField = ({ name, rules, label, isRequired, formDescript
             id={formItemId}
             onBlur={field.onBlur}
             onFocus={onFocus}
-            groupSeparator=","
-            placeholder={`${currencySymbol} 0.00`}
+            groupSeparator={groupSeparator}
+            decimalSeparator={decimalSeparator}
+            placeholder={`${currencySymbol} 0${decimalSeparator}00`}
             decimalsLimit={2}
             value={field.value}
             maxLength={12}
@@ -313,7 +320,7 @@ export const CurrencyFormField = ({ name, rules, label, isRequired, formDescript
                 // When the user eventually types the decimals or blurs out, the value is formatted anyway.
                 // Otherwise store the float value
                 // Check if the value ends with a decimal or a decimal with trailing zeroes
-                const isDecimal = v?.endsWith('.') || v?.endsWith('.0')
+                const isDecimal = v?.endsWith(decimalSeparator) || v?.endsWith(decimalSeparator + '0')
                 const newValue = isDecimal ? v : values?.float ?? ''
                 field.onChange(newValue)
             }}
