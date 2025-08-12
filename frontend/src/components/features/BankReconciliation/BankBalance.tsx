@@ -4,7 +4,7 @@ import { useFrappeGetDocCount } from "frappe-react-sdk"
 import { BankTransaction } from "@/types/Accounts/BankTransaction"
 import { Progress } from "@/components/ui/progress"
 import { useGetAccountClosingBalance, useGetAccountOpeningBalance, useGetUnreconciledTransactions } from "./utils"
-import { flt, formatCurrency } from "@/lib/numbers"
+import { flt, formatCurrency, getCurrencyFormatInfo } from "@/lib/numbers"
 import { Skeleton } from "@/components/ui/skeleton"
 import { StatContainer, StatLabel, StatValue } from "@/components/ui/stats"
 import { Info } from "lucide-react"
@@ -85,15 +85,21 @@ const ClosingBalanceAsPerStatement = () => {
 
     const bankAccount = useAtomValue(selectedBankAccountAtom)
 
-    const currencySymbol = getCurrencySymbol(bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))
+    const currency = bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? '')
+    const currencySymbol = getCurrencySymbol(currency)
+    
+    const formatInfo = getCurrencyFormatInfo(currency)
+    const groupSeparator = formatInfo.group_sep || ","
+    const decimalSeparator = formatInfo.decimal_str || "."
 
     const [value, setValue] = useAtom(bankRecClosingBalanceAtom(bankAccount?.name ?? ''))
 
     return <StatContainer>
         <StatLabel className="mb-1">{_("Enter Closing Balance as per statement")}</StatLabel>
         <CurrencyInput
-            groupSeparator=","
-            placeholder={`${currencySymbol}0.00`}
+            groupSeparator={groupSeparator}
+            decimalSeparator={decimalSeparator}
+            placeholder={`${currencySymbol}0${decimalSeparator}00`}
             decimalsLimit={2}
             value={value.stringValue}
             maxLength={12}
@@ -104,7 +110,7 @@ const ClosingBalanceAsPerStatement = () => {
                 // When the user eventually types the decimals or blurs out, the value is formatted anyway.
                 // Otherwise store the float value
                 // Check if the value ends with a decimal or a decimal with trailing zeroes
-                const isDecimal = v?.endsWith('.') || v?.endsWith('.0')
+                const isDecimal = v?.endsWith(decimalSeparator) || v?.endsWith(decimalSeparator + '0')
                 const newValue = isDecimal ? v : values?.float ?? ''
                 setValue({
                     value: Number(newValue),
