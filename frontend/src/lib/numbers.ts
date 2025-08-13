@@ -26,6 +26,8 @@ export const formatCurrency = (value?: number, currency: string = '', decimals: 
             return format_number(value, format, decimals) + " " + _(symbol);
         }
         return _(symbol) + " " + format_number(value, format, decimals);
+    } else {
+        return format_number(value, format, decimals);
     }
 }
 
@@ -244,4 +246,4 @@ export const lstrip = (s: string, chars?: string[]) => {
 export const getCurrencyFormatInfo = (currency?: string) => {
     const format = get_number_format(currency);
     return get_number_format_info(format);
-  };
+};
