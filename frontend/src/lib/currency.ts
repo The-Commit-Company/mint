@@ -3,7 +3,7 @@ export const getCurrencySymbol = (currency: string) => {
     if (frappe.boot) {
         // @ts-expect-error - Boot is available
         if (frappe.boot.sysdefaults && frappe.boot.sysdefaults.hide_currency_symbol == "Yes")
-            return null;
+            return "";
         // @ts-expect-error - Boot is available
         if (!currency) currency = frappe.boot.sysdefaults.currency;
 
