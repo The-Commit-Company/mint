@@ -302,7 +302,8 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
 def create_bulk_payment_entry_and_reconcile(bank_transaction_names: list, 
                                             party_type: str, 
                                             party: str, 
-                                            account: str):
+                                            account: str,
+                                            mode_of_payment: str | None = None):
     """
         Create a payment entry and reconcile it with the bank transaction
     """
@@ -326,6 +327,7 @@ def create_bulk_payment_entry_and_reconcile(bank_transaction_names: list,
             "payment_type": "Pay" if is_withdrawal else "Receive",
             "bank_account": bank_transaction.bank_account,
             "company": bank_transaction.company,
+            "mode_of_payment": mode_of_payment,
             "party_type": party_type,
             "party": party,
             "paid_from": paid_from,

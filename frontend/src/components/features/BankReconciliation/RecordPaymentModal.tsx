@@ -86,13 +86,14 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
         party_name: PaymentEntry['party_name'],
         /** GL account that's paid from or paid to */
         account: string
+        mode_of_payment: PaymentEntry['mode_of_payment']
     }>()
 
     const { call: createPaymentEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_bulk_payment_entry_and_reconcile')
 
     const onReconcile = useRefreshUnreconciledTransactions()
 
-    const onSubmit = (data: { party_type: PaymentEntry['party_type'], party: PaymentEntry['party'], account: string }) => {
+    const onSubmit = (data: { party_type: PaymentEntry['party_type'], party: PaymentEntry['party'], account: string, mode_of_payment: PaymentEntry['mode_of_payment'] }) => {
 
         createPaymentEntry({
             bank_transaction_names: transactions.map((transaction) => transaction.name),
@@ -148,7 +149,7 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
 
                 <SelectedTransactionsTable />
 
-                <div className='grid grid-cols-6 gap-4'>
+                <div className='grid grid-cols-8 gap-4'>
                     <div className="col-span-1">
                         <PartyTypeFormField
                             name='party_type'
@@ -210,6 +211,14 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
                                 }
                                 return true
                             }}
+                        />
+                    </div>
+
+                    <div className="col-span-2">
+                        <LinkFormField
+                            name='mode_of_payment'
+                            label='Mode of Payment'
+                            doctype="Mode of Payment"
                         />
                     </div>
 
@@ -326,8 +335,16 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
                                 <PartyField />
                             </div>
 
-                            <div className="col-span-4">
+                            <div className="col-span-2">
                                 <AccountDropdown isWithdrawal={isWithdrawal} />
+                            </div>
+
+                            <div className="col-span-2">
+                                <LinkFormField
+                                    name='mode_of_payment'
+                                    label='Mode of Payment'
+                                    doctype="Mode of Payment"
+                                />
                             </div>
 
                         </div>
