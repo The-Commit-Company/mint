@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import SelectedTransactionDetails from "./SelectedTransactionDetails"
 import { AccountFormField, CurrencyFormField, DataField, DateField, LinkFormField, PartyTypeFormField, SmallTextField } from "@/components/ui/form-elements"
 import { Form } from "@/components/ui/form"
-import { ChangeEvent, useCallback, useContext, useMemo, useState } from "react"
+import { ChangeEvent, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { AlertCircleIcon, Plus, Trash2 } from "lucide-react"
@@ -275,6 +275,15 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
     })
 
     const onReconcile = useRefreshUnreconciledTransactions()
+
+    const setUnpaidInvoiceOpen = useSetAtom(isUnpaidInvoicesButtonOpen)
+
+    useEffect(() => {
+        if (rule && rule.party && rule.party_type && rule.account) {
+            setUnpaidInvoiceOpen(true)
+        }
+
+    }, [rule, setUnpaidInvoiceOpen])
 
     const { call: createPaymentEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_payment_entry_and_reconcile')
 
