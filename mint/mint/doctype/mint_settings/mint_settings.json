@@ -5,6 +5,8 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "general_section",
+  "transfer_match_days",
   "google_document_ai_section",
   "automatically_run_rules_on_unreconciled_transactions",
   "google_project_id",
@@ -44,18 +46,33 @@
    "length": 400
   },
   {
-   "default": "1",
+   "default": "0",
    "description": "If checked, this job will run every 30 minutes",
    "fieldname": "automatically_run_rules_on_unreconciled_transactions",
    "fieldtype": "Check",
    "label": "Automatically run rules on unreconciled transactions"
+  },
+  {
+   "fieldname": "general_section",
+   "fieldtype": "Section Break",
+   "label": "General"
+  },
+  {
+   "default": "4",
+   "description": "Number of days to consider for transfer matching across bank accounts.",
+   "fieldname": "transfer_match_days",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Match Transfers across (days)",
+   "non_negative": 1,
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-06 18:49:18.518794",
+ "modified": "2025-08-24 00:16:09.369853",
  "modified_by": "Administrator",
  "module": "Mint",
  "name": "Mint Settings",

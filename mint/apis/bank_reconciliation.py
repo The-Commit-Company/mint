@@ -408,9 +408,17 @@ def search_for_transfer_transaction(transaction_id: str):
     """
     company, withdrawal, deposit, date, bank_account = frappe.db.get_value("Bank Transaction", transaction_id, ["company", "withdrawal", "deposit", "date", "bank_account"])
 
+    
+    days = frappe.db.get_single_value("Mint Settings", "transfer_match_days")
+
+    if not days:
+        days = 4
+
+    min_date = frappe.utils.add_days(date, -days)
+    max_date = frappe.utils.add_days(date, days)
     mirror_tx = frappe.db.get_list("Bank Transaction", filters={
         "company": company,
-        "date": date,
+        "date": ["between", [min_date, max_date]],
         "withdrawal": deposit,
         "bank_account": ["!=", bank_account],
         "deposit": withdrawal,
