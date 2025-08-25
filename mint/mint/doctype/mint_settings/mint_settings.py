@@ -19,5 +19,6 @@ class MintSettings(Document):
 		google_processor_location: DF.Literal["us", "eu"]
 		google_project_id: DF.Data | None
 		google_service_account_json_key: DF.Password | None
+		transfer_match_days: DF.Int
 	# end: auto-generated types
 	pass

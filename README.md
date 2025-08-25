@@ -35,7 +35,7 @@ It's built using [Frappe Framework](https://frappeframework.com) with a React ba
 
 ### Features
 
-For a complete walkthrough of the features, you can refer to the following YouTube video: 
+For a complete walkthrough of the features, you can refer to the following [YouTube video](https://youtu.be/nX9igS980MA?feature=shared)
 
 ##### Select company, dates and bank account
 <img width="3852" height="602" alt="CleanShot 2025-08-08 at 16 00 34@2x" src="https://github.com/user-attachments/assets/807e3068-a2ec-466d-93c4-0a3acae08cea" />
