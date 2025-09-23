@@ -3,13 +3,14 @@ import { FrappeError } from 'frappe-react-sdk'
 import { Alert, AlertDescription, AlertTitle } from './alert'
 import { AlertCircle } from 'lucide-react'
 import MarkdownRenderer from './markdown'
+import _ from '@/lib/translate'
 
 type Props = {
     error: FrappeError | null,
     title?: string
 }
 
-const ErrorBanner = ({ error, title = "There was an error." }: Props) => {
+const ErrorBanner = ({ error, title = _("There was an error.") }: Props) => {
 
     const errorMessage = getErrorMessage(error)
     return (

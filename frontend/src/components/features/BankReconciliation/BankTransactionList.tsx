@@ -48,7 +48,9 @@ const BankTransactionListView = () => {
 
         <div>
             <Paragraph className="text-sm">
-                Below is a list of all bank transactions imported in the system for the bank account <strong>{bankAccount?.account_name}</strong> between <strong>{formattedFromDate}</strong> and <strong>{formattedToDate}</strong>.
+                <span dangerouslySetInnerHTML={{
+                    __html: _("Below is a list of all bank transactions imported in the system for the bank account {0} between {1} and {2}.", [`<strong>${bankAccount?.account_name}</strong>`, `<strong>${formattedFromDate}</strong>`, `<strong>${formattedToDate}</strong>`])
+                }} />
             </Paragraph>
         </div>
 
