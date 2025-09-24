@@ -38,7 +38,7 @@ interface BankClearanceSummaryEntry {
     payment_document_type: string
     payment_entry: string
     posting_date: string,
-    cheque_no: string,
+    cheque_no?: string,
     amount: number,
     against: string,
     clearance_date: string,
@@ -110,8 +110,8 @@ const BankClearanceSummaryView = () => {
                             <TableCell>{formatDate(row.posting_date)}</TableCell>
                             <TableCell title={row.cheque_no}>
                                 <Tooltip delayDuration={500}>
-                                    <TooltipTrigger onClick={() => onCopy(row.cheque_no)}>
-                                        {row.cheque_no.slice(0, 40)}{row.cheque_no.length > 40 ? "..." : ""}
+                                    <TooltipTrigger onClick={() => onCopy(row.cheque_no ?? "")}>
+                                        {row.cheque_no?.slice(0, 40)}{row.cheque_no?.length && row.cheque_no?.length > 40 ? "..." : ""}
                                     </TooltipTrigger>
                                     <TooltipContent align='start'>
                                         {_("Copy to clipboard")}
