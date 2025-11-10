@@ -1,0 +1,89 @@
+{
+    "app": "mint",
+    "charts": [],
+    "content": "[{\"id\":\"_6wUOPEXZr\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Bank Reconciliation</span>\",\"col\":12}},{\"id\":\"_mzn9vcQVt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Bank Reconciliation\",\"col\":3}},{\"id\":\"_XfL8kR2Qp\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"_abc123def\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Bank Transactions\",\"col\":4}},{\"id\":\"_def456ghi\",\"type\":\"quick_list\",\"data\":{\"quick_list_name\":\"Reconciled Transactions\",\"col\":4}}]",
+    "creation": "2025-11-10 09:00:00.000000",
+    "custom_blocks": [],
+    "docstatus": 0,
+    "doctype": "Workspace",
+    "for_user": "",
+    "hide_custom": 0,
+    "idx": 0,
+    "is_hidden": 0,
+    "label": "Mint",
+    "links": [
+        {
+            "hidden": 0,
+            "is_query_report": 0,
+            "label": "Bank Reconciliation",
+            "link_count": 0,
+            "link_to": "bank-reconciliation",
+            "link_type": "Page",
+            "onboard": 0,
+            "type": "Link"
+        },
+        {
+            "hidden": 0,
+            "is_query_report": 0,
+            "label": "Bank Transaction",
+            "link_count": 0,
+            "link_to": "Bank Transaction",
+            "link_type": "DocType",
+            "onboard": 0,
+            "type": "Link"
+        },
+        {
+            "hidden": 0,
+            "is_query_report": 0,
+            "label": "Mint Bank Transaction Rule",
+            "link_count": 0,
+            "link_to": "Mint Bank Transaction Rule",
+            "link_type": "DocType",
+            "onboard": 0,
+            "type": "Link"
+        },
+        {
+            "hidden": 0,
+            "is_query_report": 0,
+            "label": "Mint Bank Statement Import",
+            "link_count": 0,
+            "link_to": "Mint Bank Statement Import",
+            "link_type": "DocType",
+            "onboard": 0,
+            "type": "Link"
+        },
+        {
+            "hidden": 0,
+            "is_query_report": 0,
+            "label": "Mint Settings",
+            "link_count": 0,
+            "link_to": "Mint Settings",
+            "link_type": "DocType",
+            "onboard": 0,
+            "type": "Link"
+        }
+    ],
+    "modified": "2025-11-10 09:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Mint",
+    "name": "Mint",
+    "number_cards": [],
+    "owner": "Administrator",
+    "parent_page": "",
+    "public": 1,
+    "quick_lists": [],
+    "roles": [],
+    "sequence_id": 1.0,
+    "shortcuts": [
+        {
+            "color": "Green",
+            "doc_view": "",
+            "format": "{} Open",
+            "label": "Bank Reconciliation",
+            "link_to": "bank-reconciliation",
+            "type": "Page"
+        }
+    ],
+    "title": "Mint",
+    "type": "Workspace"
+}
