@@ -75,22 +75,22 @@ const SettingsDialogContent = ({ onClose }: { onClose: VoidFunction }) => {
 
                 <DataField
                     name='transfer_match_days'
-                    label={"Number of Days to Match Transfers"}
+                    label={_("Number of Days to Match Transfers")}
                     isRequired
                     inputProps={{
                         type: 'number',
                         inputMode: 'numeric',
                     }}
-                    formDescription='For example, if set to 4, Mint will try to find matching transactions in other banks 4 days before and after the transaction date. This is because transactions can clear on different days on different bank accounts.'
+                    formDescription={_("For example, if set to 4, Mint will try to find matching transactions in other banks 4 days before and after the transaction date. This is because transactions can clear on different days on different bank accounts.")}
                 />
 
                 {/* <H4 className='text-sm font-semibold'>Google Document AI</H4> */}
 
                 {/* <DataField
                     name='google_project_id'
-                    label={"Google Project ID"}
+                    label={_("Google Project ID")}
                     isRequired
-                    formDescription='The Google Project ID is used to authenticate with the Google Cloud Platform.'
+                    formDescription={_("The Google Project ID is used to authenticate with the Google Cloud Platform.")}
                 />
 
                 <FormField
@@ -118,12 +118,12 @@ const SettingsDialogContent = ({ onClose }: { onClose: VoidFunction }) => {
 
                 <DataField
                     name='google_service_account_json_key'
-                    label={"Google Service Account JSON Key"}
+                    label={_("Google Service Account JSON Key")}
                     isRequired
                     inputProps={{
                         type: "password"
                     }}
-                    formDescription='Paste the Service Key (JSON) from the Google Cloud Console.'
+                    formDescription={_("Paste the Service Key (JSON) from the Google Cloud Console.")}
                 />
 
                 {data && data.google_project_id && data.google_service_account_json_key && <ProcessorField />} */}

@@ -67,7 +67,7 @@ export const getDatesForTimePeriod = (
             fromDate: daysJSObject.startOf('month').format(format),
             toDate: daysJSObject.endOf('month').format(format),
             format: "Do MMM 'YY",
-            translatedLabel: _(timePeriod)
+            translatedLabel: _('This Month')
         }
     }
 
@@ -76,7 +76,7 @@ export const getDatesForTimePeriod = (
             fromDate: daysJSObject.startOf('quarter').format(format),
             toDate: daysJSObject.endOf('quarter').format(format),
             format: 'MMM YYYY',
-            translatedLabel: _(timePeriod)
+            translatedLabel: _('This Quarter')
         }
     }
 
@@ -85,7 +85,7 @@ export const getDatesForTimePeriod = (
             fromDate: daysJSObject.startOf('year').format(format),
             toDate: daysJSObject.endOf('year').format(format),
             format: 'MMM YYYY',
-            translatedLabel: _(timePeriod)
+            translatedLabel: _('This Year')
         }
     }
 
@@ -95,7 +95,7 @@ export const getDatesForTimePeriod = (
             fromDate: lastWeek.startOf('week').format(format),
             toDate: lastWeek.endOf('week').format(format),
             format: "Do MMM 'YY",
-            translatedLabel: _(timePeriod)
+            translatedLabel: _('Last Week')
         }
     }
 
@@ -105,7 +105,7 @@ export const getDatesForTimePeriod = (
             fromDate: lastMonth.startOf('month').format(format),
             toDate: lastMonth.endOf('month').format(format),
             format: "Do MMM 'YY",
-            translatedLabel: _(timePeriod)
+            translatedLabel: _('Last Month')
         }
     }
 
@@ -115,7 +115,7 @@ export const getDatesForTimePeriod = (
             fromDate: lastQuarter.startOf('quarter').format(format),
             toDate: lastQuarter.endOf('quarter').format(format),
             format: 'MMM YYYY',
-            translatedLabel: _(timePeriod)
+            translatedLabel: _('Last Quarter')
         }
     }
 
@@ -125,7 +125,7 @@ export const getDatesForTimePeriod = (
             fromDate: lastYear.startOf('year').format(format),
             toDate: lastYear.endOf('year').format(format),
             format: 'MMM YYYY',
-            translatedLabel: _(timePeriod)
+            translatedLabel: _('Last Year')
         }
     }
 
@@ -133,7 +133,7 @@ export const getDatesForTimePeriod = (
         fromDate: '',
         toDate: '',
         format: 'Do MMM YY',
-        translatedLabel: _(timePeriod)
+        translatedLabel: _('Date Range')
     }
 }
 

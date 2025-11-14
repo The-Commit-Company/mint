@@ -26,14 +26,14 @@ const MatchFilters = () => {
             </Tooltip>
             <PopoverContent>
                 <div className="flex flex-col gap-4">
-                    <ToggleSwitch label="Show Only Exact Amount" id="exact_match" />
+                    <ToggleSwitch label={_("Show Only Exact Amount")} id="exact_match" />
                     <Separator />
-                    <ToggleSwitch label="Payment Entry" id="payment_entry" />
-                    <ToggleSwitch label="Journal Entry" id="journal_entry" />
-                    <ToggleSwitch label="Purchase Invoice" id="purchase_invoice" />
-                    <ToggleSwitch label="Sales Invoice" id="sales_invoice" />
-                    <ToggleSwitch label="Expense Claim" id="expense_claim" />
-                    <ToggleSwitch label="Bank Transaction" id="bank_transaction" />
+                    <ToggleSwitch label={_("Payment Entry")} id="payment_entry" />
+                    <ToggleSwitch label={_("Journal Entry")} id="journal_entry" />
+                    <ToggleSwitch label={_("Purchase Invoice")} id="purchase_invoice" />
+                    <ToggleSwitch label={_("Sales Invoice")} id="sales_invoice" />
+                    <ToggleSwitch label={_("Expense Claim")} id="expense_claim" />
+                    <ToggleSwitch label={_("Bank Transaction")} id="bank_transaction" />
                 </div>
             </PopoverContent>
         </Popover>

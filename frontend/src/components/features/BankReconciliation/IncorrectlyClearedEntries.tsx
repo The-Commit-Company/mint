@@ -92,11 +92,17 @@ const IncorrectlyClearedEntriesView = () => {
     return <div className="space-y-4 py-2">
 
         <div>
-            <Paragraph className="text-sm">This report shows all entries in the system where the <strong>clearance date is before the posting date</strong> which is incorrect.
+            <Paragraph className="text-sm">
+                <span dangerouslySetInnerHTML={{
+                    __html: _("This report shows all entries in the system where the <strong>clearance date is before the posting date</strong> which is incorrect.")
+                }} />
                 <br />
-                {data && data.message.result.length > 0 && <span>Entries below have a posting date after {formattedToDate} but the clearance date is before {formattedToDate}.
+                {data && data.message.result.length > 0 && <span>
+                    <span dangerouslySetInnerHTML={{
+                        __html: _("Entries below have a posting date after {0} but the clearance date is before {1}.", [`<strong>${formattedToDate}</strong>`, `<strong>${formattedToDate}</strong>`])
+                    }} />
                     <br />
-                    You can reset the clearing dates of these entries here.
+                    {_("You can reset the clearing dates of these entries here.")}
                 </span>}
             </Paragraph>
         </div>

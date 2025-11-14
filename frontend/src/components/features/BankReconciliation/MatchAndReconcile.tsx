@@ -699,9 +699,9 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                         <div className="flex items-center gap-1">
                             <span>{_("Amount")}: <span className="font-bold font-mono">{formatCurrency(voucher.paid_amount, voucher.currency)}</span></span>
                             {amountMatches ?
-                                <MatchBadge matchType="full" label="Amount matches the selected transaction" />
+                                <MatchBadge matchType="full" label={_("Amount matches the selected transaction")} />
                                 :
-                                <MatchBadge matchType="none" label="Amount does not match the selected transaction" />
+                                <MatchBadge matchType="none" label={_("Amount does not match the selected transaction")} />
                             }
                         </div>
                         <div className="flex gap-2 h-6">
@@ -710,7 +710,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                                 <span>{_("Posted On")}: <span className="font-bold">{formatDate(voucher.posting_date)}</span></span>
                                 <MatchBadge
                                     matchType={postingDateMatches ? "full" : "none"}
-                                    label={postingDateMatches ? "Posting Date matches the transaction date" : "Posting Date does not match the transaction date"}
+                                    label={postingDateMatches ? _("Posting Date matches the transaction date") : _("Posting Date does not match the transaction date")}
                                 />
                             </div>
                             {voucher.reference_date && <Separator orientation="vertical" className="h-4" />}

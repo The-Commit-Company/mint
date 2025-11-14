@@ -18,7 +18,7 @@ export const RuleForm = ({ isEdit = false }: { isEdit?: boolean }) => {
     return <div className="flex flex-col gap-4">
         <DataField
             name='rule_name'
-            label="Rule Name"
+            label={_("Rule Name")}
             disabled={isEdit}
             isRequired
             inputProps={{
@@ -36,7 +36,7 @@ export const RuleForm = ({ isEdit = false }: { isEdit?: boolean }) => {
 
         <SmallTextField
             name='rule_description'
-            label="Rule Description"
+            label={_("Rule Description")}
             inputProps={{
                 placeholder: _("Any debit transaction with the keyword 'Bank Fee'.")
             }}
@@ -47,12 +47,12 @@ export const RuleForm = ({ isEdit = false }: { isEdit?: boolean }) => {
         <div className="grid grid-cols-2 gap-2 pt-1">
             <CurrencyFormField
                 name='min_amount'
-                label="Minimum Amount"
+                label={_("Minimum Amount")}
             />
 
             <CurrencyFormField
                 name='max_amount'
-                label="Maximum Amount"
+                label={_("Maximum Amount")}
             />
         </div>
 
@@ -70,7 +70,7 @@ const CompanySelector = () => {
 
     return <LinkFormField
         name='company'
-        label="Company"
+        label={_("Company")}
         doctype="Company"
         isRequired
         rules={{
@@ -183,7 +183,7 @@ const DescriptionRules = () => {
                 <div key={field.id} className="flex w-full items-center gap-2">
                     <div className="min-w-36">
                         <SelectFormField
-                            label="Type of check"
+                            label={_("Type of check")}
                             hideLabel
                             name={`description_rules.${index}.check`}
                             rules={{
@@ -198,7 +198,7 @@ const DescriptionRules = () => {
                     <div className="w-full">
                         <DataField
                             name={`description_rules.${index}.value`}
-                            label="Value"
+                            label={_("Value")}
                             hideLabel
                             inputProps={{
                                 placeholder: _("Bank Fee, Salary, etc."),
@@ -216,7 +216,7 @@ const DescriptionRules = () => {
             <div>
                 <Button variant="outline" type='button' onClick={addRow}>
                     <PlusCircleIcon className="w-4 h-4" />
-                    Add Rule
+                    {_("Add Rule")}
                 </Button>
             </div>
 
@@ -251,8 +251,8 @@ const RuleAction = () => {
             <SelectFormField
                 name='classify_as'
                 isRequired
-                label="Suggest creating a"
-                formDescription="This will just suggest creating a new entry, and will not automatically create it."
+                label={_("Suggest creating a")}
+                formDescription={_("This will just suggest creating a new entry, and will not automatically create it.")}
                 rules={{
                     required: _("This is required")
                 }}
@@ -268,7 +268,7 @@ const RuleAction = () => {
                     <div className="col-span-1">
                         <PartyTypeFormField
                             name='party_type'
-                            label={"Party Type"}
+                            label={_("Party Type")}
                             isRequired
                             inputProps={{
                                 triggerProps: {
@@ -288,7 +288,7 @@ const RuleAction = () => {
 
             <AccountFormField
                 name='account'
-                label="Account"
+                label={_("Account")}
                 isRequired
                 rules={{
                     required: _("Account is required")
@@ -334,7 +334,7 @@ const PartyField = () => {
     if (!party_type) {
         return <DataField
             name={`party`}
-            label={"Party"}
+            label={_("Party")}
             isRequired
             inputProps={{
                 disabled: true,
@@ -344,7 +344,7 @@ const PartyField = () => {
 
     return <LinkFormField
         name={`party`}
-        label={"Party"}
+        label={_("Party")}
         rules={{
             onChange
         }}

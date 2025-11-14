@@ -110,7 +110,7 @@ const BulkBankEntryForm = ({ selectedTransactions }: { selectedTransactions: Unr
                             // Do not allow payable and receivable accounts
                             return acc.account_type !== 'Payable' && acc.account_type !== 'Receivable'
                         }}
-                        label='Account'
+                        label={_('Account')}
                         isRequired
                     />
                 </div>
@@ -209,13 +209,13 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
                         <div className='grid grid-cols-2 gap-4'>
                             <DateField
                                 name='posting_date'
-                                label={"Posting Date"}
+                                label={_("Posting Date")}
                                 isRequired
                                 inputProps={{ autoFocus: false }}
                             />
                             <DateField
                                 name='cheque_date'
-                                label={"Reference Date"}
+                                label={_("Reference Date")}
                                 isRequired
                                 inputProps={{ autoFocus: false }}
                                 rules={{
@@ -223,7 +223,7 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
                                 }}
                             />
                         </div>
-                        <DataField name='cheque_no' label={"Reference No"} isRequired inputProps={{ autoFocus: false }}
+                        <DataField name='cheque_no' label={_("Reference No")} isRequired inputProps={{ autoFocus: false }}
                             rules={{
                                 required: _("Reference No is required"),
                             }} />
@@ -237,7 +237,7 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
                     <div className='grid grid-cols-2 gap-4'>
                         <SmallTextField
                             name='user_remark'
-                            label={"Remarks"}
+                            label={_("Remarks")}
                         />
                     </div>
                 </div>
@@ -381,7 +381,7 @@ const Entries = ({ company, isWithdrawal, amount, currency }: { company: string,
                             <div className="flex">
                                 <PartyTypeFormField
                                     name={`entries.${index}.party_type`}
-                                    label={"Party Type"}
+                                    label={_("Party Type")}
                                     isRequired
                                     hideLabel
                                     inputProps={{
@@ -434,7 +434,7 @@ const Entries = ({ company, isWithdrawal, amount, currency }: { company: string,
                         <TableCell className="text-right align-top">
                             <CurrencyFormField
                                 name={`entries.${index}.amount`}
-                                label={"Amount"}
+                                label={_("Amount")}
                                 isRequired
                                 hideLabel
                                 currency={currency}
@@ -471,7 +471,7 @@ const PartyField = ({ index, onChange }: { index: number, onChange: (value: stri
     if (!party_type) {
         return <DataField
             name={`entries.${index}.party`}
-            label={"Party"}
+            label={_("Party")}
             isRequired
             inputProps={{
                 disabled: true,
@@ -483,7 +483,7 @@ const PartyField = ({ index, onChange }: { index: number, onChange: (value: stri
 
     return <LinkFormField
         name={`entries.${index}.party`}
-        label={"Party"}
+        label={_("Party")}
         rules={{
             onChange: (value) => {
                 onChange(value, index)

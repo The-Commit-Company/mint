@@ -81,7 +81,9 @@ const BankClearanceSummaryView = () => {
 
         <div>
             <Paragraph className="text-sm">
-                Below is a list of all accounting entries posted against the bank account <strong>{bankAccount?.account}</strong> between <strong>{formattedFromDate}</strong> and <strong>{formattedToDate}</strong>.
+                <span dangerouslySetInnerHTML={{
+                    __html: _("Below is a list of all accounting entries posted against the bank account {0} between {1} and {2}.", [`<strong>${bankAccount?.account}</strong>`, `<strong>${formattedFromDate}</strong>`, `<strong>${formattedToDate}</strong>`])
+                }} />
             </Paragraph>
         </div>
 

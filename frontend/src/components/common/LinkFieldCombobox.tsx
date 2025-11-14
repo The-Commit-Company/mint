@@ -227,7 +227,7 @@ const LinkFieldCombobox = ({
                         className={cn("w-full justify-between font-normal group",
                             readOnly ? "bg-muted" : ""
                             , buttonClassName)}>
-                        {linkTitle || _(placeholder)}
+                        {linkTitle || placeholder}
 
                         <div className="flex items-center gap-1">
                             {value && <a href={`/app/${slug(doctype)}/${value}`} target="_blank" className="group-hover:block hidden">
@@ -246,7 +246,7 @@ const LinkFieldCombobox = ({
                         className={cn("w-full justify-between font-normal",
                             readOnly ? "bg-muted" : ""
                             , buttonClassName)}>
-                        {value || _(placeholder)}
+                        {value || placeholder}
 
                         <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>}
@@ -254,7 +254,7 @@ const LinkFieldCombobox = ({
             <PopoverContent className="p-0" style={{ minWidth: width }} align="start">
                 {error && <ErrorBanner error={error} />}
                 <Command shouldFilter={false} className="w-full">
-                    <CommandInput placeholder={_(placeholder)} onValueChange={setSearchInput} />
+                    <CommandInput placeholder={placeholder} onValueChange={setSearchInput} />
                     <CommandList>
                         <CommandEmpty>{isLoading ? _("Loading...") : _("No results found.")}</CommandEmpty>
                         <CommandGroup>
