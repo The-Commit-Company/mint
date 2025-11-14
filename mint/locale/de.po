@@ -1,0 +1,1688 @@
+# German translations for Mint.
+# Copyright (C) 2025 The Commit Company (Algocode Technologies Pvt. Ltd.)
+# This file is distributed under the same license as the Mint project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Mint VERSION\n"
+"Report-Msgid-Bugs-To: support@thecommit.company\n"
+"POT-Creation-Date: 2025-09-23 18:12+0053\n"
+"PO-Revision-Date: 2025-09-23 17:21+0053\n"
+"Last-Translator: support@thecommit.company\n"
+"Language: de\n"
+"Language-Team: support@thecommit.company\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:465
+msgid "Accepted"
+msgstr "Akzeptiert"
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:422
+msgid "Accepting the suggestion will reconcile both transactions."
+msgstr "Das Akzeptieren des Vorschlags wird beide Transaktionen abstimmen."
+
+#. Label of the account (Link) field in DocType 'Mint Bank Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:113
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:362
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:401
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:561
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:200
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1091
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1112
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:291
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Account"
+msgstr "Konto"
+
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.py:71
+msgid "Account company does not match with the rule company."
+msgstr "Das Konto-Unternehmen stimmt nicht mit dem Regel-Unternehmen überein."
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:403
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:203
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1114
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:294
+msgid "Account is required"
+msgstr "Konto ist erforderlich"
+
+#. Label of the action_section (Section Break) field in DocType 'Mint Bank
+#. Transaction Rule'
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Action"
+msgstr "Aktion"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:553
+msgid "Action Type"
+msgstr "Aktionstyp"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:70
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:118
+msgid "Actions"
+msgstr "Aktionen"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:450
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1173
+msgid "Add Row"
+msgstr "Zeile hinzufügen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:219
+msgid "Add Rule"
+msgstr "Regel hinzufügen"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:792
+msgid "Add a charge to the payment entry with the difference amount"
+msgstr "Eine Gebühr zum Zahlungseintrag mit dem Differenzbetrag hinzufügen"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:776
+msgid "Add a charge to the payment entry with the unallocated amount"
+msgstr "Eine Gebühr zum Zahlungseintrag mit dem nicht zugeordneten Betrag hinzufügen"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:535
+msgid "Add a row to with the difference amount"
+msgstr "Eine Zeile mit dem Differenzbetrag hinzufügen"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:100
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:103
+msgid "Against Account"
+msgstr "Gegenkonto"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:200
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:120
+msgid "All"
+msgstr "Alle"
+
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.py:80
+msgid "All rows must have an amount and a type. Missing in row {0}"
+msgstr "Alle Zeilen müssen einen Betrag und einen Typ haben. Fehlt in Zeile {0}"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:600
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:637
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:763
+msgid "Allocated"
+msgstr "Zugeordnet"
+
+#. Label of the amended_from (Link) field in DocType 'Mint Bank Statement
+#. Import'
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+msgid "Amended From"
+msgstr "Berichtigt von"
+
+#. Label of the amount (Currency) field in DocType 'Mint Bank Statement Import
+#. Transactions'
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:101
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:365
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:437
+#: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:83
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:700
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1094
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1155
+#: frontend/src/components/features/BankReconciliation/SelectedTransactionsTable.tsx:25
+#: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
+msgid "Amount"
+msgstr "Betrag"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:704
+msgid "Amount does not match the selected transaction"
+msgstr "Betrag stimmt nicht mit der ausgewählten Transaktion überein"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:702
+msgid "Amount matches the selected transaction"
+msgstr "Betrag stimmt mit der ausgewählten Transaktion überein"
+
+#. Option for the 'Transaction Type' (Select) field in DocType 'Mint Bank
+#. Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:328
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Any"
+msgstr "Beliebig"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:41
+msgid "Any debit transaction with the keyword 'Bank Fee'."
+msgstr "Jede Sollbuchung mit dem Stichwort 'Bankgebühr'."
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:32
+msgid "Are you sure you want to unreconcile this transaction?"
+msgstr "Sind Sie sicher, dass Sie die Abstimmung dieser Transaktion rückgängig machen möchten?"
+
+#. Label of the automatically_run_rules_on_unreconciled_transactions (Check)
+#. field in DocType 'Mint Settings'
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "Automatically run rules on unreconciled transactions"
+msgstr "Regeln automatisch auf nicht abgestimmte Transaktionen anwenden"
+
+#. Label of the bank_account (Link) field in DocType 'Mint Bank Statement
+#. Import'
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+msgid "Bank Account"
+msgstr "Bankkonto"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:27
+msgid "Bank Charges, Salary, etc."
+msgstr "Bankgebühren, Gehalt, usw."
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:92
+#: frontend/src/pages/BankReconciliation.tsx:53
+msgid "Bank Clearance Summary"
+msgstr "Bank-Freigabe-Übersicht"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:90
+msgid "Bank Entries Created"
+msgstr "Bankeinträge erstellt"
+
+#. Option for the 'Classify As' (Select) field in DocType 'Mint Bank
+#. Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:33
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:333
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:410
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:260
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Bank Entry"
+msgstr "Bankeintrag"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:186
+msgid "Bank Entry Created"
+msgstr "Bankeintrag erstellt"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:204
+msgid "Bank Fee, Salary, etc."
+msgstr "Bankgebühr, Gehalt, usw."
+
+#: frontend/src/pages/BankReconciliation.tsx:37
+msgid "Bank Reconciliation"
+msgstr "Bankabstimmung"
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:95
+#: frontend/src/pages/BankReconciliation.tsx:51
+msgid "Bank Reconciliation Statement"
+msgstr "Bankabstimmungsnachweis"
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:213
+msgid "Bank Statement Balance as per General Ledger"
+msgstr "Kontoauszug-Saldo laut Hauptbuch"
+
+#: frontend/src/components/features/Settings/Settings.tsx:177
+msgid "Bank Statement Processor"
+msgstr "Kontoauszug-Verarbeiter"
+
+#: mint/apis/google_ai.py:132
+msgid "Bank Statement Processor is not set in Mint Settings"
+msgstr "Kontoauszug-Verarbeiter ist in den Mint-Einstellungen nicht festgelegt"
+
+#: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:36
+msgid "Bank Transaction"
+msgstr "Banktransaktion"
+
+#: mint/apis/bank_reconciliation.py:31
+msgid "Bank Transaction {0} is already fully reconciled"
+msgstr "Banktransaktion {0} ist bereits vollständig abgestimmt"
+
+#: frontend/src/pages/BankReconciliation.tsx:52
+msgid "Bank Transactions"
+msgstr "Banktransaktionen"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:59
+msgid "Bank Transactions between {0} and {1}"
+msgstr "Banktransaktionen zwischen {0} und {1}"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:84
+msgid "Below is a list of all accounting entries posted against the bank account {0} between {1} and {2}."
+msgstr "Unten ist eine Liste aller Buchungseinträge, die gegen das Bankkonto {0} zwischen {1} und {2} gebucht wurden."
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:51
+msgid "Below is a list of all bank transactions imported in the system for the bank account {0} between {1} and {2}."
+msgstr "Unten ist eine Liste aller Banktransaktionen, die im System für das Bankkonto {0} zwischen {1} und {2} importiert wurden."
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:85
+msgid "Below is a list of all entries posted against the bank account {0} which have not been cleared till {1}."
+msgstr "Unten ist eine Liste aller Einträge, die gegen das Bankkonto {0} gebucht wurden, die bis zum {1} noch nicht freigegeben wurden."
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:231
+msgid "Calculated Bank Statement Balance"
+msgstr "Berechneter Kontoauszug-Saldo"
+
+#. Description of the 'String Amount' (Data) field in DocType 'Mint Bank
+#. Statement Import Transactions'
+#: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
+msgid "Can be \"1200 Dr\" and will be translated to 1200 in amount and \"Withdrawal\""
+msgstr "Kann \"1200 S\" sein und wird zu 1200 im Betrag und \"Abhebung\" übersetzt"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:120
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:247
+#: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:117
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:230
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:402
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:117
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:281
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#. Label of the check (Select) field in DocType 'Mint Bank Transaction
+#. Description Rules'
+#: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
+msgid "Check"
+msgstr "Prüfung"
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:223
+msgid "Checks and Deposits incorrectly cleared"
+msgstr "Schecks und Einzahlungen fehlerhaft freigegeben"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:98
+msgid "Cheque/Reference Number"
+msgstr "Scheck-/Referenznummer"
+
+#. Label of the classify_as (Select) field in DocType 'Mint Bank Transaction
+#. Rule'
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Classify As"
+msgstr "Klassifizieren als"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:99
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:106
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:117
+msgid "Clearance Date"
+msgstr "Freigabedatum"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:127
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:80
+msgid "Cleared"
+msgstr "Freigegeben"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:703
+msgid "Click to pay in full."
+msgstr "Klicken Sie, um vollständig zu bezahlen."
+
+#: frontend/src/components/features/BankReconciliation/Rules/CreateNewRule.tsx:58
+#: frontend/src/components/features/BankReconciliation/Rules/EditRule.tsx:36
+#: frontend/src/components/features/BankReconciliation/Rules/EditRule.tsx:50
+#: frontend/src/components/features/BankReconciliation/Rules/EditRule.tsx:98
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:233
+#: frontend/src/components/features/Settings/Settings.tsx:135
+msgid "Close"
+msgstr "Schließen"
+
+#: frontend/src/components/features/BankReconciliation/BankBalance.tsx:58
+msgid "Closing Balance as per system"
+msgstr "Schlusssaldo laut System"
+
+#: frontend/src/components/features/BankReconciliation/BankBalance.tsx:65
+msgid "Closing balance as per system"
+msgstr "Schlusssaldo laut System"
+
+#. Label of the company (Link) field in DocType 'Mint Bank Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:73
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Company"
+msgstr "Unternehmen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:77
+msgid "Company is required"
+msgstr "Unternehmen ist erforderlich"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:732
+msgid "Complete Match"
+msgstr "Vollständige Übereinstimmung"
+
+#. Option for the 'Status' (Select) field in DocType 'Mint Bank Statement
+#. Import'
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+msgid "Completed"
+msgstr "Abgeschlossen"
+
+#: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:18
+#: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:24
+msgid "Configure match filters for vouchers"
+msgstr "Abgleichsfilter für Belege konfigurieren"
+
+#: frontend/src/components/features/Settings/Settings.tsx:70
+msgid "Configure settings for Mint."
+msgstr "Einstellungen für Mint konfigurieren."
+
+#. Option for the 'Check' (Select) field in DocType 'Mint Bank Transaction
+#. Description Rules'
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:192
+#: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
+msgid "Contains"
+msgstr "Enthält"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:76
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:76
+msgid "Copied to clipboard"
+msgstr "In die Zwischenablage kopiert"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:117
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:132
+msgid "Copy to clipboard"
+msgstr "In die Zwischenablage kopieren"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:363
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:417
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1092
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1136
+msgid "Cost Center"
+msgstr "Kostenstelle"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1133
+msgid "Cost Center is required"
+msgstr "Kostenstelle ist erforderlich"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:582
+msgid "Create"
+msgstr "Erstellen"
+
+#: frontend/src/components/features/Settings/Settings.tsx:197
+msgid "Create New Bank Statement Processor"
+msgstr "Neuen Kontoauszug-Verarbeiter erstellen"
+
+#: frontend/src/components/common/LinkFieldCombobox.tsx:275
+msgid "Create New {0}"
+msgstr "Neuen {0} erstellen"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:513
+msgid "Create a journal entry for expenses, income or split transactions"
+msgstr "Einen Journaleintrag für Ausgaben, Einnahmen oder geteilte Transaktionen erstellen"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:519
+msgid "Create a new entry based on the rule"
+msgstr "Einen neuen Eintrag basierend auf der Regel erstellen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:199
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:229
+msgid "Create a new rule"
+msgstr "Eine neue Regel erstellen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:72
+msgid "Create a new rule to automatically classify transactions."
+msgstr "Eine neue Regel erstellen, um Transaktionen automatisch zu klassifizieren."
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:102
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:115
+msgid "Credit"
+msgstr "Haben"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:202
+msgid "Credits"
+msgstr "Habenbuchungen"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:395
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:274
+msgid "Custom Remarks"
+msgstr "Benutzerdefinierte Bemerkungen"
+
+#. Label of the date (Date) field in DocType 'Mint Bank Statement Import
+#. Transactions'
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:62
+#: frontend/src/components/features/BankReconciliation/SelectedTransactionsTable.tsx:19
+#: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
+msgid "Date"
+msgstr "Datum"
+
+#: frontend/src/lib/date.ts:136
+msgid "Date Range"
+msgstr "Datumsbereich"
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:101
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:114
+msgid "Debit"
+msgstr "Soll"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:201
+msgid "Debits"
+msgstr "Sollbuchungen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:348
+msgid "Delete"
+msgstr "Löschen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:104
+msgid "Deleting rule..."
+msgstr "Regel wird gelöscht..."
+
+#. Option for the 'Type' (Select) field in DocType 'Mint Bank Statement Import
+#. Transactions'
+#. Option for the 'Transaction Type' (Select) field in DocType 'Mint Bank
+#. Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:66
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:328
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:154
+#: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Deposit"
+msgstr "Einzahlung"
+
+#. Label of the description (Small Text) field in DocType 'Mint Bank Statement
+#. Import Transactions'
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:63
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1093
+#: frontend/src/components/features/BankReconciliation/SelectedTransactionsTable.tsx:22
+#: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
+msgid "Description"
+msgstr "Beschreibung"
+
+#. Label of the description_rules (Table) field in DocType 'Mint Bank
+#. Transaction Rule'
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Description Rules"
+msgstr "Beschreibungsregeln"
+
+#: frontend/src/components/features/BankReconciliation/BankBalance.tsx:137
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:527
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:784
+msgid "Difference"
+msgstr "Differenz"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:276
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:82
+msgid "Document"
+msgstr "Beleg"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:95
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:99
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:112
+msgid "Document Type"
+msgstr "Belegtyp"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:313
+msgid "Drag to reorder"
+msgstr "Ziehen, um neu zu ordnen"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:597
+msgid "Due Date"
+msgstr "Fälligkeitsdatum"
+
+#: frontend/src/components/features/Settings/Settings.tsx:110
+msgid "EU"
+msgstr "EU"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:72
+msgid "Edit this rule"
+msgstr "Diese Regel bearbeiten"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:274
+msgid "Enabled"
+msgstr "Aktiviert"
+
+#. Option for the 'Check' (Select) field in DocType 'Mint Bank Transaction
+#. Description Rules'
+#: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
+msgid "Ends With"
+msgstr "Endet mit"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:194
+msgid "Ends with"
+msgstr "Endet mit"
+
+#: frontend/src/components/features/BankReconciliation/BankBalance.tsx:98
+msgid "Enter Closing Balance as per statement"
+msgstr "Schlusssaldo laut Auszug eingeben"
+
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:98
+msgid "Entries below have a posting date after {0} but the clearance date is before {1}."
+msgstr "Die unten stehenden Einträge haben ein Buchungsdatum nach {0}, aber das Freigabedatum liegt vor {1}."
+
+#. Option for the 'Status' (Select) field in DocType 'Mint Bank Statement
+#. Import'
+#. Label of the error (Code) field in DocType 'Mint Bank Statement Import'
+#: frontend/src/components/features/BankReconciliation/utils.ts:228
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+msgid "Error"
+msgstr "Fehler"
+
+#: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:35
+msgid "Expense Claim"
+msgstr "Spesenabrechnung"
+
+#: mint/apis/google_ai.py:116
+msgid "Failed to create document processor"
+msgstr "Dokumentverarbeiter konnte nicht erstellt werden"
+
+#: frontend/src/components/features/Settings/Settings.tsx:163
+#: mint/apis/google_ai.py:104
+msgid "Failed to create processor"
+msgstr "Verarbeiter konnte nicht erstellt werden"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:106
+msgid "Failed to delete rule."
+msgstr "Regel konnte nicht gelöscht werden."
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:117
+msgid "Failed to run rules evaluation"
+msgstr "Regelbewertung konnte nicht ausgeführt werden"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:264
+msgid "Failed to update auto classify transactions settings"
+msgstr "Einstellungen für automatische Transaktionsklassifizierung konnten nicht aktualisiert werden"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:145
+msgid "Failed to update rule priorities"
+msgstr "Regelprioriät konnte nicht aktualisiert werden"
+
+#. Label of the file (Attach) field in DocType 'Mint Bank Statement Import'
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+msgid "File"
+msgstr "Datei"
+
+#. Label of the file_type (Select) field in DocType 'Mint Bank Statement
+#. Import'
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+msgid "File Type"
+msgstr "Dateityp"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:164
+msgid "Filter by amount"
+msgstr "Nach Betrag filtern"
+
+#: frontend/src/components/features/Settings/Settings.tsx:84
+msgid "For example, if set to 4, Mint will try to find matching transactions in other banks 4 days before and after the transaction date. This is because transactions can clear on different days on different bank accounts."
+msgstr "Wenn Sie z.B. 4 einstellen, versucht Mint, passende Transaktionen in anderen Banken 4 Tage vor und nach dem Transaktionsdatum zu finden. Das liegt daran, dass Transaktionen an verschiedenen Tagen auf verschiedenen Bankkonten freigegeben werden können."
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:175
+msgid "Force Evaluate All"
+msgstr "Alle zwangsweise bewerten"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:173
+msgid "Force re-evaluate all unreconciled transactions, even if they were previously evaluated"
+msgstr "Alle nicht abgestimmten Transaktionen zwangsweise neu bewerten, auch wenn sie bereits bewertet wurden"
+
+#: frontend/src/components/features/BankReconciliation/SelectedTransactionDetails.tsx:70
+msgid "GL Account"
+msgstr "Hauptbuchkonto"
+
+#. Label of the general_section (Section Break) field in DocType 'Mint
+#. Settings'
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "General"
+msgstr "Allgemein"
+
+#: mint/apis/google_ai.py:78
+msgid "Google APIs are not enabled. Please enable them in Mint Settings."
+msgstr "Google APIs sind nicht aktiviert. Bitte aktivieren Sie sie in den Mint-Einstellungen."
+
+#. Label of the google_document_ai_section (Section Break) field in DocType
+#. 'Mint Settings'
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "Google Document AI"
+msgstr "Google Document AI"
+
+#. Label of the bank_statement_gdoc_processor (Data) field in DocType 'Mint
+#. Settings'
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "Google Document Processor - Bank Statement"
+msgstr "Google Dokumentverarbeiter - Kontoauszug"
+
+#: frontend/src/components/features/Settings/Settings.tsx:101
+msgid "Google Document Processor Location"
+msgstr "Google Dokumentverarbeiter-Standort"
+
+#. Label of the google_processor_location (Select) field in DocType 'Mint
+#. Settings'
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "Google Processor Location"
+msgstr "Google Verarbeiter-Standort"
+
+#. Label of the google_project_id (Data) field in DocType 'Mint Settings'
+#: frontend/src/components/features/Settings/Settings.tsx:91
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "Google Project ID"
+msgstr "Google Projekt-ID"
+
+#: mint/apis/google_ai.py:126
+msgid "Google Project ID is not set in Mint Settings"
+msgstr "Google Projekt-ID ist in den Mint-Einstellungen nicht festgelegt"
+
+#: mint/apis/google_ai.py:17
+msgid "Google Project ID is not set. Please set it in the Mint Settings."
+msgstr "Google Projekt-ID ist nicht festgelegt. Bitte legen Sie sie in den Mint-Einstellungen fest."
+
+#. Label of the google_service_account_json_key (Password) field in DocType
+#. 'Mint Settings'
+#: frontend/src/components/features/Settings/Settings.tsx:121
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "Google Service Account JSON Key"
+msgstr "Google Service Account JSON-Schlüssel"
+
+#: mint/apis/google_ai.py:129
+msgid "Google Service Account JSON Key is not set in Mint Settings"
+msgstr "Google Service Account JSON-Schlüssel ist in den Mint-Einstellungen nicht festgelegt"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:598
+msgid "Grand Total"
+msgstr "Gesamtsumme"
+
+#. Description of the 'Automatically run rules on unreconciled transactions'
+#. (Check) field in DocType 'Mint Settings'
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "If checked, this job will run every 30 minutes"
+msgstr "Falls aktiviert, wird dieser Job alle 30 Minuten ausgeführt"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:249
+msgid "If rule matches, then:"
+msgstr "Falls Regel zutrifft, dann:"
+
+#: frontend/src/components/features/BankReconciliation/BankBalance.tsx:71
+msgid "If your bank statement shows a different closing balance, it is because all transactions have not reconciled yet."
+msgstr "Falls Ihr Kontoauszug einen anderen Schlusssaldo anzeigt, liegt es daran, dass noch nicht alle Transaktionen abgestimmt wurden."
+
+#. Label of the imported (Check) field in DocType 'Mint Bank Statement Import
+#. Transactions'
+#: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
+msgid "Imported"
+msgstr "Importiert"
+
+#: frontend/src/pages/BankReconciliation.tsx:54
+msgid "Incorrectly Cleared Entries"
+msgstr "Fehlerhaft freigegebene Einträge"
+
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:109
+msgid "Incorrectly cleared entries as per the report."
+msgstr "Fehlerhaft freigegebene Einträge laut Bericht."
+
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.py:56
+msgid "Invalid file type"
+msgstr "Ungültiger Dateityp"
+
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.py:67
+msgid "Invalid regex pattern."
+msgstr "Ungültiges Regex-Muster."
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:596
+msgid "Invoice No"
+msgstr "Rechnungsnummer"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:583
+msgid "Invoices"
+msgstr "Rechnungen"
+
+#: frontend/src/components/features/BankReconciliation/BankBalance.tsx:69
+msgid "It takes into account all the transactions that have been posted and subtracts the transactions that have not cleared yet."
+msgstr "Es berücksichtigt alle gebuchten Transaktionen und zieht die noch nicht freigegebenen Transaktionen ab."
+
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:145
+msgid "It's all good!"
+msgstr "Alles in Ordnung!"
+
+#: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:32
+msgid "Journal Entry"
+msgstr "Journaleintrag"
+
+#: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:80
+msgid "Last Fiscal Year"
+msgstr "Letztes Geschäftsjahr"
+
+#: frontend/src/lib/date.ts:108
+msgid "Last Month"
+msgstr "Letzter Monat"
+
+#: frontend/src/lib/date.ts:118
+msgid "Last Quarter"
+msgstr "Letztes Quartal"
+
+#: frontend/src/components/features/BankReconciliation/BankPicker.tsx:90
+msgid "Last Synced Transaction"
+msgstr "Letzte synchronisierte Transaktion"
+
+#: frontend/src/lib/date.ts:98
+msgid "Last Week"
+msgstr "Letzte Woche"
+
+#: frontend/src/lib/date.ts:128
+msgid "Last Year"
+msgstr "Letztes Jahr"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:146
+msgid "Loading"
+msgstr "Wird geladen"
+
+#: frontend/src/components/common/LinkFieldCombobox.tsx:259
+msgid "Loading..."
+msgstr "Wird geladen..."
+
+#: frontend/src/components/features/Settings/Settings.tsx:113
+#: frontend/src/components/features/Settings/Settings.tsx:190
+msgid "Location where the document processor is run."
+msgstr "Standort, an dem der Dokumentverarbeiter ausgeführt wird."
+
+#. Label of the transfer_match_days (Int) field in DocType 'Mint Settings'
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "Match Transfers across (days)"
+msgstr "Überweisungen abgleichen über (Tage)"
+
+#: frontend/src/pages/BankReconciliation.tsx:50
+msgid "Match and Reconcile"
+msgstr "Abgleichen und Abstimmen"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:49
+msgid "Match or Create"
+msgstr "Abgleichen oder Erstellen"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:264
+msgid "Matched by rule"
+msgstr "Durch Regel abgeglichen"
+
+#. Label of the max_amount (Currency) field in DocType 'Mint Bank Transaction
+#. Rule'
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Max Amount"
+msgstr "Höchstbetrag"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:55
+msgid "Maximum Amount"
+msgstr "Höchstbetrag"
+
+#. Label of the min_amount (Currency) field in DocType 'Mint Bank Transaction
+#. Rule'
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Min Amount"
+msgstr "Mindestbetrag"
+
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.py:52
+msgid "Min amount cannot be greater than max amount."
+msgstr "Mindestbetrag kann nicht größer als Höchstbetrag sein."
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:50
+msgid "Minimum Amount"
+msgstr "Mindestbetrag"
+
+#. Name of a DocType
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+msgid "Mint Bank Statement Import"
+msgstr "Mint Kontoauszug Import"
+
+#. Name of a DocType
+#: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
+msgid "Mint Bank Statement Import Transactions"
+msgstr "Mint Kontoauszug Import Transaktionen"
+
+#. Name of a DocType
+#: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
+msgid "Mint Bank Transaction Description Rules"
+msgstr "Mint Banktransaktions-Beschreibungsregeln"
+
+#. Name of a DocType
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Mint Bank Transaction Rule"
+msgstr "Mint Banktransaktions-Regel"
+
+#. Name of a DocType
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "Mint Settings"
+msgstr "Mint Einstellungen"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:220
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:354
+msgid "Mode of Payment"
+msgstr "Zahlungsweise"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:68
+msgid "New Rule"
+msgstr "Neue Regel"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:732
+msgid "No Match"
+msgstr "Keine Übereinstimmung"
+
+#: frontend/src/components/common/AccountsDropdown.tsx:151
+msgid "No accounts found."
+msgstr "Keine Konten gefunden."
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:147
+msgid "No entries found"
+msgstr "Keine Einträge gefunden"
+
+#: frontend/src/components/common/LinkFieldCombobox.tsx:259
+msgid "No results found."
+msgstr "Keine Ergebnisse gefunden."
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:196
+msgid "No rules found"
+msgstr "Keine Regeln gefunden"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:126
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.py:84
+msgid "No transactions found"
+msgstr "Keine Transaktionen gefunden"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:624
+msgid "No vouchers found for this transaction"
+msgstr "Keine Belege für diese Transaktion gefunden"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:129
+msgid "Not Cleared"
+msgstr "Nicht freigegeben"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:87
+msgid "Not Reconciled"
+msgstr "Nicht abgestimmt"
+
+#. Option for the 'Status' (Select) field in DocType 'Mint Bank Statement
+#. Import'
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+msgid "Not Started"
+msgstr "Nicht gestartet"
+
+#: frontend/src/components/features/Settings/Settings.tsx:78
+msgid "Number of Days to Match Transfers"
+msgstr "Anzahl Tage zum Abgleich von Überweisungen"
+
+#. Description of the 'Match Transfers across (days)' (Int) field in DocType
+#. 'Mint Settings'
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "Number of days to consider for transfer matching across bank accounts."
+msgstr "Anzahl der Tage, die für den Überweisungsabgleich zwischen Bankkonten zu berücksichtigen sind."
+
+#: frontend/src/components/features/BankReconciliation/BankBalance.tsx:45
+msgid "Opening Balance"
+msgstr "Eröffnungssaldo"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:523
+msgid "Original amount"
+msgstr "Ursprungsbetrag"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:599
+msgid "Outstanding"
+msgstr "Ausstehend"
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:218
+msgid "Outstanding Checks and Deposits to clear"
+msgstr "Ausstehende Schecks und Einzahlungen zur Freigabe"
+
+#. Option for the 'File Type' (Select) field in DocType 'Mint Bank Statement
+#. Import'
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+msgid "PDF"
+msgstr "PDF"
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:244
+msgid "Paid From"
+msgstr "Bezahlt von"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:533
+msgid "Paid From (GL Account)"
+msgstr "Bezahlt von (Hauptbuchkonto)"
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:258
+msgid "Paid To"
+msgstr "Bezahlt an"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:521
+msgid "Paid To (GL Account)"
+msgstr "Bezahlt an (Hauptbuchkonto)"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:325
+msgid "Paid to"
+msgstr "Bezahlt an"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:732
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:763
+msgid "Partial Match"
+msgstr "Teilweise Übereinstimmung"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:91
+msgid "Partially Reconciled"
+msgstr "Teilweise abgestimmt"
+
+#. Label of the party (Dynamic Link) field in DocType 'Mint Bank Transaction
+#. Rule'
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:361
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:474
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:486
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:568
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:171
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:183
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:465
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:475
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:337
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:347
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Party"
+msgstr "Partei"
+
+#. Label of the party_type (Link) field in DocType 'Mint Bank Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:384
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:156
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:330
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:271
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Party Type"
+msgstr "Parteityp"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:175
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:185
+msgid "Party is required"
+msgstr "Partei ist erforderlich"
+
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.py:59
+msgid "Party is required create a payment entry."
+msgstr "Partei ist erforderlich, um einen Zahlungseintrag zu erstellen."
+
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.py:56
+msgid "Party type is required to create a payment entry."
+msgstr "Parteityp ist erforderlich, um einen Zahlungseintrag zu erstellen."
+
+#: frontend/src/components/features/Settings/Settings.tsx:126
+msgid "Paste the Service Key (JSON) from the Google Cloud Console."
+msgstr "Fügen Sie den Service Key (JSON) aus der Google Cloud Console ein."
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:96
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:100
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:113
+msgid "Payment Document"
+msgstr "Zahlungsbeleg"
+
+#. Option for the 'Classify As' (Select) field in DocType 'Mint Bank
+#. Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:31
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:261
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Payment Entry"
+msgstr "Zahlung"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:301
+msgid "Payment Entry Created"
+msgstr "Zahlung erstellt"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:104
+msgid "Payment Recorded"
+msgstr "Zahlung erfasst"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:28
+msgid "Please select a bank account to view the bank clearance summary."
+msgstr "Bitte wählen Sie ein Bankkonto aus, um die Bank-Freigabe-Übersicht anzuzeigen."
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:28
+msgid "Please select a bank account to view the bank reconciliation statement."
+msgstr "Bitte wählen Sie ein Bankkonto aus, um den Bankabstimmungsnachweis anzuzeigen."
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:23
+msgid "Please select a bank and set the date range"
+msgstr "Bitte wählen Sie eine Bank aus und legen Sie den Datumsbereich fest"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:32
+msgid "Please select dates to view the bank clearance summary."
+msgstr "Bitte wählen Sie Daten aus, um die Bank-Freigabe-Übersicht anzuzeigen."
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:32
+msgid "Please select dates to view the bank reconciliation statement."
+msgstr "Bitte wählen Sie Daten aus, um den Bankabstimmungsnachweis anzuzeigen."
+
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.py:51
+msgid "Please upload a file"
+msgstr "Bitte laden Sie eine Datei hoch"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:710
+msgid "Posted On"
+msgstr "Gebucht am"
+
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:97
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:212
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:98
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:116
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:380
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:219
+msgid "Posting Date"
+msgstr "Buchungsdatum"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:713
+msgid "Posting Date does not match the transaction date"
+msgstr "Buchungsdatum stimmt nicht mit dem Transaktionsdatum überein"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:713
+msgid "Posting Date matches the transaction date"
+msgstr "Buchungsdatum stimmt mit dem Transaktionsdatum überein"
+
+#. Label of the priority (Int) field in DocType 'Mint Bank Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:547
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Priority"
+msgstr "Priorität"
+
+#: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:33
+msgid "Purchase Invoice"
+msgstr "Eingangsrechnung"
+
+#: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:40
+msgid "Q1"
+msgstr "Q1"
+
+#: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:48
+msgid "Q2"
+msgstr "Q2"
+
+#: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:56
+msgid "Q3"
+msgstr "Q3"
+
+#: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:64
+msgid "Q4"
+msgstr "Q4"
+
+#: frontend/src/components/features/BankReconciliation/SelectedTransactionDetails.tsx:61
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:451
+msgid "Received"
+msgstr "Erhalten"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:325
+msgid "Received from"
+msgstr "Erhalten von"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:544
+msgid "Recommended Action"
+msgstr "Empfohlene Aktion"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:745
+msgid "Reconcile"
+msgstr "Abstimmen"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:94
+#: frontend/src/components/features/BankReconciliation/utils.ts:215
+msgid "Reconciled"
+msgstr "Abgestimmt"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:84
+msgid "Reconciliation Type"
+msgstr "Abstimmungstyp"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:745
+msgid "Reconciling"
+msgstr "Wird abgestimmt"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:347
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:397
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:43
+msgid "Record Payment"
+msgstr "Zahlung erfassen"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:331
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:408
+msgid "Record a bank journal entry for expenses, income or split transactions"
+msgstr "Einen Bankjournaleintrag für Ausgaben, Einnahmen oder geteilte Transaktionen erfassen"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:337
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:414
+msgid "Record a journal entry for expenses, income or split transactions"
+msgstr "Einen Journaleintrag für Ausgaben, Einnahmen oder geteilte Transaktionen erfassen"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:35
+msgid "Record a journal entry for expenses, income or split transactions."
+msgstr "Einen Journaleintrag für Ausgaben, Einnahmen oder geteilte Transaktionen erfassen."
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:345
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:351
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:395
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:401
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:515
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:45
+msgid "Record a payment entry against a customer or supplier"
+msgstr "Einen Zahlungseintrag gegen einen Kunden oder Lieferanten erfassen"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:360
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:366
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:421
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:427
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:517
+msgid "Record an internal transfer to another bank/credit card/cash account"
+msgstr "Eine interne Überweisung auf ein anderes Bank-/Kreditkarten-/Kassenkonto erfassen"
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:36
+msgid "Record an internal transfer to another bank/credit card/cash account."
+msgstr "Eine interne Überweisung auf ein anderes Bank-/Kreditkarten-/Kassenkonto erfassen."
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:260
+#: frontend/src/components/features/BankReconciliation/SelectedTransactionDetails.tsx:69
+msgid "Ref"
+msgstr "Ref"
+
+#. Label of the reference (Data) field in DocType 'Mint Bank Statement Import
+#. Transactions'
+#: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
+msgid "Reference"
+msgstr "Referenz"
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:104
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:64
+msgid "Reference #"
+msgstr "Referenznr."
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:218
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:105
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:718
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:386
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:225
+msgid "Reference Date"
+msgstr "Referenzdatum"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:721
+msgid "Reference Date does not match the transaction date"
+msgstr "Referenzdatum stimmt nicht mit dem Transaktionsdatum überein"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:222
+msgid "Reference Date is required"
+msgstr "Referenzdatum ist erforderlich"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:721
+msgid "Reference Date matches the transaction date"
+msgstr "Referenzdatum stimmt mit dem Transaktionsdatum überein"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:595
+msgid "Reference Document"
+msgstr "Referenzbeleg"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:226
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:391
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:230
+msgid "Reference No"
+msgstr "Referenznummer"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:228
+msgid "Reference No is required"
+msgstr "Referenznummer ist erforderlich"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:735
+msgid "Reference does not match the selected transaction"
+msgstr "Referenz stimmt nicht mit der ausgewählten Transaktion überein"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:735
+msgid "Reference matches the selected transaction"
+msgstr "Referenz stimmt mit der ausgewählten Transaktion überein"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:735
+msgid "Reference matches the selected transaction partially"
+msgstr "Referenz stimmt teilweise mit der ausgewählten Transaktion überein"
+
+#. Option for the 'Check' (Select) field in DocType 'Mint Bank Transaction
+#. Description Rules'
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:195
+#: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
+msgid "Regex"
+msgstr "Regex"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:240
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:364
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:426
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1144
+msgid "Remarks"
+msgstr "Bemerkungen"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:453
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:656
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1176
+msgid "Remove"
+msgstr "Entfernen"
+
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:135
+msgid "Reset Clearing Date"
+msgstr "Freigabedatum zurücksetzen"
+
+#. Label of the rule_description (Small Text) field in DocType 'Mint Bank
+#. Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:39
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Rule Description"
+msgstr "Regelbeschreibung"
+
+#. Label of the rule_name (Data) field in DocType 'Mint Bank Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:21
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Rule Name"
+msgstr "Regelname"
+
+#: frontend/src/components/features/BankReconciliation/Rules/CreateNewRule.tsx:39
+msgid "Rule created successfully"
+msgstr "Regel erfolgreich erstellt"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:105
+msgid "Rule deleted."
+msgstr "Regel gelöscht."
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:535
+msgid "Rule matched based on transaction description and other criteria."
+msgstr "Regel stimmte basierend auf Transaktionsbeschreibung und anderen Kriterien überein."
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:31
+msgid "Rule name is required"
+msgstr "Regelname ist erforderlich"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:142
+msgid "Rule priorities updated"
+msgstr "Regelprioriäten aktualisiert"
+
+#: frontend/src/components/features/BankReconciliation/Rules/EditRule.tsx:79
+msgid "Rule updated."
+msgstr "Regel aktualisiert."
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:155
+msgid "Rules"
+msgstr "Regeln"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:115
+msgid "Rules evaluation completed"
+msgstr "Regelbewertung abgeschlossen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:115
+msgid "Rules evaluation started"
+msgstr "Regelbewertung gestartet"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:181
+msgid "Rules to match against the transaction description"
+msgstr "Regeln zur Übereinstimmung mit der Transaktionsbeschreibung"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:164
+msgid "Run Rules"
+msgstr "Regeln ausführen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:170
+msgid "Run on new transactions"
+msgstr "Bei neuen Transaktionen ausführen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:272
+msgid "Run rules automatically"
+msgstr "Regeln automatisch ausführen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:168
+msgid "Run rules on unreconciled transactions that haven't been evaluated yet"
+msgstr "Regeln auf nicht abgestimmte Transaktionen anwenden, die noch nicht bewertet wurden"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:164
+msgid "Running..."
+msgstr "Wird ausgeführt..."
+
+#: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:34
+msgid "Sales Invoice"
+msgstr "Ausgangsrechnung"
+
+#: frontend/src/components/features/BankReconciliation/Rules/CreateNewRule.tsx:54
+#: frontend/src/components/features/BankReconciliation/Rules/EditRule.tsx:94
+#: frontend/src/components/features/Settings/Settings.tsx:137
+msgid "Save"
+msgstr "Speichern"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:263
+msgid "Scheduled job disabled. Transactions will not be auto classified."
+msgstr "Geplanter Job deaktiviert. Transaktionen werden nicht automatisch klassifiziert."
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:263
+msgid "Scheduled job enabled. Transactions will be auto classified."
+msgstr "Geplanter Job aktiviert. Transaktionen werden automatisch klassifiziert."
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:157
+msgid "Search"
+msgstr "Suchen"
+
+#: frontend/src/components/common/AccountsDropdown.tsx:154
+msgid "Search Results"
+msgstr "Suchergebnisse"
+
+#: frontend/src/components/common/AccountsDropdown.tsx:149
+msgid "Search account..."
+msgstr "Konto suchen..."
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:151
+msgid "Search transactions"
+msgstr "Transaktionen suchen"
+
+#: frontend/src/components/common/AccountsDropdown.tsx:128
+#: frontend/src/components/common/AccountsDropdown.tsx:142
+msgid "Select Account"
+msgstr "Konto auswählen"
+
+#: frontend/src/components/features/Settings/Settings.tsx:105
+msgid "Select Location"
+msgstr "Standort auswählen"
+
+#: frontend/src/components/features/Settings/Settings.tsx:181
+msgid "Select Processor"
+msgstr "Verarbeiter auswählen"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:38
+msgid "Select a bank account to reconcile"
+msgstr "Wählen Sie ein Bankkonto zur Abstimmung aus"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:288
+msgid "Select a transaction to match and reconcile with vouchers"
+msgstr "Wählen Sie eine Transaktion zum Abgleich und Abstimmen mit Belegen aus"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:358
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:592
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1088
+msgid "Select all"
+msgstr "Alle auswählen"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:376
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:612
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1105
+msgid "Select row {0}"
+msgstr "Zeile {0} auswählen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:72
+msgid "Set up rules to automatically classify transactions. Drag and drop rules to reorder their priority."
+msgstr "Regeln einrichten, um Transaktionen automatisch zu klassifizieren. Regeln per Drag & Drop verschieben, um ihre Priorität zu ändern."
+
+#: frontend/src/components/features/Settings/Settings.tsx:69
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: frontend/src/components/features/Settings/Settings.tsx:58
+msgid "Settings updated"
+msgstr "Einstellungen aktualisiert"
+
+#: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:29
+msgid "Show Only Exact Amount"
+msgstr "Nur exakte Beträge anzeigen"
+
+#: frontend/src/components/features/BankReconciliation/SelectedTransactionDetails.tsx:61
+msgid "Spent"
+msgstr "Ausgegeben"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:519
+msgid "Split amount"
+msgstr "Betrag aufteilen"
+
+#. Option for the 'Check' (Select) field in DocType 'Mint Bank Transaction
+#. Description Rules'
+#: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
+msgid "Starts With"
+msgstr "Beginnt mit"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:193
+msgid "Starts with"
+msgstr "Beginnt mit"
+
+#. Label of the status (Select) field in DocType 'Mint Bank Statement Import'
+#: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:102
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:69
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+msgid "Status"
+msgstr "Status"
+
+#. Label of the string_amount (Data) field in DocType 'Mint Bank Statement
+#. Import Transactions'
+#: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
+msgid "String Amount"
+msgstr "String-Betrag"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:122
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:249
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:232
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:404
+msgid "Submit"
+msgstr "Senden"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:254
+msgid "Suggest creating a"
+msgstr "Erstellen vorschlagen von"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:751
+msgid "Suggested"
+msgstr "Vorgeschlagen"
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:418
+msgid "Suggested Transfer to {0}"
+msgstr "Vorgeschlagene Überweisung an {0}"
+
+#. Name of a role
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "System Manager"
+msgstr "Systemverwalter"
+
+#: frontend/src/components/features/Settings/Settings.tsx:93
+msgid "The Google Project ID is used to authenticate with the Google Cloud Platform."
+msgstr "Die Google Projekt-ID wird zur Authentifizierung mit der Google Cloud Platform verwendet."
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:701
+msgid "The invoice is not fully allocated as there is a difference of {0}."
+msgstr "Die Rechnung ist nicht vollständig zugeordnet, da eine Differenz von {0} besteht."
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:421
+msgid "The system found a mirror transaction ({0}) in another account with the same amount and date."
+msgstr "Das System fand eine Spiegeltransaktion ({0}) in einem anderen Konto mit dem gleichen Betrag und Datum."
+
+#: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:149
+msgid "There are no accounting entries in the system for the selected account and dates."
+msgstr "Es gibt keine Buchungseinträge im System für das ausgewählte Konto und die Daten."
+
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:147
+msgid "There are no entries in the system where the clearance date is before the posting date."
+msgstr "Es gibt keine Einträge im System, bei denen das Freigabedatum vor dem Buchungsdatum liegt."
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:128
+msgid "There are no transactions in the system for the selected bank account and dates."
+msgstr "Es gibt keine Transaktionen im System für das ausgewählte Bankkonto und die Daten."
+
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:85
+msgid "There was an error while performing the action."
+msgstr "Beim Ausführen der Aktion ist ein Fehler aufgetreten."
+
+#: frontend/src/components/ui/error-banner.tsx:13
+msgid "There was an error."
+msgstr "Es ist ein Fehler aufgetreten."
+
+#: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:72
+msgid "This Fiscal Year"
+msgstr "Dieses Geschäftsjahr"
+
+#: frontend/src/lib/date.ts:70
+msgid "This Month"
+msgstr "Dieser Monat"
+
+#: frontend/src/lib/date.ts:79
+msgid "This Quarter"
+msgstr "Dieses Quartal"
+
+#: frontend/src/lib/date.ts:61
+msgid "This Week"
+msgstr "Diese Woche"
+
+#: frontend/src/lib/date.ts:88
+msgid "This Year"
+msgstr "Dieses Jahr"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:190
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:257
+msgid "This is required"
+msgstr "Dies ist erforderlich"
+
+#: frontend/src/components/features/BankReconciliation/BankBalance.tsx:67
+msgid "This is what the system expects the closing balance to be in your bank statement."
+msgstr "Das ist der Schlusssaldo, den das System in Ihrem Kontoauszug erwartet."
+
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:96
+msgid "This report shows all entries in the system where the <strong>clearance date is before the posting date</strong> which is incorrect."
+msgstr "Dieser Bericht zeigt alle Einträge im System, bei denen das <strong>Freigabedatum vor dem Buchungsdatum liegt</strong>, was inkorrekt ist."
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:78
+msgid "This transaction has been reconciled with the following document(s):"
+msgstr "Diese Transaktion wurde mit den folgenden Beleg(en) abgestimmt:"
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:275
+msgid "This will be auto-populated if not set."
+msgstr "Dies wird automatisch gefüllt, wenn nicht gesetzt."
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:255
+msgid "This will just suggest creating a new entry, and will not automatically create it."
+msgstr "Dies wird nur das Erstellen eines neuen Eintrags vorschlagen und ihn nicht automatisch erstellen."
+
+#: frontend/src/components/ui/sidebar.tsx:287
+#: frontend/src/components/ui/sidebar.tsx:290
+msgid "Toggle Sidebar"
+msgstr "Seitenleiste ein-/ausblenden"
+
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:759
+msgid "Total Amount"
+msgstr "Gesamtbetrag"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:54
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:68
+msgid "Transaction Matching Rules"
+msgstr "Transaktions-Abgleichsregeln"
+
+#. Label of the transaction_type (Select) field in DocType 'Mint Bank
+#. Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:98
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Transaction Type"
+msgstr "Transaktionstyp"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:62
+msgid "Transaction Unreconciled"
+msgstr "Transaktion nicht abgestimmt"
+
+#. Label of the transactions (Table) field in DocType 'Mint Bank Statement
+#. Import'
+#: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
+msgid "Transactions"
+msgstr "Transaktionen"
+
+#. Option for the 'Classify As' (Select) field in DocType 'Mint Bank
+#. Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:362
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:423
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:262
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:34
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:119
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:283
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Transfer"
+msgstr "Überweisung"
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:85
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:176
+msgid "Transfer Recorded"
+msgstr "Überweisung erfasst"
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:451
+msgid "Transferred Out"
+msgstr "Überwiesen"
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:235
+msgid "Transferred from"
+msgstr "Überwiesen von"
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:235
+msgid "Transferred to"
+msgstr "Überwiesen an"
+
+#. Label of the type (Select) field in DocType 'Mint Bank Statement Import
+#. Transactions'
+#: frontend/src/components/common/PartyTypeDropdown.tsx:67
+#: frontend/src/components/common/PartyTypeDropdown.tsx:70
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:68
+#: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
+msgid "Type"
+msgstr "Typ"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:186
+msgid "Type of check"
+msgstr "Art der Prüfung"
+
+#: frontend/src/components/features/Settings/Settings.tsx:109
+msgid "US"
+msgstr "US"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:67
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:273
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:768
+#: frontend/src/components/features/BankReconciliation/SelectedTransactionDetails.tsx:64
+msgid "Unallocated"
+msgstr "Nicht zugeordnet"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:190
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:114
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:305
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:180
+#: frontend/src/components/features/BankReconciliation/utils.ts:219
+msgid "Undo"
+msgstr "Rückgängig"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:30
+msgid "Undo Transaction Reconciliation"
+msgstr "Transaktionsabstimmung rückgängig machen"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:119
+msgid "Unreconcile"
+msgstr "Abstimmung aufheben"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:44
+msgid "Unreconciled Transactions"
+msgstr "Nicht abgestimmte Transaktionen"
+
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:262
+msgid "Updating..."
+msgstr "Wird aktualisiert..."
+
+#: frontend/src/components/features/BankReconciliation/TransferModal.tsx:465
+msgid "Use Suggestion"
+msgstr "Vorschlag verwenden"
+
+#. Label of the value (Small Text) field in DocType 'Mint Bank Transaction
+#. Description Rules'
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:201
+#: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
+msgid "Value"
+msgstr "Wert"
+
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:104
+msgid "View"
+msgstr "Anzeigen"
+
+#. Option for the 'Type' (Select) field in DocType 'Mint Bank Statement Import
+#. Transactions'
+#. Option for the 'Transaction Type' (Select) field in DocType 'Mint Bank
+#. Transaction Rule'
+#: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:65
+#: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:328
+#: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:137
+#: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
+#: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
+msgid "Withdrawal"
+msgstr "Abhebung"
+
+#: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:100
+msgid "You can reset the clearing dates of these entries here."
+msgstr "Sie können hier die Freigabedaten dieser Einträge zurücksetzen."
+
+#: frontend/src/components/features/BankReconciliation/BankBalance.tsx:168
+msgid "Your Progress"
+msgstr "Ihr Fortschritt"
+
+#: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:428
+#: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1146
+msgid "e.g. Bank Charges"
+msgstr "z.B. Bankgebühren"
+
+#. Option for the 'Google Processor Location' (Select) field in DocType 'Mint
+#. Settings'
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "eu"
+msgstr "eu"
+
+#: frontend/src/components/features/BankReconciliation/BankBalance.tsx:168
+msgid "reconciled"
+msgstr "abgestimmt"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:311
+msgid "transaction selected"
+msgstr "Transaktion ausgewählt"
+
+#: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:311
+msgid "transactions selected"
+msgstr "Transaktionen ausgewählt"
+
+#. Option for the 'Google Processor Location' (Select) field in DocType 'Mint
+#. Settings'
+#: mint/mint/doctype/mint_settings/mint_settings.json
+msgid "us"
+msgstr "us"
+
+#: mint/apis/bank_reconciliation.py:389
+msgid "{0} {1} does not exist"
+msgstr "{0} {1} existiert nicht"
+

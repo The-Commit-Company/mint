@@ -153,7 +153,7 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
                     <div className="col-span-1">
                         <PartyTypeFormField
                             name='party_type'
-                            label={"Party Type"}
+                            label={_("Party Type")}
                             isRequired
                             inputProps={{
                                 triggerProps: {
@@ -168,7 +168,7 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
                     <div className="col-span-3">
                         {party_type ? <LinkFormField
                             name={`party`}
-                            label={"Party"}
+                            label={_("Party")}
                             isRequired
                             rules={{
                                 onChange: onPartyChange,
@@ -180,7 +180,7 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
 
                         /> : <DataField
                             name={`party`}
-                            label={"Party"}
+                            label={_("Party")}
                             rules={{
                                 required: _('Party is required')
                             }}
@@ -197,7 +197,7 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
                     <div className="col-span-2">
                         <AccountFormField
                             name='account'
-                            label='Account'
+                            label={_("Account")}
                             isRequired
                             rules={{
                                 required: _('Account is required')
@@ -217,7 +217,7 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
                     <div className="col-span-2">
                         <LinkFormField
                             name='mode_of_payment'
-                            label='Mode of Payment'
+                            label={_("Mode of Payment")}
                             doctype="Mode of Payment"
                         />
                     </div>
@@ -327,7 +327,7 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
                             <div className="col-span-1">
                                 <PartyTypeFormField
                                     name='party_type'
-                                    label={"Party Type"}
+                                    label={_("Party Type")}
                                     isRequired
                                     inputProps={{
                                         triggerProps: {
@@ -351,7 +351,7 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
                             <div className="col-span-2">
                                 <LinkFormField
                                     name='mode_of_payment'
-                                    label='Mode of Payment'
+                                    label={_("Mode of Payment")}
                                     doctype="Mode of Payment"
                                 />
                             </div>
@@ -377,22 +377,22 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
                         <div className="grid grid-cols-2 gap-4">
                             <DateField
                                 name='posting_date'
-                                label={"Posting Date"}
+                                label={_("Posting Date")}
                                 isRequired
                                 inputProps={{ autoFocus: false }}
                             />
                             <DateField
                                 name='reference_date'
-                                label={"Reference Date"}
+                                label={_("Reference Date")}
                                 isRequired
                                 inputProps={{ autoFocus: false }}
                             />
                         </div>
-                        <DataField name='reference_no' label={"Reference No"} isRequired inputProps={{ autoFocus: false }} />
+                        <DataField name='reference_no' label={_("Reference No")} isRequired inputProps={{ autoFocus: false }} />
                     </div>
                     <SmallTextField
                         name='remarks'
-                        label={"Custom Remarks"}
+                        label={_("Custom Remarks")}
                         formDescription={"This will be auto-populated if not set."}
                     />
 
@@ -462,7 +462,7 @@ const PartyField = () => {
     if (!party_type) {
         return <DataField
             name={`party`}
-            label={"Party"}
+            label={_("Party")}
             isRequired
             inputProps={{
                 disabled: true,
@@ -472,7 +472,7 @@ const PartyField = () => {
 
     return <LinkFormField
         name={`party`}
-        label={"Party"}
+        label={_("Party")}
         rules={{
             onChange
         }}
@@ -518,7 +518,7 @@ const AccountDropdown = ({ isWithdrawal }: { isWithdrawal: boolean }) => {
     if (isWithdrawal) {
         return <AccountFormField
             name='paid_to'
-            label='Paid To (GL Account)'
+            label={_("Paid To (GL Account)")}
             isRequired
             rules={{
                 required: 'Paid To is required',
@@ -530,7 +530,7 @@ const AccountDropdown = ({ isWithdrawal }: { isWithdrawal: boolean }) => {
     } else {
         return <AccountFormField
             name='paid_from'
-            label='Paid From (GL Account)'
+            label={_("Paid From (GL Account)")}
             isRequired
             rules={{
                 required: 'Paid From is required',
@@ -580,7 +580,7 @@ const InvoicesSection = ({ currency }: { currency: string }) => {
 
     return <div className="flex flex-col gap-2">
         <div className="flex gap-4 items-center">
-            <H4 className="text-base">Invoices</H4>
+            <H4 className="text-base">{_("Invoices")}</H4>
             <GetUnpaidInvoicesButton />
         </div>
         <Table>
@@ -634,7 +634,7 @@ const InvoicesSection = ({ currency }: { currency: string }) => {
                         <TableCell className="text-right max-w-36">
                             <CurrencyFormField
                                 name={`references.${index}.allocated_amount`}
-                                label={"Allocated"}
+                                label={_("Allocated")}
                                 isRequired
                                 rules={{
                                     onChange: () => setTotalAllocatedAmount()
@@ -1152,7 +1152,7 @@ const OtherChargesSection = ({ currency }: { currency: string }) => {
                         <TableCell className="text-right align-top">
                             <CurrencyFormField
                                 name={`deductions.${index}.amount`}
-                                label={"Amount"}
+                                label={_("Amount")}
                                 isRequired
                                 hideLabel
                                 currency={currency}

@@ -160,5 +160,72 @@ export const BANK_LOGOS: { keywords: string[], logo: string }[] = [
     {
         keywords: ['Fi Bank'],
         logo: 'assets/bank-logos/Fi_Bank.svg'
+    },
+    // Australia and New Zealand
+    {
+        keywords: ["Commonwealth Bank", "CBA"],
+        logo: "assets/bank-logos/Commonwealth_Bank.svg"
+    },
+    {
+        keywords: ["Airwallex"],
+        logo: "assets/bank-logos/Airwallex.png"
+    },
+    {
+        keywords: ["Judo Bank"],
+        logo: "assets/bank-logos/JudoBank.png"
+    },
+    {
+        keywords: ["Alpha"], // This might conflict with Alpha Bank in Greece
+        logo: "assets/bank-logos/AlphaGroupInternational.png"
+    },
+    {
+        keywords: ["Australian Tax Office", "Australian Taxation Office"],
+        logo: "assets/bank-logos/Australian_Tax_Office.png"
+    },
+    {
+        keywords: ["Westpac"],
+        logo: "assets/bank-logos/Westpac.png"
+    },
+    {
+        keywords: ["ANZ", "ANZ Bank", "Australia and New Zealand Banking Group"],
+        logo: "assets/bank-logos/ANZ.png"
+    },
+    {
+        keywords: ["Macquarie Group", "Macquarie Bank"],
+        logo: "assets/bank-logos/Macquarie.png"
+    },
+    // Nicaragua
+    {
+        keywords: ["Banco Atlantida", "Banco Atlántida"],
+        logo: "assets/bank-logos/Banco_Atlantida.png"
+    },
+    {
+        keywords: ["Banco de Finanzas"],
+        logo: "assets/bank-logos/Banco_de_Finanzas.svg"
+    },
+    {
+        keywords: ["Avanz"],
+        logo: "assets/bank-logos/Avanz.svg"
+    },
+    {
+        keywords: ["Ficohsa"],
+        logo: "assets/bank-logos/Ficohsa.svg"
+    },
+    {
+        keywords: ["BAC", "BAC Credomatic"],
+        logo: "assets/bank-logos/BAC_Credomatic.svg"
+    },
+    {
+        keywords: ["Banco Lafise"],
+        logo: "assets/bank-logos/Banco_Lafise.png"
+    },
+    // German
+    {
+        keywords: ["Sparkasse"],
+        logo: "assets/bank-logos/Sparkasse.png"
+    },
+    {
+        keywords: ["Volksbanken Raiffeisenbanken", "VRde"],
+        logo: "assets/bank-logos/Volksbanken_Raiffeisenbanken.svg"
     }
 ]

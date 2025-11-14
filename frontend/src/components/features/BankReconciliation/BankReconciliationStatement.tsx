@@ -82,7 +82,9 @@ const BankReconciliationStatementView = () => {
 
         <div>
             <Paragraph className="text-sm">
-                Below is a list of all entries posted against the bank account <strong>{bankAccount?.account}</strong> which have not been cleared till <strong>{formatDate(dates.toDate)}</strong>.
+                <span dangerouslySetInnerHTML={{
+                    __html: _("Below is a list of all entries posted against the bank account {0} which have not been cleared till {1}.", [`<strong>${bankAccount?.account}</strong>`, `<strong>${formatDate(dates.toDate)}</strong>`])
+                }} />
             </Paragraph>
         </div>
 
