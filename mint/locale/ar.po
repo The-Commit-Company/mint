@@ -1089,7 +1089,7 @@ msgstr "الإجراء الموصى به"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:745
 msgid "Reconcile"
-msgstr "مصالحة"
+msgstr "تسوية"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:96
 #: frontend/src/components/features/BankReconciliation/utils.ts:215
