@@ -1,4 +1,4 @@
-# Translations template for Mint.
+# Arabic translations for Mint.
 # Copyright (C) 2025 The Commit Company (Algocode Technologies Pvt. Ltd.)
 # This file is distributed under the same license as the Mint project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
@@ -10,7 +10,9 @@ msgstr ""
 "POT-Creation-Date: 2025-11-24 12:16+0000\n"
 "PO-Revision-Date: 2025-11-24 12:16+0000\n"
 "Last-Translator: support@thecommit.company\n"
+"Language: ar\n"
 "Language-Team: support@thecommit.company\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,15 +21,15 @@ msgstr ""
 #. Header text in the Mint Workspace
 #: mint/mint/workspace/mint/mint.json
 msgid "<span class=\"h4\"><a href=\"/mint\">Bank Reconciliation</a></span>"
-msgstr ""
+msgstr "<span class=\"h4\"><a href=\"/mint\">تسوية البنك</a></span>"
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:465
 msgid "Accepted"
-msgstr ""
+msgstr "مقبول"
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:422
 msgid "Accepting the suggestion will reconcile both transactions."
-msgstr ""
+msgstr "قبول الاقتراح سوف يوفق بين المعاملتين."
 
 #. Label of a Link field in DocType 'Mint Bank Transaction Rule'
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:113
@@ -40,78 +42,78 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:291
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Account"
-msgstr ""
+msgstr "الحساب"
 
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.py:71
 msgid "Account company does not match with the rule company."
-msgstr ""
+msgstr "شركة الحساب غير متطابقة مع شركة القاعدة."
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:403
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:203
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1114
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:294
 msgid "Account is required"
-msgstr ""
+msgstr "الحساب مطلوب"
 
 #. Label of a Section Break field in DocType 'Mint Bank Transaction Rule'
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Action"
-msgstr ""
+msgstr "العمل"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:553
 msgid "Action Type"
-msgstr ""
+msgstr "نوع العمل"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:72
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:123
 msgid "Actions"
-msgstr ""
+msgstr "الإجراءات"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:450
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1173
 msgid "Add Row"
-msgstr ""
+msgstr "إضافة صف"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:219
 msgid "Add Rule"
-msgstr ""
+msgstr "إضافة القاعدة"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:792
 msgid "Add a charge to the payment entry with the difference amount"
-msgstr ""
+msgstr "إضافة رسوم إلى قيد المدفوعات بمبلغ الفرق"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:776
 msgid "Add a charge to the payment entry with the unallocated amount"
-msgstr ""
+msgstr "إضافة رسوم إلى قيد المدفوعات بالمبلغ غير المخصص"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:535
 msgid "Add a row to with the difference amount"
-msgstr ""
+msgstr "إضافة صف إلى مع مقدار الفرق"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:102
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:105
 msgid "Against Account"
-msgstr ""
+msgstr "الحساب المقابل"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:200
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:120
 msgid "All"
-msgstr ""
+msgstr "الكل"
 
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.py:80
 msgid "All rows must have an amount and a type. Missing in row {0}"
-msgstr ""
+msgstr "يجب أن تحتوي جميع الصفوف على مبلغ ونوع. "
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:600
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:637
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:763
 msgid "Allocated"
-msgstr ""
+msgstr "المخصصة"
 
 #. Label of a Link field in DocType 'Mint Bank Statement Import'
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 msgid "Amended From"
-msgstr ""
+msgstr "معدل من"
 
 #. Label of a Currency field in DocType 'Mint Bank Statement Import
 #. Transactions'
@@ -125,53 +127,53 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/SelectedTransactionsTable.tsx:25
 #: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
 msgid "Amount"
-msgstr ""
+msgstr "المبلغ"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:704
 msgid "Amount does not match the selected transaction"
-msgstr ""
+msgstr "المبلغ لا يتطابق مع المعاملة المحددة"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:702
 msgid "Amount matches the selected transaction"
-msgstr ""
+msgstr "المبلغ يطابق المعاملة المحددة"
 
 #. Option for the 'Transaction Type' (Select) field in DocType 'Mint Bank
 #. Transaction Rule'
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:328
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Any"
-msgstr ""
+msgstr "أي"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:41
 msgid "Any debit transaction with the keyword 'Bank Fee'."
-msgstr ""
+msgstr "أي معاملة مدينة بالكلمة الرئيسية "رسوم البنك"."
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:32
 msgid "Are you sure you want to unreconcile this transaction?"
-msgstr ""
+msgstr "هل أنت متأكد أنك تريد إلغاء هذه المعاملة؟"
 
 #. Label of a Check field in DocType 'Mint Settings'
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "Automatically run rules on unreconciled transactions"
-msgstr ""
+msgstr "تشغيل القواعد تلقائيًا على المعاملات التي لم تتم تسويتها"
 
 #. Label of a Link field in DocType 'Mint Bank Statement Import'
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 msgid "Bank Account"
-msgstr ""
+msgstr "الحساب البنكي"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:27
 msgid "Bank Charges, Salary, etc."
-msgstr ""
+msgstr "الرسوم المصرفية، الراتب، الخ."
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:94
 #: frontend/src/pages/BankReconciliation.tsx:53
 msgid "Bank Clearance Summary"
-msgstr ""
+msgstr "ملخص مخالصة البنك"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:90
 msgid "Bank Entries Created"
-msgstr ""
+msgstr "تم إنشاء إدخالات البنك"
 
 #. Option for the 'Classify As' (Select) field in DocType 'Mint Bank
 #. Transaction Rule'
@@ -181,83 +183,83 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:260
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Bank Entry"
-msgstr ""
+msgstr "قيد بنكي"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:186
 msgid "Bank Entry Created"
-msgstr ""
+msgstr "تم إنشاء قيد بنكي"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:204
 msgid "Bank Fee, Salary, etc."
-msgstr ""
+msgstr "الرسوم المصرفية، الراتب، الخ."
 
 #. Label of a Link in the Mint Workspace
 #. Label of a shortcut in the Mint Workspace
 #: frontend/src/pages/BankReconciliation.tsx:37
 #: mint/mint/workspace/mint/mint.json
 msgid "Bank Reconciliation"
-msgstr ""
+msgstr "تسوية البنك"
 
 #: mint/mint/page/bank_reconciliation/bank_reconciliation.js:7
 msgid "Bank Reconciliation - Mint"
-msgstr ""
+msgstr "تسوية البنك - Mint"
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:97
 #: frontend/src/pages/BankReconciliation.tsx:51
 msgid "Bank Reconciliation Statement"
-msgstr ""
+msgstr "بيان تسوية البنك"
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:215
 msgid "Bank Statement Balance as per General Ledger"
-msgstr ""
+msgstr "رصيد كشف الحساب البنكي حسب دفتر الأستاذ العام"
 
 #: frontend/src/components/features/Settings/Settings.tsx:177
 msgid "Bank Statement Processor"
-msgstr ""
+msgstr "معالج كشف الحساب البنكي"
 
 #: mint/apis/google_ai.py:132
 msgid "Bank Statement Processor is not set in Mint Settings"
-msgstr ""
+msgstr "لم يتم تعيين معالج كشف الحساب البنكي في إعدادات Mint"
 
 #. Label of a Link in the Mint Workspace
 #: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:36
 #: mint/mint/workspace/mint/mint.json
 msgid "Bank Transaction"
-msgstr ""
+msgstr "المعاملة البنكية"
 
 #: mint/apis/bank_reconciliation.py:31
 msgid "Bank Transaction {0} is already fully reconciled"
-msgstr ""
+msgstr "المعاملة المصرفية {0} تمت تسويتها بالكامل بالفعل"
 
 #: frontend/src/pages/BankReconciliation.tsx:52
 msgid "Bank Transactions"
-msgstr ""
+msgstr "المعاملات البنكية"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:61
 msgid "Bank Transactions between {0} and {1}"
-msgstr ""
+msgstr "المعاملات البنكية بين {0} و{1}"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:85
 msgid "Below is a list of all accounting entries posted against the bank account {0} between {1} and {2}."
-msgstr ""
+msgstr "توجد أدناه قائمة بجميع الإدخالات المحاسبية المنشورة على الحساب البنكي {0} بين {1} و{2}."
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:52
 msgid "Below is a list of all bank transactions imported in the system for the bank account {0} between {1} and {2}."
-msgstr ""
+msgstr "توجد أدناه قائمة بجميع المعاملات البنكية المستوردة في النظام للحساب البنكي {0} بين {1} و{2}."
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:86
 msgid "Below is a list of all entries posted against the bank account {0} which have not been cleared till {1}."
-msgstr ""
+msgstr "فيما يلي قائمة بجميع الإدخالات المنشورة على الحساب البنكي {0} والتي لم تتم تصفيتها حتى {1}."
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:233
 msgid "Calculated Bank Statement Balance"
-msgstr ""
+msgstr "حساب رصيد كشف الحساب البنكي"
 
 #. Description of the 'String Amount' (Data) field in DocType 'Mint Bank
 #. Statement Import Transactions'
 #: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
 msgid "Can be \"1200 Dr\" and will be translated to 1200 in amount and \"Withdrawal\""
-msgstr ""
+msgstr "يمكن \"1200 د\" وسيتم ترجمتها إلى 1200 مبلغ و\"سحب\""
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:120
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:247
@@ -267,40 +269,40 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:117
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:281
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #. Label of a Select field in DocType 'Mint Bank Transaction Description Rules'
 #: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
 msgid "Check"
-msgstr ""
+msgstr "تحقق"
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:225
 msgid "Checks and Deposits incorrectly cleared"
-msgstr ""
+msgstr "مقاصة الشيكات والودائع بشكل غير صحيح"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:100
 msgid "Cheque/Reference Number"
-msgstr ""
+msgstr "الشيك/الرقم المرجعي"
 
 #. Label of a Select field in DocType 'Mint Bank Transaction Rule'
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Classify As"
-msgstr ""
+msgstr "تصنيف ك"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:101
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:108
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:122
 msgid "Clearance Date"
-msgstr ""
+msgstr "تاريخ التخليص"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:129
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:80
 msgid "Cleared"
-msgstr ""
+msgstr "مسح"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:703
 msgid "Click to pay in full."
-msgstr ""
+msgstr "انقر للدفع بالكامل."
 
 #: frontend/src/components/features/BankReconciliation/Rules/CreateNewRule.tsx:58
 #: frontend/src/components/features/BankReconciliation/Rules/EditRule.tsx:36
@@ -309,143 +311,143 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:233
 #: frontend/src/components/features/Settings/Settings.tsx:135
 msgid "Close"
-msgstr ""
+msgstr "أغلاق"
 
 #: frontend/src/components/features/BankReconciliation/BankBalance.tsx:58
 msgid "Closing Balance as per system"
-msgstr ""
+msgstr "الرصيد الختامي حسب النظام"
 
 #: frontend/src/components/features/BankReconciliation/BankBalance.tsx:65
 msgid "Closing balance as per system"
-msgstr ""
+msgstr "الرصيد الختامي حسب النظام"
 
 #. Label of a Link field in DocType 'Mint Bank Transaction Rule'
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:73
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Company"
-msgstr ""
+msgstr "شركة"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:77
 msgid "Company is required"
-msgstr ""
+msgstr "الشركة مطلوبة"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:732
 msgid "Complete Match"
-msgstr ""
+msgstr "مطابق بالكامل"
 
 #. Option for the 'Status' (Select) field in DocType 'Mint Bank Statement
 #. Import'
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 msgid "Completed"
-msgstr ""
+msgstr "اكتمل"
 
 #: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:18
 #: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:24
 msgid "Configure match filters for vouchers"
-msgstr ""
+msgstr "تكوين مرشحات المطابقة للقسائم"
 
 #: frontend/src/components/features/Settings/Settings.tsx:70
 msgid "Configure settings for Mint."
-msgstr ""
+msgstr "تكوين الإعدادات لـ Mint."
 
 #. Option for the 'Check' (Select) field in DocType 'Mint Bank Transaction
 #. Description Rules'
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:192
 #: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
 msgid "Contains"
-msgstr ""
+msgstr "يحتوي على"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:76
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:76
 msgid "Copied to clipboard"
-msgstr ""
+msgstr "تم النسخ إلى الحافظة"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:119
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:134
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "نسخ إلى الحافظة"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:363
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:417
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1092
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1136
 msgid "Cost Center"
-msgstr ""
+msgstr "مركز التكلفة"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1133
 msgid "Cost Center is required"
-msgstr ""
+msgstr "مركز التكلفة مطلوب"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:582
 msgid "Create"
-msgstr ""
+msgstr "إنشاء"
 
 #: frontend/src/components/features/Settings/Settings.tsx:197
 msgid "Create New Bank Statement Processor"
-msgstr ""
+msgstr "إنشاء معالج كشف حساب بنكي جديد"
 
 #: frontend/src/components/common/LinkFieldCombobox.tsx:275
 msgid "Create New {0}"
-msgstr ""
+msgstr "إنشاء جديد {0}"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:513
 msgid "Create a journal entry for expenses, income or split transactions"
-msgstr ""
+msgstr "قم بإنشاء قيد يومية للنفقات أو الدخل أو المعاملات المقسمة"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:519
 msgid "Create a new entry based on the rule"
-msgstr ""
+msgstr "قم بإنشاء إدخال جديد بناءً على القاعدة"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:199
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:229
 msgid "Create a new rule"
-msgstr ""
+msgstr "إنشاء قاعدة جديدة"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:72
 msgid "Create a new rule to automatically classify transactions."
-msgstr ""
+msgstr "إنشاء قاعدة جديدة لتصنيف المعاملات تلقائيًا."
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:104
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:120
 msgid "Credit"
-msgstr ""
+msgstr "الائتمان"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:202
 msgid "Credits"
-msgstr ""
+msgstr "الائتمانات"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:395
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:274
 msgid "Custom Remarks"
-msgstr ""
+msgstr "ملاحظات مخصصة"
 
 #. Label of a Date field in DocType 'Mint Bank Statement Import Transactions'
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:64
 #: frontend/src/components/features/BankReconciliation/SelectedTransactionsTable.tsx:19
 #: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
 msgid "Date"
-msgstr ""
+msgstr "التاريخ"
 
 #: frontend/src/lib/date.ts:136
 msgid "Date Range"
-msgstr ""
+msgstr "نطاق التاريخ"
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:103
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:119
 msgid "Debit"
-msgstr ""
+msgstr "الخصم"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:201
 msgid "Debits"
-msgstr ""
+msgstr "الديون"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:348
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:104
 msgid "Deleting rule..."
-msgstr ""
+msgstr "حذف القاعدة..."
 
 #. Option for the 'Type' (Select) field in DocType 'Mint Bank Statement Import
 #. Transactions'
@@ -457,7 +459,7 @@ msgstr ""
 #: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Deposit"
-msgstr ""
+msgstr "الإيداع"
 
 #. Label of a Small Text field in DocType 'Mint Bank Statement Import
 #. Transactions'
@@ -466,70 +468,70 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/SelectedTransactionsTable.tsx:22
 #: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
 msgid "Description"
-msgstr ""
+msgstr "الوصف"
 
 #. Label of a Table field in DocType 'Mint Bank Transaction Rule'
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Description Rules"
-msgstr ""
+msgstr "قواعد الوصف"
 
 #: frontend/src/components/features/BankReconciliation/BankBalance.tsx:137
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:527
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:784
 msgid "Difference"
-msgstr ""
+msgstr "الفرق"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:276
 msgid "Disabled"
-msgstr ""
+msgstr "معطل"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:82
 msgid "Document"
-msgstr ""
+msgstr "وثيقة"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:97
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:101
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:117
 msgid "Document Type"
-msgstr ""
+msgstr "نوع الوثيقة"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:313
 msgid "Drag to reorder"
-msgstr ""
+msgstr "اسحب لإعادة الترتيب"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:597
 msgid "Due Date"
-msgstr ""
+msgstr "تاريخ الاستحقاق"
 
 #: frontend/src/components/features/Settings/Settings.tsx:110
 msgid "EU"
-msgstr ""
+msgstr "الاتحاد الأوروبي"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:72
 msgid "Edit this rule"
-msgstr ""
+msgstr "تعديل هذه القاعدة"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:274
 msgid "Enabled"
-msgstr ""
+msgstr "مفعل"
 
 #. Option for the 'Check' (Select) field in DocType 'Mint Bank Transaction
 #. Description Rules'
 #: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
 msgid "Ends With"
-msgstr ""
+msgstr "ينتهي ب"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:194
 msgid "Ends with"
-msgstr ""
+msgstr "ينتهي ب"
 
 #: frontend/src/components/features/BankReconciliation/BankBalance.tsx:98
 msgid "Enter Closing Balance as per statement"
-msgstr ""
+msgstr "أدخل الرصيد الختامي حسب كشف الحساب"
 
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:102
 msgid "Entries below have a posting date after {0} but the clearance date is before {1}."
-msgstr ""
+msgstr "الإدخالات أدناه لها تاريخ نشر بعد {0} ولكن تاريخ التصفية قبل {1}."
 
 #. Option for the 'Status' (Select) field in DocType 'Mint Bank Statement
 #. Import'
@@ -537,406 +539,406 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/utils.ts:228
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 msgid "Error"
-msgstr ""
+msgstr "خطأ"
 
 #: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:35
 msgid "Expense Claim"
-msgstr ""
+msgstr "مطالبة بالنفقات"
 
 #: mint/apis/google_ai.py:116
 msgid "Failed to create document processor"
-msgstr ""
+msgstr "فشل في إنشاء معالج المستندات"
 
 #: frontend/src/components/features/Settings/Settings.tsx:163
 #: mint/apis/google_ai.py:104
 msgid "Failed to create processor"
-msgstr ""
+msgstr "فشل في إنشاء المعالج"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:106
 msgid "Failed to delete rule."
-msgstr ""
+msgstr "فشل في حذف القاعدة."
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:117
 msgid "Failed to run rules evaluation"
-msgstr ""
+msgstr "فشل في تشغيل تقييم القواعد"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:264
 msgid "Failed to update auto classify transactions settings"
-msgstr ""
+msgstr "فشل في تحديث إعدادات معاملات التصنيف التلقائي"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:145
 msgid "Failed to update rule priorities"
-msgstr ""
+msgstr "فشل في تحديث أولويات القاعدة"
 
 #. Label of a Attach field in DocType 'Mint Bank Statement Import'
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 msgid "File"
-msgstr ""
+msgstr "ملف"
 
 #. Label of a Select field in DocType 'Mint Bank Statement Import'
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 msgid "File Type"
-msgstr ""
+msgstr "نوع الملف"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:164
 msgid "Filter by amount"
-msgstr ""
+msgstr "تصفية حسب المبلغ"
 
 #: frontend/src/components/features/Settings/Settings.tsx:84
 msgid "For example, if set to 4, Mint will try to find matching transactions in other banks 4 days before and after the transaction date. This is because transactions can clear on different days on different bank accounts."
-msgstr ""
+msgstr "على سبيل المثال، إذا تم التعيين على 4، فستحاول Mint العثور على المعاملات المطابقة في البنوك الأخرى قبل 4 أيام من تاريخ المعاملة وبعده. "
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:175
 msgid "Force Evaluate All"
-msgstr ""
+msgstr "تقييم الكل"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:173
 msgid "Force re-evaluate all unreconciled transactions, even if they were previously evaluated"
-msgstr ""
+msgstr "فرض إعادة تقييم كافة المعاملات التي لم تتم تسويتها، حتى لو تم تقييمها مسبقًا"
 
 #: frontend/src/components/features/BankReconciliation/SelectedTransactionDetails.tsx:70
 msgid "GL Account"
-msgstr ""
+msgstr "حساب دفتر الأستاذ العام"
 
 #. Label of a Section Break field in DocType 'Mint Settings'
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "General"
-msgstr ""
+msgstr "عام"
 
 #: mint/apis/google_ai.py:78
 msgid "Google APIs are not enabled. Please enable them in Mint Settings."
-msgstr ""
+msgstr "لم يتم تمكين واجهات برمجة تطبيقات Google. "
 
 #. Label of a Section Break field in DocType 'Mint Settings'
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "Google Document AI"
-msgstr ""
+msgstr "مستند جوجل AI"
 
 #. Label of a Data field in DocType 'Mint Settings'
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "Google Document Processor - Bank Statement"
-msgstr ""
+msgstr "معالج مستندات Google - كشف الحساب البنكي"
 
 #: frontend/src/components/features/Settings/Settings.tsx:101
 msgid "Google Document Processor Location"
-msgstr ""
+msgstr "موقع معالج مستندات Google"
 
 #. Label of a Select field in DocType 'Mint Settings'
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "Google Processor Location"
-msgstr ""
+msgstr "موقع المعالج جوجل"
 
 #. Label of a Data field in DocType 'Mint Settings'
 #: frontend/src/components/features/Settings/Settings.tsx:91
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "Google Project ID"
-msgstr ""
+msgstr "معرف مشروع جوجل"
 
 #: mint/apis/google_ai.py:126
 msgid "Google Project ID is not set in Mint Settings"
-msgstr ""
+msgstr "لم يتم تعيين معرف مشروع Google في إعدادات Mint"
 
 #: mint/apis/google_ai.py:17
 msgid "Google Project ID is not set. Please set it in the Mint Settings."
-msgstr ""
+msgstr "لم يتم تعيين معرف مشروع Google. "
 
 #. Label of a Password field in DocType 'Mint Settings'
 #: frontend/src/components/features/Settings/Settings.tsx:121
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "Google Service Account JSON Key"
-msgstr ""
+msgstr "مفتاح JSON لحساب خدمة Google"
 
 #: mint/apis/google_ai.py:129
 msgid "Google Service Account JSON Key is not set in Mint Settings"
-msgstr ""
+msgstr "لم يتم تعيين مفتاح JSON لحساب خدمة Google في إعدادات Mint"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:598
 msgid "Grand Total"
-msgstr ""
+msgstr "المجموع الكلي"
 
 #. Description of the 'Automatically run rules on unreconciled transactions'
 #. (Check) field in DocType 'Mint Settings'
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "If checked, this job will run every 30 minutes"
-msgstr ""
+msgstr "إذا تم تحديده، سيتم تشغيل هذه المهمة كل 30 دقيقة"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:249
 msgid "If rule matches, then:"
-msgstr ""
+msgstr "إذا تطابقت القاعدة، إذن:"
 
 #: frontend/src/components/features/BankReconciliation/BankBalance.tsx:71
 msgid "If your bank statement shows a different closing balance, it is because all transactions have not reconciled yet."
-msgstr ""
+msgstr "إذا أظهر كشف حسابك البنكي رصيدًا إغلاقًا مختلفًا، فذلك لأن جميع المعاملات لم تتم تسويتها بعد."
 
 #. Label of a Check field in DocType 'Mint Bank Statement Import Transactions'
 #: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
 msgid "Imported"
-msgstr ""
+msgstr "مستورد"
 
 #: frontend/src/pages/BankReconciliation.tsx:54
 msgid "Incorrectly Cleared Entries"
-msgstr ""
+msgstr "الإدخالات التي تم مسحها بشكل غير صحيح"
 
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:114
 msgid "Incorrectly cleared entries as per the report."
-msgstr ""
+msgstr "تم مسح الإدخالات بشكل غير صحيح حسب التقرير."
 
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.py:56
 msgid "Invalid file type"
-msgstr ""
+msgstr "نوع الملف غير صالح"
 
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.py:67
 msgid "Invalid regex pattern."
-msgstr ""
+msgstr "نمط التعبير العادي غير صالح."
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:596
 msgid "Invoice No"
-msgstr ""
+msgstr "رقم الفاتورة"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:583
 msgid "Invoices"
-msgstr ""
+msgstr "الفواتير"
 
 #: frontend/src/components/features/BankReconciliation/BankBalance.tsx:69
 msgid "It takes into account all the transactions that have been posted and subtracts the transactions that have not cleared yet."
-msgstr ""
+msgstr "يأخذ في الاعتبار جميع المعاملات التي تم ترحيلها ويطرح المعاملات التي لم يتم تسويتها بعد."
 
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:150
 msgid "It's all good!"
-msgstr ""
+msgstr "كل شيء جيد!"
 
 #: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:32
 msgid "Journal Entry"
-msgstr ""
+msgstr "إدخال دفتر اليومية"
 
 #: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:80
 msgid "Last Fiscal Year"
-msgstr ""
+msgstr "السنة المالية الماضية"
 
 #: frontend/src/lib/date.ts:108
 msgid "Last Month"
-msgstr ""
+msgstr "الشهر الماضي"
 
 #: frontend/src/lib/date.ts:118
 msgid "Last Quarter"
-msgstr ""
+msgstr "الربع الأخير"
 
 #: frontend/src/components/features/BankReconciliation/BankPicker.tsx:90
 msgid "Last Synced Transaction"
-msgstr ""
+msgstr "آخر معاملة تمت مزامنتها"
 
 #: frontend/src/lib/date.ts:98
 msgid "Last Week"
-msgstr ""
+msgstr "الأسبوع الماضي"
 
 #: frontend/src/lib/date.ts:128
 msgid "Last Year"
-msgstr ""
+msgstr "العام الماضي"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:146
 msgid "Loading"
-msgstr ""
+msgstr "جاري التحميل"
 
 #: frontend/src/components/common/LinkFieldCombobox.tsx:259
 msgid "Loading..."
-msgstr ""
+msgstr "جارٍ التحميل..."
 
 #: frontend/src/components/features/Settings/Settings.tsx:113
 #: frontend/src/components/features/Settings/Settings.tsx:190
 msgid "Location where the document processor is run."
-msgstr ""
+msgstr "الموقع الذي يتم فيه تشغيل معالج المستندات."
 
 #. Label of a Int field in DocType 'Mint Settings'
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "Match Transfers across (days)"
-msgstr ""
+msgstr "تحويلات المستندات التي تم تطابقها عبر (أيام)"
 
 #: frontend/src/pages/BankReconciliation.tsx:50
 msgid "Match and Reconcile"
-msgstr ""
+msgstr "التطابق والتوفيق"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:49
 msgid "Match or Create"
-msgstr ""
+msgstr "تطابق أو إنشاء"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:264
 msgid "Matched by rule"
-msgstr ""
+msgstr "المتطابقة بالقاعدة"
 
 #. Label of a Currency field in DocType 'Mint Bank Transaction Rule'
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Max Amount"
-msgstr ""
+msgstr "الحد الأقصى للمبلغ"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:55
 msgid "Maximum Amount"
-msgstr ""
+msgstr "الحد الأقصى للمبلغ"
 
 #. Label of a Currency field in DocType 'Mint Bank Transaction Rule'
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Min Amount"
-msgstr ""
+msgstr "الحد الأدنى للمبلغ"
 
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.py:52
 msgid "Min amount cannot be greater than max amount."
-msgstr ""
+msgstr "لا يمكن أن يكون الحد الأدنى للمبلغ أكبر من الحد الأقصى."
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:50
 msgid "Minimum Amount"
-msgstr ""
+msgstr "الحد الأدنى"
 
 #. Name of a Workspace
 #: mint/mint/workspace/mint/mint.json
 msgid "Mint"
-msgstr ""
+msgstr "Mint"
 
 #. Name of a DocType
 #. Label of a Link in the Mint Workspace
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 #: mint/mint/workspace/mint/mint.json
 msgid "Mint Bank Statement Import"
-msgstr ""
+msgstr "استيراد كشف حساب البنك"
 
 #. Name of a DocType
 #: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
 msgid "Mint Bank Statement Import Transactions"
-msgstr ""
+msgstr "معاملات استيراد كشف الحساب البنكي"
 
 #. Name of a DocType
 #: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
 msgid "Mint Bank Transaction Description Rules"
-msgstr ""
+msgstr "قواعد وصف المعاملات الخاصة"
 
 #. Name of a DocType
 #. Label of a Link in the Mint Workspace
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 #: mint/mint/workspace/mint/mint.json
 msgid "Mint Bank Transaction Rule"
-msgstr ""
+msgstr "قاعدة المعاملات في بنك"
 
 #. Name of a DocType
 #. Label of a Link in the Mint Workspace
 #: mint/mint/doctype/mint_settings/mint_settings.json
 #: mint/mint/workspace/mint/mint.json
 msgid "Mint Settings"
-msgstr ""
+msgstr "إعدادات"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:220
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:354
 msgid "Mode of Payment"
-msgstr ""
+msgstr "طريقة الدفع"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:68
 msgid "New Rule"
-msgstr ""
+msgstr "القاعدة الجديدة"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:732
 msgid "No Match"
-msgstr ""
+msgstr "لا يوجد تطابق"
 
 #: frontend/src/components/common/AccountsDropdown.tsx:151
 msgid "No accounts found."
-msgstr ""
+msgstr "لم يتم العثور على حسابات."
 
 #: frontend/src/components/features/BankReconciliation/CompanySelector.tsx:55
 msgid "No company found."
-msgstr ""
+msgstr "لم يتم العثور على شركة."
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:149
 msgid "No entries found"
-msgstr ""
+msgstr "لم يتم العثور على إدخالات"
 
 #: frontend/src/components/common/LinkFieldCombobox.tsx:259
 msgid "No results found."
-msgstr ""
+msgstr "لم يتم العثور على نتائج."
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:196
 msgid "No rules found"
-msgstr ""
+msgstr "لم يتم العثور على قواعد"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:128
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.py:84
 msgid "No transactions found"
-msgstr ""
+msgstr "لم يتم العثور على معاملات"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:624
 msgid "No vouchers found for this transaction"
-msgstr ""
+msgstr "لم يتم العثور على قسائم لهذه المعاملة"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:131
 msgid "Not Cleared"
-msgstr ""
+msgstr "غير واضح"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:89
 msgid "Not Reconciled"
-msgstr ""
+msgstr "لم يتم التوفيق"
 
 #. Option for the 'Status' (Select) field in DocType 'Mint Bank Statement
 #. Import'
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 msgid "Not Started"
-msgstr ""
+msgstr "لم يبدأ"
 
 #: frontend/src/components/features/Settings/Settings.tsx:78
 msgid "Number of Days to Match Transfers"
-msgstr ""
+msgstr "عدد الأيام لمطابقة التحويلات"
 
 #. Description of the 'Match Transfers across (days)' (Int) field in DocType
 #. 'Mint Settings'
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "Number of days to consider for transfer matching across bank accounts."
-msgstr ""
+msgstr "عدد الأيام التي يجب مراعاتها لمطابقة التحويل عبر الحسابات المصرفية."
 
 #: frontend/src/components/features/BankReconciliation/BankBalance.tsx:45
 msgid "Opening Balance"
-msgstr ""
+msgstr "الرصيد الافتتاحي"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:523
 msgid "Original amount"
-msgstr ""
+msgstr "المبلغ الأصلي"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:599
 msgid "Outstanding"
-msgstr ""
+msgstr "مستحق / واجب الدفع"
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:220
 msgid "Outstanding Checks and Deposits to clear"
-msgstr ""
+msgstr "الشيكات والودائع المعلقة للتصفية"
 
 #. Option for the 'File Type' (Select) field in DocType 'Mint Bank Statement
 #. Import'
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:244
 msgid "Paid From"
-msgstr ""
+msgstr "مدفوع من"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:533
 msgid "Paid From (GL Account)"
-msgstr ""
+msgstr "مدفوع من (حساب GL)"
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:258
 msgid "Paid To"
-msgstr ""
+msgstr "مدفوع ل"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:521
 msgid "Paid To (GL Account)"
-msgstr ""
+msgstr "مدفوع إلى (حساب GL)"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:325
 msgid "Paid to"
-msgstr ""
+msgstr "مدفوع ل"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:732
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:763
 msgid "Partial Match"
-msgstr ""
+msgstr "تطابق جزئي"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:93
 msgid "Partially Reconciled"
-msgstr ""
+msgstr "مصالحة جزئية"
 
 #. Label of a Dynamic Link field in DocType 'Mint Bank Transaction Rule'
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:361
@@ -951,7 +953,7 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:347
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Party"
-msgstr ""
+msgstr "الطرف"
 
 #. Label of a Link field in DocType 'Mint Bank Transaction Rule'
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:384
@@ -960,30 +962,30 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:271
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Party Type"
-msgstr ""
+msgstr "نوع الطرف المعني"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:175
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:185
 msgid "Party is required"
-msgstr ""
+msgstr "الطرف مطلوب"
 
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.py:59
 msgid "Party is required create a payment entry."
-msgstr ""
+msgstr "مطلوب من الطرف إنشاء قيد المدفوعات."
 
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.py:56
 msgid "Party type is required to create a payment entry."
-msgstr ""
+msgstr "نوع الطرف مطلوب لإنشاء قيد المدفوعات."
 
 #: frontend/src/components/features/Settings/Settings.tsx:126
 msgid "Paste the Service Key (JSON) from the Google Cloud Console."
-msgstr ""
+msgstr "الصق مفتاح الخدمة (JSON) من Google Cloud Console."
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:98
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:102
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:118
 msgid "Payment Document"
-msgstr ""
+msgstr "مستند الدفع"
 
 #. Option for the 'Classify As' (Select) field in DocType 'Mint Bank
 #. Transaction Rule'
@@ -991,43 +993,43 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:261
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Payment Entry"
-msgstr ""
+msgstr "قيد المدفوعات"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:301
 msgid "Payment Entry Created"
-msgstr ""
+msgstr "تم إنشاء قيد المدفوعات"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:104
 msgid "Payment Recorded"
-msgstr ""
+msgstr "تم تسجيل الدفع"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:28
 msgid "Please select a bank account to view the bank clearance summary."
-msgstr ""
+msgstr "يرجى تحديد حساب بنكي لعرض ملخص المخالصة البنكية."
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:28
 msgid "Please select a bank account to view the bank reconciliation statement."
-msgstr ""
+msgstr "يرجى تحديد حساب بنكي لعرض كشف التسوية البنكية."
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:23
 msgid "Please select a bank and set the date range"
-msgstr ""
+msgstr "يرجى تحديد البنك وتحديد النطاق الزمني"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:32
 msgid "Please select dates to view the bank clearance summary."
-msgstr ""
+msgstr "يرجى تحديد التواريخ لعرض ملخص المقاصة البنكية."
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:32
 msgid "Please select dates to view the bank reconciliation statement."
-msgstr ""
+msgstr "يرجى تحديد التواريخ لعرض بيان تسوية البنك."
 
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.py:51
 msgid "Please upload a file"
-msgstr ""
+msgstr "يرجى تحميل ملف"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:710
 msgid "Posted On"
-msgstr ""
+msgstr "تم النشر في"
 
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:99
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:212
@@ -1036,91 +1038,91 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:380
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:219
 msgid "Posting Date"
-msgstr ""
+msgstr "تاريخ النشر"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:713
 msgid "Posting Date does not match the transaction date"
-msgstr ""
+msgstr "تاريخ الترحيل لا يتطابق مع تاريخ المعاملة"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:713
 msgid "Posting Date matches the transaction date"
-msgstr ""
+msgstr "تاريخ الترحيل يطابق تاريخ المعاملة"
 
 #. Label of a Int field in DocType 'Mint Bank Transaction Rule'
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:547
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Priority"
-msgstr ""
+msgstr "الأولوية"
 
 #: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:33
 msgid "Purchase Invoice"
-msgstr ""
+msgstr "فاتورة الشراء"
 
 #: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:40
 msgid "Q1"
-msgstr ""
+msgstr "الربع الاول"
 
 #: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:48
 msgid "Q2"
-msgstr ""
+msgstr "الربع الثاني"
 
 #: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:56
 msgid "Q3"
-msgstr ""
+msgstr "الربع الثالث"
 
 #: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:64
 msgid "Q4"
-msgstr ""
+msgstr "الربع الرابع"
 
 #: frontend/src/components/features/BankReconciliation/SelectedTransactionDetails.tsx:61
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:451
 msgid "Received"
-msgstr ""
+msgstr "تم الاستلام"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:325
 msgid "Received from"
-msgstr ""
+msgstr "ورد من"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:544
 msgid "Recommended Action"
-msgstr ""
+msgstr "الإجراء الموصى به"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:745
 msgid "Reconcile"
-msgstr ""
+msgstr "تسوية"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:96
 #: frontend/src/components/features/BankReconciliation/utils.ts:215
 msgid "Reconciled"
-msgstr ""
+msgstr "التسوية"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:84
 msgid "Reconciliation Type"
-msgstr ""
+msgstr "نوع التسوية"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:745
 msgid "Reconciling"
-msgstr ""
+msgstr "التسوية"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:347
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:397
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:43
 msgid "Record Payment"
-msgstr ""
+msgstr "سجل الدفع"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:331
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:408
 msgid "Record a bank journal entry for expenses, income or split transactions"
-msgstr ""
+msgstr "قم بتسجيل قيد يومية البنك للنفقات أو الدخل أو المعاملات المقسمة"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:337
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:414
 msgid "Record a journal entry for expenses, income or split transactions"
-msgstr ""
+msgstr "سجل قيد دفتر اليومية للمصروفات أو الدخل أو المعاملات المقسمة"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:35
 msgid "Record a journal entry for expenses, income or split transactions."
-msgstr ""
+msgstr "سجل قيد دفتر اليومية للمصروفات أو الدخل أو المعاملات المقسمة."
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:345
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:351
@@ -1129,7 +1131,7 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:515
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:45
 msgid "Record a payment entry against a customer or supplier"
-msgstr ""
+msgstr "تسجيل قيد دفع لعميل أو مورد"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:360
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:366
@@ -1137,26 +1139,26 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:427
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:517
 msgid "Record an internal transfer to another bank/credit card/cash account"
-msgstr ""
+msgstr "تسجيل تحويل داخلي إلى حساب مصرفي/بطاقة ائتمان/حساب نقدي آخر"
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:36
 msgid "Record an internal transfer to another bank/credit card/cash account."
-msgstr ""
+msgstr "تسجيل تحويل داخلي إلى حساب مصرفي/بطاقة ائتمان/حساب نقدي آخر."
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:260
 #: frontend/src/components/features/BankReconciliation/SelectedTransactionDetails.tsx:69
 msgid "Ref"
-msgstr ""
+msgstr "المرجع"
 
 #. Label of a Data field in DocType 'Mint Bank Statement Import Transactions'
 #: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
 msgid "Reference"
-msgstr ""
+msgstr "مرجع"
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:106
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:66
 msgid "Reference #"
-msgstr ""
+msgstr "مرجع"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:218
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:107
@@ -1164,45 +1166,45 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:386
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:225
 msgid "Reference Date"
-msgstr ""
+msgstr "تاريخ مرجعي"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:721
 msgid "Reference Date does not match the transaction date"
-msgstr ""
+msgstr "تاريخ المرجع لا يتطابق مع تاريخ المعاملة"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:222
 msgid "Reference Date is required"
-msgstr ""
+msgstr "تاريخ المرجعي مطلوب"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:721
 msgid "Reference Date matches the transaction date"
-msgstr ""
+msgstr "التاريخ المرجعي يطابق تاريخ المعاملة"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:595
 msgid "Reference Document"
-msgstr ""
+msgstr "المستند المرجعي"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:226
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:391
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:230
 msgid "Reference No"
-msgstr ""
+msgstr "رقم مرجعي"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:228
 msgid "Reference No is required"
-msgstr ""
+msgstr "الرقم المرجعي مطلوب"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:735
 msgid "Reference does not match the selected transaction"
-msgstr ""
+msgstr "الرقم المرجعي لا يتطابق مع المعاملة المحددة"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:735
 msgid "Reference matches the selected transaction"
-msgstr ""
+msgstr "الرقم المرجعي يطابق المعاملة المحددة"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:735
 msgid "Reference matches the selected transaction partially"
-msgstr ""
+msgstr "الرقم المرجعي يتطابق جزئيًا مع المعاملة المحددة"
 
 #. Option for the 'Check' (Select) field in DocType 'Mint Bank Transaction
 #. Description Rules'
@@ -1216,99 +1218,99 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:426
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1144
 msgid "Remarks"
-msgstr ""
+msgstr "ملاحظات"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:453
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:656
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1176
 msgid "Remove"
-msgstr ""
+msgstr "حذف"
 
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:140
 msgid "Reset Clearing Date"
-msgstr ""
+msgstr "إعادة تعيين تاريخ المخالصة"
 
 #. Label of a Small Text field in DocType 'Mint Bank Transaction Rule'
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:39
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Rule Description"
-msgstr ""
+msgstr "وصف القاعدة"
 
 #. Label of a Data field in DocType 'Mint Bank Transaction Rule'
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:21
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Rule Name"
-msgstr ""
+msgstr "أسم القاعدة"
 
 #: frontend/src/components/features/BankReconciliation/Rules/CreateNewRule.tsx:39
 msgid "Rule created successfully"
-msgstr ""
+msgstr "القاعدة تم إنشاؤها بنجاح"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:105
 msgid "Rule deleted."
-msgstr ""
+msgstr "القاعدة تم حذف"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:535
 msgid "Rule matched based on transaction description and other criteria."
-msgstr ""
+msgstr "القاعدة تطابقت بناءً على وصف المعاملة ومعايير أخرى."
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:31
 msgid "Rule name is required"
-msgstr ""
+msgstr "اسم القاعدة مطلوب"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:142
 msgid "Rule priorities updated"
-msgstr ""
+msgstr "اولويه القواعد تم تحديثها"
 
 #: frontend/src/components/features/BankReconciliation/Rules/EditRule.tsx:79
 msgid "Rule updated."
-msgstr ""
+msgstr "القاعدة تم تحديثها."
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:155
 msgid "Rules"
-msgstr ""
+msgstr "القواعد"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:115
 msgid "Rules evaluation completed"
-msgstr ""
+msgstr "تم تقييم القاعدة بنجاح"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:115
 msgid "Rules evaluation started"
-msgstr ""
+msgstr "تم البدأ بتقييم القواعد"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:181
 msgid "Rules to match against the transaction description"
-msgstr ""
+msgstr "القواعد للمطابقة مع وصف المعاملة"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:164
 msgid "Run Rules"
-msgstr ""
+msgstr "تشغيل القواعد"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:170
 msgid "Run on new transactions"
-msgstr ""
+msgstr "البدا التفعيل علي المعاملات الجديدة"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:272
 msgid "Run rules automatically"
-msgstr ""
+msgstr "تفعيل القواعد تلقائيًا"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:168
 msgid "Run rules on unreconciled transactions that haven't been evaluated yet"
-msgstr ""
+msgstr "تفعيل القواعد على المعاملات غير المتسوية التي لم يتم تقييمها بعد"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:164
 msgid "Running..."
-msgstr ""
+msgstr "تعمل الان ..."
 
 #: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:34
 msgid "Sales Invoice"
-msgstr ""
+msgstr "فاتورة المبيعات"
 
 #: frontend/src/components/features/BankReconciliation/Rules/CreateNewRule.tsx:54
 #: frontend/src/components/features/BankReconciliation/Rules/EditRule.tsx:94
 #: frontend/src/components/features/Settings/Settings.tsx:137
 msgid "Save"
-msgstr ""
+msgstr "حفظ"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:263
 msgid "Scheduled job disabled. Transactions will not be auto classified."
@@ -1320,238 +1322,238 @@ msgstr ""
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:157
 msgid "Search"
-msgstr ""
+msgstr "بحث"
 
 #: frontend/src/components/common/AccountsDropdown.tsx:154
 msgid "Search Results"
-msgstr ""
+msgstr "نتائج البحث"
 
 #: frontend/src/components/common/AccountsDropdown.tsx:149
 msgid "Search account..."
-msgstr ""
+msgstr "البحث عن الحساب..."
 
 #: frontend/src/components/features/BankReconciliation/CompanySelector.tsx:53
 msgid "Search company..."
-msgstr ""
+msgstr "البحث عن الشركة..."
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:151
 msgid "Search transactions"
-msgstr ""
+msgstr "البحث عن المعاملات"
 
 #: frontend/src/components/common/AccountsDropdown.tsx:128
 #: frontend/src/components/common/AccountsDropdown.tsx:142
 msgid "Select Account"
-msgstr ""
+msgstr "تحديد الحساب"
 
 #: frontend/src/components/features/Settings/Settings.tsx:105
 msgid "Select Location"
-msgstr ""
+msgstr "تحديد الموقع"
 
 #: frontend/src/components/features/Settings/Settings.tsx:181
 msgid "Select Processor"
-msgstr ""
+msgstr "تحديد المعالج"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:38
 msgid "Select a bank account to reconcile"
-msgstr ""
+msgstr "تحديد حساب بنكي للتسوية"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:288
 msgid "Select a transaction to match and reconcile with vouchers"
-msgstr ""
+msgstr "حدد معاملة لمطابقتها وتسويتها مع الإيصالات"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:358
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:592
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1088
 msgid "Select all"
-msgstr ""
+msgstr "تحديد الكل"
 
 #: frontend/src/components/ui/form-elements.tsx:157
 msgid "Select date"
-msgstr ""
+msgstr "اختر التاريخ"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:376
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:612
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1105
 msgid "Select row {0}"
-msgstr ""
+msgstr "حدد الصف {0}"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:72
 msgid "Set up rules to automatically classify transactions. Drag and drop rules to reorder their priority."
-msgstr ""
+msgstr "إعداد القواعد لتصنيف المعاملات تلقائيًا. "
 
 #: frontend/src/components/features/Settings/Settings.tsx:69
 msgid "Settings"
-msgstr ""
+msgstr "الإعدادات"
 
 #: frontend/src/components/features/Settings/Settings.tsx:58
 msgid "Settings updated"
-msgstr ""
+msgstr "تم تحديث الإعدادات"
 
 #: frontend/src/components/features/BankReconciliation/MatchFilters.tsx:29
 msgid "Show Only Exact Amount"
-msgstr ""
+msgstr "إظهار المبلغ المحدد فقط"
 
 #: frontend/src/components/features/BankReconciliation/SelectedTransactionDetails.tsx:61
 msgid "Spent"
-msgstr ""
+msgstr "قضى"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:519
 msgid "Split amount"
-msgstr ""
+msgstr "تقسيم المبلغ"
 
 #. Option for the 'Check' (Select) field in DocType 'Mint Bank Transaction
 #. Description Rules'
 #: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
 msgid "Starts With"
-msgstr ""
+msgstr "يبدأ ب"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:193
 msgid "Starts with"
-msgstr ""
+msgstr "يبدأ ب"
 
 #. Label of a Select field in DocType 'Mint Bank Statement Import'
 #: frontend/src/components/features/BankReconciliation/BankClearanceSummary.tsx:104
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:71
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 msgid "Status"
-msgstr ""
+msgstr "الحالة"
 
 #. Label of a Data field in DocType 'Mint Bank Statement Import Transactions'
 #: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
 msgid "String Amount"
-msgstr ""
+msgstr "مبلغ السلسلة"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:122
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:249
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:232
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:404
 msgid "Submit"
-msgstr ""
+msgstr "إرسال"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:254
 msgid "Suggest creating a"
-msgstr ""
+msgstr "اقتراح إنشاء"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:751
 msgid "Suggested"
-msgstr ""
+msgstr "مقترح"
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:418
 msgid "Suggested Transfer to {0}"
-msgstr ""
+msgstr "التحويل المقترح إلى {0}"
 
 #. Name of a role
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "System Manager"
-msgstr ""
+msgstr "مدير النظام"
 
 #: frontend/src/components/features/Settings/Settings.tsx:93
 msgid "The Google Project ID is used to authenticate with the Google Cloud Platform."
-msgstr ""
+msgstr "يتم استخدام معرف مشروع Google للمصادقة مع Google Cloud Platform."
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:701
 msgid "The invoice is not fully allocated as there is a difference of {0}."
-msgstr ""
+msgstr "لم يتم تخصيص الفاتورة بالكامل نظرًا لوجود فرق قدره {0}."
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:421
 msgid "The system found a mirror transaction ({0}) in another account with the same amount and date."
-msgstr ""
+msgstr "عثر النظام على معاملة مطابقة ({0}) في حساب آخر بنفس المبلغ والتاريخ."
 
 #: frontend/src/components/features/BankReconciliation/BankReconciliationStatement.tsx:151
 msgid "There are no accounting entries in the system for the selected account and dates."
-msgstr ""
+msgstr "لا توجد إدخالات محاسبية في النظام للحساب والتواريخ المحددة."
 
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:152
 msgid "There are no entries in the system where the clearance date is before the posting date."
-msgstr ""
+msgstr "لا توجد إدخالات في النظام حيث يكون تاريخ التخليص قبل تاريخ الترحيل."
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:130
 msgid "There are no transactions in the system for the selected bank account and dates."
-msgstr ""
+msgstr "لا توجد أي معاملات في النظام للحساب البنكي والتواريخ المحددة."
 
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:85
 msgid "There was an error while performing the action."
-msgstr ""
+msgstr "حدث خطأ أثناء تنفيذ الإجراء."
 
 #: frontend/src/components/ui/error-banner.tsx:13
 msgid "There was an error."
-msgstr ""
+msgstr "حدث خطأ."
 
 #: frontend/src/components/features/BankReconciliation/BankRecDateFilter.tsx:72
 msgid "This Fiscal Year"
-msgstr ""
+msgstr "هذه السنة المالية"
 
 #: frontend/src/lib/date.ts:70
 msgid "This Month"
-msgstr ""
+msgstr "هذا الشهر"
 
 #: frontend/src/lib/date.ts:79
 msgid "This Quarter"
-msgstr ""
+msgstr "هذا الربع"
 
 #: frontend/src/lib/date.ts:61
 msgid "This Week"
-msgstr ""
+msgstr "هذا الأسبوع"
 
 #: frontend/src/lib/date.ts:88
 msgid "This Year"
-msgstr ""
+msgstr "هذا العام"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:190
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:257
 msgid "This is required"
-msgstr ""
+msgstr "هذا مطلوب"
 
 #: frontend/src/components/features/BankReconciliation/BankBalance.tsx:67
 msgid "This is what the system expects the closing balance to be in your bank statement."
-msgstr ""
+msgstr "هذا هو ما يتوقع النظام أن يكون عليه الرصيد الختامي في كشف حسابك البنكي."
 
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:97
 msgid "This report shows all entries in the system where the <strong>clearance date is before the posting date</strong> which is incorrect."
-msgstr ""
+msgstr "يظهر هذا التقرير جميع الإدخالات في النظام حيث يكون <strong>تاريخ التخليص قبل تاريخ الترحيل</strong> وهذا غير صحيح."
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:78
 msgid "This transaction has been reconciled with the following document(s):"
-msgstr ""
+msgstr "تمت تسوية هذه المعاملة مع المستند (المستندات) التالية:"
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:275
 msgid "This will be auto-populated if not set."
-msgstr ""
+msgstr "سيتم ملء هذا تلقائيًا إذا لم يتم ضبطه."
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:255
 msgid "This will just suggest creating a new entry, and will not automatically create it."
-msgstr ""
+msgstr "سيقترح هذا فقط إنشاء إدخال جديد، ولن يقوم بإنشائه تلقائيًا."
 
 #: frontend/src/components/ui/sidebar.tsx:287
 #: frontend/src/components/ui/sidebar.tsx:290
 msgid "Toggle Sidebar"
-msgstr ""
+msgstr "تبديل الشريط الجانبي"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:759
 msgid "Total Amount"
-msgstr ""
+msgstr "المبلغ الإجمالي"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:54
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:68
 msgid "Transaction Matching Rules"
-msgstr ""
+msgstr "قواعد مطابقة المعاملات"
 
 #. Label of a Select field in DocType 'Mint Bank Transaction Rule'
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:98
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Transaction Type"
-msgstr ""
+msgstr "نوع المعاملة"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:62
 msgid "Transaction Unreconciled"
-msgstr ""
+msgstr "لم تتم تسوية المعاملة"
 
 #. Label of a Table field in DocType 'Mint Bank Statement Import'
 #: mint/mint/doctype/mint_bank_statement_import/mint_bank_statement_import.json
 msgid "Transactions"
-msgstr ""
+msgstr "المعاملات"
 
 #. Option for the 'Classify As' (Select) field in DocType 'Mint Bank
 #. Transaction Rule'
@@ -1563,24 +1565,24 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:283
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Transfer"
-msgstr ""
+msgstr "تحويل مصرفي"
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:85
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:176
 msgid "Transfer Recorded"
-msgstr ""
+msgstr "تم تسجيل التحويل"
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:451
 msgid "Transferred Out"
-msgstr ""
+msgstr "تم التحويل"
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:235
 msgid "Transferred from"
-msgstr ""
+msgstr "منقول من"
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:235
 msgid "Transferred to"
-msgstr ""
+msgstr "تم التحويل إلى"
 
 #. Label of a Select field in DocType 'Mint Bank Statement Import Transactions'
 #: frontend/src/components/common/PartyTypeDropdown.tsx:67
@@ -1588,22 +1590,22 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:70
 #: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
 msgid "Type"
-msgstr ""
+msgstr "النوع"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:186
 msgid "Type of check"
-msgstr ""
+msgstr "نوع الشيك"
 
 #: frontend/src/components/features/Settings/Settings.tsx:109
 msgid "US"
-msgstr ""
+msgstr "الولايات المتحدة"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:69
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:273
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:768
 #: frontend/src/components/features/BankReconciliation/SelectedTransactionDetails.tsx:64
 msgid "Unallocated"
-msgstr ""
+msgstr "غير مخصصة"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:190
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:116
@@ -1611,38 +1613,38 @@ msgstr ""
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:180
 #: frontend/src/components/features/BankReconciliation/utils.ts:219
 msgid "Undo"
-msgstr ""
+msgstr "تراجع"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:30
 msgid "Undo Transaction Reconciliation"
-msgstr ""
+msgstr "التراجع عن تسوية المعاملات"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionUnreconcileModal.tsx:119
 msgid "Unreconcile"
-msgstr ""
+msgstr "لم يتم التسوية"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:44
 msgid "Unreconciled Transactions"
-msgstr ""
+msgstr "المعاملات التي لم تتم تسويتها"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:262
 msgid "Updating..."
-msgstr ""
+msgstr "جارٍ التحديث..."
 
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:465
 msgid "Use Suggestion"
-msgstr ""
+msgstr "استخدام الاقتراح"
 
 #. Label of a Small Text field in DocType 'Mint Bank Transaction Description
 #. Rules'
 #: frontend/src/components/features/BankReconciliation/Rules/RuleForm.tsx:201
 #: mint/mint/doctype/mint_bank_transaction_description_rules/mint_bank_transaction_description_rules.json
 msgid "Value"
-msgstr ""
+msgstr "القيمة"
 
 #: frontend/src/components/features/BankReconciliation/BankTransactionList.tsx:106
 msgid "View"
-msgstr ""
+msgstr "عرض"
 
 #. Option for the 'Type' (Select) field in DocType 'Mint Bank Statement Import
 #. Transactions'
@@ -1654,51 +1656,51 @@ msgstr ""
 #: mint/mint/doctype/mint_bank_statement_import_transactions/mint_bank_statement_import_transactions.json
 #: mint/mint/doctype/mint_bank_transaction_rule/mint_bank_transaction_rule.json
 msgid "Withdrawal"
-msgstr ""
+msgstr "سحب"
 
 #: frontend/src/components/features/BankReconciliation/IncorrectlyClearedEntries.tsx:105
 msgid "You can reset the clearing dates of these entries here."
-msgstr ""
+msgstr "يمكنك إعادة تعيين تواريخ مسح هذه الإدخالات هنا."
 
 #: frontend/src/components/features/BankReconciliation/BankBalance.tsx:168
 msgid "Your Progress"
-msgstr ""
+msgstr "تقدمك"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:428
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:1146
 msgid "e.g. Bank Charges"
-msgstr ""
+msgstr "على سبيل المثال. "
 
 #. Option for the 'Google Processor Location' (Select) field in DocType 'Mint
 #. Settings'
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "eu"
-msgstr ""
+msgstr "الاتحاد الأوروبي"
 
 #: frontend/src/components/features/BankReconciliation/BankBalance.tsx:168
 msgid "reconciled"
-msgstr ""
+msgstr "تم التسوية"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:311
 msgid "transaction selected"
-msgstr ""
+msgstr "تم تحديد المعاملة"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:311
 msgid "transactions selected"
-msgstr ""
+msgstr "المعاملات المحددة"
 
 #. Option for the 'Google Processor Location' (Select) field in DocType 'Mint
 #. Settings'
 #: mint/mint/doctype/mint_settings/mint_settings.json
 msgid "us"
-msgstr ""
+msgstr "نحن"
 
 #: mint/apis/bank_reconciliation.py:389
 msgid "{0} {1} does not exist"
-msgstr ""
+msgstr "{0} {1} غير موجود"
 
 #. Count format of shortcut in the Mint Workspace
 #: mint/mint/workspace/mint/mint.json
 msgid "{} Open"
-msgstr ""
+msgstr "{} مفتوح"
 
