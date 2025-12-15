@@ -72,7 +72,7 @@ const BulkInternalTransferForm = ({ transactions }: { transactions: Unreconciled
 
     const setIsOpen = useSetAtom(bankRecTransferModalAtom)
 
-    const { call: createPaymentEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_bulk_internal_transfer')
+    const { call: createPaymentEntry, loading, error } = useFrappePostCall('truebalance.apis.bank_reconciliation.create_bulk_internal_transfer')
 
     const onReconcile = useRefreshUnreconciledTransactions()
 
@@ -160,7 +160,7 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
 
     const onReconcile = useRefreshUnreconciledTransactions()
 
-    const { call: createPaymentEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_internal_transfer')
+    const { call: createPaymentEntry, loading, error } = useFrappePostCall('truebalance.apis.bank_reconciliation.create_internal_transfer')
 
     const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
 
@@ -364,7 +364,7 @@ const RecommendedTransferAccount = ({ transaction, onAccountChange }: { transact
     const paid_from = watch('paid_from')
     const paid_to = watch('paid_to')
 
-    const { data } = useFrappeGetCall('mint.apis.bank_reconciliation.search_for_transfer_transaction', {
+    const { data } = useFrappeGetCall('truebalance.apis.bank_reconciliation.search_for_transfer_transaction', {
         transaction_id: transaction.name
     }, undefined, {
         revalidateOnFocus: false,

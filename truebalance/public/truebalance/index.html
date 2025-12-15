@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/assets/truebalance/truebalance/assets/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/assets/truebalance/truebalance/assets/favicon.svg" />
+  <link rel="shortcut icon" href="/assets/truebalance/truebalance/assets/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/truebalance/truebalance/assets/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="Mint" />
+  <link rel="manifest" href="/assets/truebalance/truebalance/assets/site.webmanifest" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:wght@100..900&display=swap"
+    rel="stylesheet">
+  <title>mint</title>
+  <script type="module" crossorigin src="/assets/truebalance/truebalance/assets/index-rItlQMw3.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/truebalance/truebalance/assets/index-CB-CTHF2.css">
+</head>
+
+<body>
+  <div id="root"></div>
+  <script>window.csrf_token = '{{ frappe.session.csrf_token }}';
+    if (!window.frappe) window.frappe = {};
+
+    frappe.boot = JSON.parse({{ boot }});
+    frappe._messages = frappe.boot["__messages"];
+  </script>
+</body>
+
+</html>

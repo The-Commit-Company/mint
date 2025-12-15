@@ -317,7 +317,7 @@ const PartyField = () => {
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         // Fetch the party and account
         if (event.target.value) {
-            call.get('mint.apis.bank_reconciliation.get_party_details', {
+            call.get('truebalance.apis.bank_reconciliation.get_party_details', {
                 company: company,
                 party_type: party_type,
                 party: event.target.value

@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/assets/mint/mint/ && yarn copy-html-entry",
+    "build": "vite build --base=/assets/truebalance/truebalance/ && yarn copy-html-entry",
     "lint": "eslint .",
     "preview": "vite preview",
-    "copy-html-entry": "cp ../mint/public/mint/index.html ../mint/www/mint.html"
+    "copy-html-entry": "cp ../truebalance/public/truebalance/index.html ../truebalance/www/truebalance.html"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

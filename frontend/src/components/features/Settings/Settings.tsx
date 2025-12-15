@@ -145,14 +145,14 @@ const SettingsDialogContent = ({ onClose }: { onClose: VoidFunction }) => {
 
 //     const form = useFormContext()
 
-//     const { data, error, mutate } = useFrappeGetCall("mint.apis.google_ai.get_list_of_processors", {
+//     const { data, error, mutate } = useFrappeGetCall("truebalance.apis.google_ai.get_list_of_processors", {
 //         processor_type: "BANK_STATEMENT"
 //     }, undefined, {
 //         revalidateOnFocus: false,
 //         revalidateIfStale: false
 //     })
 
-//     const { call: createProcessor } = useFrappePostCall('mint.apis.google_ai.create_document_processor')
+//     const { call: createProcessor } = useFrappePostCall('truebalance.apis.google_ai.create_document_processor')
 
 //     const onProcessorCreate = () => {
 //         createProcessor({})

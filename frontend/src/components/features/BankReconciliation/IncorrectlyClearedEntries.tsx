@@ -72,7 +72,7 @@ const IncorrectlyClearedEntriesView = () => {
 
     const formattedToDate = formatDate(dates.toDate)
 
-    const { call: clearClearingDate } = useFrappePostCall('mint.apis.bank_reconciliation.clear_clearing_date')
+    const { call: clearClearingDate } = useFrappePostCall('truebalance.apis.bank_reconciliation.clear_clearing_date')
 
     const onClearClick = (voucher_type: string, voucher_name: string) => {
         clearClearingDate({ voucher_type, voucher_name })

@@ -89,7 +89,7 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
         mode_of_payment: PaymentEntry['mode_of_payment']
     }>()
 
-    const { call: createPaymentEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_bulk_payment_entry_and_reconcile')
+    const { call: createPaymentEntry, loading, error } = useFrappePostCall('truebalance.apis.bank_reconciliation.create_bulk_payment_entry_and_reconcile')
 
     const onReconcile = useRefreshUnreconciledTransactions()
 
@@ -125,7 +125,7 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
     const onPartyChange = (event: ChangeEvent<HTMLInputElement>) => {
         // Fetch the party and account
         if (event.target.value) {
-            call.get('mint.apis.bank_reconciliation.get_party_details', {
+            call.get('truebalance.apis.bank_reconciliation.get_party_details', {
                 company: company,
                 party_type: party_type,
                 party: event.target.value
@@ -285,7 +285,7 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
 
     }, [rule, setUnpaidInvoiceOpen])
 
-    const { call: createPaymentEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_payment_entry_and_reconcile')
+    const { call: createPaymentEntry, loading, error } = useFrappePostCall('truebalance.apis.bank_reconciliation.create_payment_entry_and_reconcile')
 
     const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
 
@@ -434,7 +434,7 @@ const PartyField = () => {
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
         // Fetch the party and account
         if (event.target.value) {
-            call.get('mint.apis.bank_reconciliation.get_party_details', {
+            call.get('truebalance.apis.bank_reconciliation.get_party_details', {
                 company: company,
                 party_type: party_type,
                 party: event.target.value
