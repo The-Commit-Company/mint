@@ -1,6 +1,6 @@
 import { MintBankTransactionDescriptionRules } from './MintBankTransactionDescriptionRules'
 
-export interface MintBankTransactionRule{
+export interface MintBankTransactionRule {
 	name: string
 	creation: string
 	modified: string
@@ -25,7 +25,7 @@ export interface MintBankTransactionRule{
 	rule_description?: string
 	/**	Company : Link - Company	*/
 	company: string
-	/**	Description Rules : Table - Mint Bank Transaction Description Rules	*/
+	/**	Description Rules : Table - Mint Bank Transaction Description Rules TB	*/
 	description_rules: MintBankTransactionDescriptionRules[]
 	/**	Classify As : Select	*/
 	classify_as: "Bank Entry" | "Payment Entry" | "Transfer"

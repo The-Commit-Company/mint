@@ -10,11 +10,11 @@ def get_list_of_processors(processor_type: str = "BANK_STATEMENT"):
 	"""
 	Get the list of document processors available for the Google Cloud project.
 	"""
-	frappe.has_permission("Mint Settings", ptype="read", throw=True)
+	frappe.has_permission("Mint Settings TB", ptype="read", throw=True)
 
-	settings = frappe.get_single("Mint Settings")
+	settings = frappe.get_single("Mint Settings TB")
 	if not settings.google_project_id:
-		frappe.throw(_("Google Project ID is not set. Please set it in the Mint Settings."))
+		frappe.throw(_("Google Project ID is not set. Please set it in the Mint Settings TB."))
 
 	location = settings.google_processor_location
 
@@ -73,9 +73,9 @@ def create_document_processor(processor_type_key: str = "BANK_STATEMENT"):
 	if processor_type_key not in PROCESSOR_TYPES_CONFIG:
 		frappe.throw(f"Invalid processor type: {processor_type_key}")
 
-	settings = frappe.get_single("Mint Settings")
+	settings = frappe.get_single("Mint Settings TB")
 	if not settings.google_project_id:
-		frappe.throw(_("Google APIs are not enabled. Please enable them in Mint Settings."))
+		frappe.throw(_("Google APIs are not enabled. Please enable them in Mint Settings TB."))
 
 	# Get the processor type configuration
 	config = PROCESSOR_TYPES_CONFIG[processor_type_key]
@@ -120,22 +120,22 @@ def run_bank_statement_processor(file_path: str):
 	"""
 	Run the document AI processor on the given file.
 	"""
-	settings = frappe.get_doc("Mint Settings")
+	settings = frappe.get_doc("Mint Settings TB")
 
 	if not settings.google_project_id:
-		frappe.throw(_("Google Project ID is not set in Mint Settings"))
+		frappe.throw(_("Google Project ID is not set in Mint Settings TB"))
 	
 	if not settings.google_service_account_json_key:
-		frappe.throw(_("Google Service Account JSON Key is not set in Mint Settings"))
+		frappe.throw(_("Google Service Account JSON Key is not set in Mint Settings TB"))
 	
 	if not settings.bank_statement_gdoc_processor:
-		frappe.throw(_("Bank Statement Processor is not set in Mint Settings"))
+		frappe.throw(_("Bank Statement Processor is not set in Mint Settings TB"))
 
 	file_doc = frappe.get_doc("File", {"file_url": file_path})
 
 	content = file_doc.get_content()
 
-	settings = frappe.get_single("Mint Settings")
+	settings = frappe.get_single("Mint Settings TB")
 
 	location = settings.google_processor_location
 

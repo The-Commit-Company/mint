@@ -33,7 +33,7 @@
  "modified": "2025-08-06 18:20:32.513687",
  "modified_by": "Administrator",
  "module": "TrueBalance",
- "name": "Mint Bank Transaction Description Rules",
+ "name": "Mint Bank Transaction Description Rules TB",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",

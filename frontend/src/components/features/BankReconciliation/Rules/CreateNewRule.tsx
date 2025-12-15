@@ -34,7 +34,7 @@ const CreateNewRule = ({ onCreate }: Props) => {
     const { createDoc, loading, error } = useFrappeCreateDoc<MintBankTransactionRule>()
 
     const onSubmit = (data: MintBankTransactionRule) => {
-        createDoc("Mint Bank Transaction Rule", data)
+        createDoc("Mint Bank Transaction Rule TB", data)
             .then(() => {
                 toast.success(_("Rule created successfully"))
                 onCreate()

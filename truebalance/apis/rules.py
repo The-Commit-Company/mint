@@ -3,7 +3,7 @@ import re
 
 def scheduler_run_rule_evaluation():
 
-    automatically_run_rules_on_unreconciled_transactions = frappe.db.get_single_value("Mint Settings", "automatically_run_rules_on_unreconciled_transactions")
+    automatically_run_rules_on_unreconciled_transactions = frappe.db.get_single_value("Mint Settings TB", "automatically_run_rules_on_unreconciled_transactions")
 
     if automatically_run_rules_on_unreconciled_transactions:
         _run_rule_evaluation(force_evaluate=False)
@@ -18,7 +18,7 @@ def _run_rule_evaluation(force_evaluate=False):
 
     If force evaluate is set to True, then transactions that were previously evaluated will be evaluated again.
     """
-    rules = frappe.get_all("Mint Bank Transaction Rule", fields=["name"], order_by="priority asc")
+    rules = frappe.get_all("Mint Bank Transaction Rule TB", fields=["name"], order_by="priority asc")
 
     if not rules:
         return
@@ -41,7 +41,7 @@ def _run_rule_evaluation(force_evaluate=False):
     rule_docs = []
 
     for rule in rules:
-        rule_doc = frappe.get_doc("Mint Bank Transaction Rule", rule.name)
+        rule_doc = frappe.get_doc("Mint Bank Transaction Rule TB", rule.name)
         rule_docs.append(rule_doc)
     
     # Run evaluation for each transaction

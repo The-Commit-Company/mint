@@ -1,0 +1,89 @@
+{
+    "charts": [],
+    "content": "[{\"id\":\"_6wUOPEXZr\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><a href=\\\"/truebalance\\\">Bank Reconciliation</a></span>\",\"col\":12}},{\"id\":\"_mzn9vcQVt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Bank Reconciliation\",\"col\":3}},{\"id\":\"_XfL8kR2Qp\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
+    "creation": "2025-11-10 09:00:00",
+    "custom_blocks": [],
+    "docstatus": 0,
+    "doctype": "Workspace",
+    "for_user": "",
+    "hide_custom": 0,
+    "icon": "income",
+    "idx": 0,
+    "indicator_color": "",
+    "is_hidden": 0,
+    "label": "TrueBalance",
+    "links": [
+        {
+            "hidden": 0,
+            "is_query_report": 0,
+            "label": "Bank Reconciliation",
+            "link_count": 0,
+            "link_to": "bank-reconciliation",
+            "link_type": "Page",
+            "onboard": 0,
+            "type": "Link"
+        },
+        {
+            "hidden": 0,
+            "is_query_report": 0,
+            "label": "Bank Transaction",
+            "link_count": 0,
+            "link_to": "Bank Transaction",
+            "link_type": "DocType",
+            "onboard": 0,
+            "type": "Link"
+        },
+        {
+            "hidden": 0,
+            "is_query_report": 0,
+            "label": "Mint Bank Transaction Rule TB",
+            "link_count": 0,
+            "link_to": "Mint Bank Transaction Rule TB",
+            "link_type": "DocType",
+            "onboard": 0,
+            "type": "Link"
+        },
+        {
+            "hidden": 0,
+            "is_query_report": 0,
+            "label": "Mint Bank Statement Import TB",
+            "link_count": 0,
+            "link_to": "Mint Bank Statement Import TB",
+            "link_type": "DocType",
+            "onboard": 0,
+            "type": "Link"
+        },
+        {
+            "hidden": 0,
+            "is_query_report": 0,
+            "label": "Mint Settings TB",
+            "link_count": 0,
+            "link_to": "Mint Settings TB",
+            "link_type": "DocType",
+            "onboard": 0,
+            "type": "Link"
+        }
+    ],
+    "modified": "2025-11-14 18:23:16.211166",
+    "modified_by": "Administrator",
+    "module": "TrueBalance",
+    "name": "TrueBalance",
+    "number_cards": [],
+    "owner": "Administrator",
+    "parent_page": "",
+    "public": 1,
+    "quick_lists": [],
+    "roles": [],
+    "sequence_id": 1.0,
+    "shortcuts": [
+        {
+            "color": "Green",
+            "doc_view": "",
+            "format": "{} Open",
+            "label": "Bank Reconciliation",
+            "link_to": "bank-reconciliation",
+            "type": "Page"
+        }
+    ],
+    "title": "TrueBalance"
+}

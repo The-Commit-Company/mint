@@ -37,7 +37,7 @@ def after_install():
                 "insert_after": "is_rule_evaluated",
                 "fieldtype": "Link",
                 "label": "Matched Rule",
-                "options": "Mint Bank Transaction Rule",
+                "options": "Mint Bank Transaction Rule TB",
                 "read_only": 1,
                 "allow_on_submit": 1,
 			}

@@ -294,7 +294,7 @@ export const useIsTransactionWithdrawal = (transaction: UnreconciledTransaction)
 
 export const useGetRuleForTransaction = (transaction: UnreconciledTransaction) => {
 
-    return useFrappeGetDoc<MintBankTransactionRule>('Mint Bank Transaction Rule', transaction.matched_rule,
+    return useFrappeGetDoc<MintBankTransactionRule>('Mint Bank Transaction Rule TB', transaction.matched_rule,
         transaction.matched_rule ? undefined : null, {
         revalidateOnFocus: false,
         revalidateIfStale: false

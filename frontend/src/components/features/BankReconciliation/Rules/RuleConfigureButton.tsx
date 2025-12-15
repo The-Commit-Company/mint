@@ -80,7 +80,7 @@ const RuleConfigureButton = () => {
 
 const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: string) => void, setIsNewRule: (isNewRule: boolean) => void }) => {
 
-    const { data, error, isLoading, mutate } = useFrappeGetDocList<MintBankTransactionRule>("Mint Bank Transaction Rule", {
+    const { data, error, isLoading, mutate } = useFrappeGetDocList<MintBankTransactionRule>("Mint Bank Transaction Rule TB", {
         fields: ["name", "rule_name", "rule_description", "transaction_type", "priority"],
         orderBy: {
             field: 'priority',
@@ -100,7 +100,7 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
     )
 
     const onDeleteRule = (ruleID: string) => {
-        toast.promise(db.deleteDoc("Mint Bank Transaction Rule", ruleID), {
+        toast.promise(db.deleteDoc("Mint Bank Transaction Rule TB", ruleID), {
             loading: _("Deleting rule..."),
             success: _("Rule deleted."),
             error: _("Failed to delete rule.")
@@ -132,7 +132,7 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
             const updatePromises = newData.map((rule, index) => {
                 const newPriority = index + 1
                 if (rule.priority !== newPriority) {
-                    return db.setValue("Mint Bank Transaction Rule", rule.name, "priority", newPriority)
+                    return db.setValue("Mint Bank Transaction Rule TB", rule.name, "priority", newPriority)
                 }
                 return Promise.resolve()
             })
@@ -243,14 +243,14 @@ const AutoRunRuleItem = () => {
     const { db } = useContext(FrappeContext) as FrappeConfig
 
     const { data: mintSetting, mutate: setAutomaticallyRunRulesOnUnreconciledTransactions } = useFrappeGetCall("frappe.client.get_single_value", {
-        "doctype": "Mint Settings",
+        "doctype": "Mint Settings TB",
         "field": "automatically_run_rules_on_unreconciled_transactions"
     })
 
     const automaticallyRunRulesOnUnreconciledTransactions = mintSetting?.message ? true : false
 
     const onAutoClassifyTransactions = (checked: boolean) => {
-        toast.promise(db.setValue("Mint Settings", "Mint Settings", "automatically_run_rules_on_unreconciled_transactions", checked ? 1 : 0).then(() => {
+        toast.promise(db.setValue("Mint Settings TB", "Mint Settings TB", "automatically_run_rules_on_unreconciled_transactions", checked ? 1 : 0).then(() => {
             setAutomaticallyRunRulesOnUnreconciledTransactions({
                 message: {
                     automatically_run_rules_on_unreconciled_transactions: checked ? 1 : 0,

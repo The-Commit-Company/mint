@@ -6,7 +6,7 @@ from frappe import _
 from frappe.model.document import Document
 
 
-class MintBankStatementImport(Document):
+class MintBankStatementImportTB(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -14,7 +14,7 @@ class MintBankStatementImport(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-		from truebalance.mint.doctype.mint_bank_statement_import_transactions.mint_bank_statement_import_transactions import MintBankStatementImportTransactions
+		from truebalance.truebalance.doctype.mint_bank_statement_import_transactions_tb.mint_bank_statement_import_transactions_tb import MintBankStatementImportTransactionsTB
 
 		amended_from: DF.Link | None
 		bank_account: DF.Link

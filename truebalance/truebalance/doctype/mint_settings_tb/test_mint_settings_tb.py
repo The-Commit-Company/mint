@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestMintSettings(FrappeTestCase):
+class TestMintSettingsTB(FrappeTestCase):
 	pass

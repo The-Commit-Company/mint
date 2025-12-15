@@ -1,6 +1,6 @@
 import { MintBankStatementImportTransactions } from './MintBankStatementImportTransactions'
 
-export interface MintBankStatementImport{
+export interface MintBankStatementImport {
 	name: string
 	creation: string
 	modified: string
@@ -19,10 +19,10 @@ export interface MintBankStatementImport{
 	file?: string
 	/**	File Type : Select	*/
 	file_type?: "PDF"
-	/**	Transactions : Table - Mint Bank Statement Import Transactions	*/
+	/**	Transactions : Table - Mint Bank Statement Import TB Transactions	*/
 	transactions?: MintBankStatementImportTransactions[]
 	/**	Error : Code	*/
 	error?: string
-	/**	Amended From : Link - Mint Bank Statement Import	*/
+	/**	Amended From : Link - Mint Bank Statement Import TB	*/
 	amended_from?: string
 }

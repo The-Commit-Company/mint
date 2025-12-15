@@ -7,7 +7,7 @@ from frappe import _
 from frappe.model.document import Document
 
 
-class MintBankTransactionRule(Document):
+class MintBankTransactionRuleTB(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -15,7 +15,7 @@ class MintBankTransactionRule(Document):
 
 	if TYPE_CHECKING:
 		from frappe.types import DF
-		from truebalance.mint.doctype.mint_bank_transaction_description_rules.mint_bank_transaction_description_rules import MintBankTransactionDescriptionRules
+		from truebalance.mint.doctype.mint_bank_transaction_description_rules_tb.mint_bank_transaction_description_rules_tb import MintBankTransactionDescriptionRulesTB
 
 		account: DF.Link
 		classify_as: DF.Literal["Bank Entry", "Payment Entry", "Transfer"]
@@ -36,7 +36,7 @@ class MintBankTransactionRule(Document):
 		if not self.priority:
 			# Get the highest priority for rules in the same company
 			highest_priority = frappe.db.get_value(
-				"Mint Bank Transaction Rule",
+				"Mint Bank Transaction Rule TB",
 				filters={"company": self.company},
 				fieldname="MAX(priority)",
 				order_by="priority DESC"

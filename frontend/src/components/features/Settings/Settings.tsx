@@ -43,7 +43,7 @@ const SettingsDialogContent = ({ onClose }: { onClose: VoidFunction }) => {
         }
     })
 
-    const { mutate, error: fetchError } = useFrappeGetDoc<MintSettings>("Mint Settings", "Mint Settings", undefined, {
+    const { mutate, error: fetchError } = useFrappeGetDoc<MintSettings>("Mint Settings TB", "Mint Settings TB", undefined, {
         onSuccess: (data) => {
             form.reset(data)
         },
@@ -53,7 +53,7 @@ const SettingsDialogContent = ({ onClose }: { onClose: VoidFunction }) => {
     const { updateDoc, loading, error } = useFrappeUpdateDoc<MintSettings>()
 
     const onSubmit = (data: MintSettings) => {
-        updateDoc("Mint Settings", "Mint Settings", data)
+        updateDoc("Mint Settings TB", "Mint Settings TB", data)
             .then(() => {
                 toast.success(_("Settings updated"))
                 mutate()

@@ -409,7 +409,7 @@ def search_for_transfer_transaction(transaction_id: str):
     company, withdrawal, deposit, date, bank_account = frappe.db.get_value("Bank Transaction", transaction_id, ["company", "withdrawal", "deposit", "date", "bank_account"])
 
     
-    days = frappe.db.get_single_value("Mint Settings", "transfer_match_days")
+    days = frappe.db.get_single_value("Mint Settings TB", "transfer_match_days")
 
     if not days:
         days = 4

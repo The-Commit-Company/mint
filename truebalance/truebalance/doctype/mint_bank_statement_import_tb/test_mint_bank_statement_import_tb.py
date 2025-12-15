@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestMintBankTransactionRule(FrappeTestCase):
+class TestMintBankStatementImportTB(FrappeTestCase):
 	pass

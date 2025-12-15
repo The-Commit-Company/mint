@@ -5,7 +5,7 @@
 from frappe.model.document import Document
 
 
-class MintBankStatementImportTransactions(Document):
+class MintBankTransactionDescriptionRulesTB(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -14,15 +14,10 @@ class MintBankStatementImportTransactions(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		amount: DF.Currency
-		date: DF.Date
-		description: DF.SmallText | None
-		imported: DF.Check
+		check: DF.Literal["Contains", "Starts With", "Ends With", "Regex"]
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data
-		reference: DF.Data | None
-		string_amount: DF.Data | None
-		type: DF.Literal["Withdrawal", "Deposit"]
+		value: DF.SmallText
 	# end: auto-generated types
 	pass

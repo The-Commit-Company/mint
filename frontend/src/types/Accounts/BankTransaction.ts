@@ -1,6 +1,6 @@
 import { BankTransactionPayments } from './BankTransactionPayments'
 
-export interface BankTransaction{
+export interface BankTransaction {
 	name: string
 	creation: string
 	modified: string
@@ -13,7 +13,7 @@ export interface BankTransaction{
 	idx?: number
 	/**	Is Rule Evaluated : Check	*/
 	is_rule_evaluated?: 0 | 1
-	/**	Matched Rule : Link - Mint Bank Transaction Rule	*/
+	/**	Matched Rule : Link - Mint Bank Transaction Rule TB	*/
 	matched_rule?: string
 	/**	Series : Select	*/
 	naming_series: "ACC-BTN-.YYYY.-"
