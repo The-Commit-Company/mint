@@ -260,7 +260,7 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
     for entry in entries:
         # Check if this account is a Income or Expense Account
         # If it is, and no cost center is added, select the company default cost center
-        cost_center = dimensions.get("cost_center")
+        cost_center = entry.get("cost_center")
 
         if not cost_center:
             report_type = frappe.get_cached_value("Account", entry["account"], "report_type")
@@ -277,11 +277,11 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
             "credit_in_account_currency": credit,
             "debit": debit,
             "credit": credit,
-            "cost_center": cost_center,
             "party_type": entry.get("party_type") if entry.get("party") else None,
             "party": entry.get("party"),
             "user_remark": entry.get("user_remark"),
-            **dimensions,
+            **entry,
+            "cost_center": cost_center
         })
 
     bank_entry.insert()
