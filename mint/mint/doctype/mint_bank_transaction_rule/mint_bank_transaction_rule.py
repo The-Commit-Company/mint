@@ -69,3 +69,22 @@ class MintBankTransactionRule(Document):
 		account_company = frappe.db.get_value("Account", self.account, "company")
 		if account_company != self.company:
 			frappe.throw(_("Account company does not match with the rule company."))
+	
+	def on_trash(self):
+		"""
+		Delete the matched rule from the bank transaction
+		"""
+		try:
+			frappe.db.set_value("Bank Transaction", {"matched_rule": self.name}, "matched_rule", None)
+		except Exception as e:
+			pass
+	
+	def after_delete(self):
+		"""
+		Rearrange the priorities of the rules
+		"""
+		rules = frappe.get_all("Mint Bank Transaction Rule", filters={"company": self.company, "name": ["!=", self.name]}, order_by="priority asc")
+		for i, rule in enumerate(rules):
+			frappe.db.set_value("Mint Bank Transaction Rule", rule.name, "priority", i + 1)
+
+

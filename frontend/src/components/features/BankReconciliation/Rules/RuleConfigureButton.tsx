@@ -100,7 +100,9 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
     )
 
     const onDeleteRule = (ruleID: string) => {
-        toast.promise(db.deleteDoc("Mint Bank Transaction Rule", ruleID), {
+        toast.promise(db.deleteDoc("Mint Bank Transaction Rule", ruleID).then(() => {
+            mutate()
+        }), {
             loading: _("Deleting rule..."),
             success: _("Rule deleted."),
             error: _("Failed to delete rule.")
