@@ -92,6 +92,10 @@ export const BANK_LOGOS: { keywords: string[], logo: string }[] = [
         keywords: ['PlainsCapital', 'Plains Capital'],
         logo: 'assets/bank-logos/PlainsCapitalBank.png'
     },
+    {
+        keywords: ["Standard Chartered"],
+        logo: 'assets/bank-logos/Standard_Chartered.png'
+    },
     // India
     {
         keywords: ['HDFC Bank', 'HDFC'],
@@ -225,7 +229,36 @@ export const BANK_LOGOS: { keywords: string[], logo: string }[] = [
         logo: "assets/bank-logos/Sparkasse.png"
     },
     {
-        keywords: ["Volksbanken Raiffeisenbanken", "VRde"],
+        keywords: ["Volksbank", "Raiffeisenbank", "VR-Bank"],
         logo: "assets/bank-logos/Volksbanken_Raiffeisenbanken.svg"
+    },
+    // Kenya
+    {
+        keywords: ["KCB Bank", "KCB"],
+        logo: "assets/bank-logos/KCB_Bank_Kenya.png"
+    },
+    {
+        keywords: ["Equity Bank"],
+        logo: "assets/bank-logos/Equity_Bank.png"
+    },
+    {
+        keywords: ["I&M"],
+        logo: "assets/bank-logos/I&M_Logo.jpg"
+    },
+    {
+        keywords: ["ABSA"],
+        logo: "assets/bank-logos/ABSA.png"
+    },
+    {
+        keywords: ["Stanbic"],
+        logo: "assets/bank-logos/Stanbic.png"
+    },
+    {
+        keywords: ["DTB", "Diamond Trust Bank"],
+        logo: "assets/bank-logos/Diamond_Trust_Bank.jpg"
+    },
+    {
+        keywords: ["Prime Bank"],
+        logo: "assets/bank-logos/Prime_Bank.png"
     }
 ]
