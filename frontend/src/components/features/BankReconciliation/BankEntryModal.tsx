@@ -401,8 +401,8 @@ const Entries = ({ company, isWithdrawal, amount, currency }: { company: string,
                                 label={_("Account")}
                                 rules={{
                                     required: _("Account is required"),
-                                    onChange: (value) => {
-                                        onAccountChange(value, index)
+                                    onChange: (event) => {
+                                        onAccountChange(event.target.value, index)
                                     }
                                 }}
                                 buttonClassName="min-w-64"
@@ -485,8 +485,8 @@ const PartyField = ({ index, onChange }: { index: number, onChange: (value: stri
         name={`entries.${index}.party`}
         label={_("Party")}
         rules={{
-            onChange: (value) => {
-                onChange(value, index)
+            onChange: (event) => {
+                onChange(event.target.value, index)
             }
         }}
         hideLabel
