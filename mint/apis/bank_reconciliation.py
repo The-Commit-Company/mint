@@ -173,7 +173,7 @@ def create_internal_transfer(bank_transaction_name: str,
     return transaction_id
 
 @frappe.whitelist(methods=['POST'])
-def create_bulk_bank_entry_and_reconcile(bank_transactions: list, 
+def create_bulk_bank_entry_and_reconcile(bank_transactions: list[str], 
                                          account: str):
     """
      Create bank entries for all transactions and reconcile them
@@ -186,15 +186,49 @@ def create_bulk_bank_entry_and_reconcile(bank_transactions: list,
         # Check Number will be limited to 140 characters
         cheque_no = (transactions_details.reference_number or transactions_details.description or '')[:140]
 
+        is_withdrawal = transactions_details.withdrawal > 0.0
+
+        entries = []
+
+        gl_account = frappe.get_cached_value("Bank Account", transactions_details.bank_account, "account")
+
+        if is_withdrawal:
+            entries.append({
+                "account": gl_account,
+                "bank_account": transactions_details.bank_account,
+                "credit_in_account_currency": transactions_details.unallocated_amount,
+                "credit": transactions_details.unallocated_amount,
+                "debit_in_account_currency": 0,
+                "debit": 0,
+            })
+
+            entries.append({
+                "account": account,
+                "credit": 0,
+                "debit": transactions_details.unallocated_amount,
+            })
+        else:
+            entries.append({
+                "account": gl_account,
+                "bank_account": transactions_details.bank_account,
+                "debit_in_account_currency": transactions_details.unallocated_amount,
+                "debit": transactions_details.unallocated_amount,
+                "credit_in_account_currency": 0,
+                "debit": 0,
+            })
+
+            entries.append({
+                "account": account,
+                "debit": 0,
+                "credit": transactions_details.unallocated_amount,
+            })
+
         create_bank_entry_and_reconcile(bank_transaction_name=bank_transaction,
                                         cheque_date=transactions_details.date,
                                         posting_date=transactions_details.date,
                                         cheque_no=cheque_no,
                                         user_remark=transactions_details.description,
-                                        entries=[{
-                                            "account": account,
-                                            "amount": transactions_details.unallocated_amount,
-                                        }],
+                                        entries=entries,
                                         voucher_type=("Credit Card Entry" if is_credit_card else "Bank Entry"))
 
 @frappe.whitelist(methods=['POST'])
@@ -231,28 +265,6 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
         "cheque_no": cheque_no,
         "user_remark": user_remark,
     })
-
-    # Compute accounts for JE 
-    is_withdrawal = bank_transaction.withdrawal > 0.0
-
-    if is_withdrawal:
-        bank_entry.append("accounts", {
-            "account": bank_account,
-            "bank_account": bank_transaction.bank_account,
-            "credit_in_account_currency": bank_transaction.unallocated_amount,
-            "credit": bank_transaction.unallocated_amount,
-            "debit_in_account_currency": 0,
-            "debit": 0,
-        })
-    else:
-        bank_entry.append("accounts", {
-            "account": bank_account,
-            "bank_account": bank_transaction.bank_account,
-            "debit_in_account_currency": bank_transaction.unallocated_amount,
-            "debit": bank_transaction.unallocated_amount,
-            "credit_in_account_currency": 0,
-            "debit": 0,
-        })
     
     if not dimensions:
         dimensions = {}
@@ -268,15 +280,13 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
                 # Cost center is required
                 cost_center = default_cost_center
         
-        credit = entry["amount"] if not is_withdrawal else 0
-        debit = entry["amount"] if is_withdrawal else 0
         bank_entry.append("accounts", {
             "account": entry["account"],
             # TODO: Multi currency support
-            "debit_in_account_currency": debit,
-            "credit_in_account_currency": credit,
-            "debit": debit,
-            "credit": credit,
+            "debit_in_account_currency": entry.get("debit"),
+            "credit_in_account_currency": entry.get("credit"),
+            "debit": entry.get("debit"),
+            "credit": entry.get("credit"),
             "party_type": entry.get("party_type") if entry.get("party") else None,
             "party": entry.get("party"),
             "user_remark": entry.get("user_remark"),

@@ -25,6 +25,7 @@ const CreateNewRule = ({ onCreate }: Props) => {
             rule_description: "",
             transaction_type: "Any",
             classify_as: 'Bank Entry',
+            bank_entry_type: "Single Account",
             description_rules: [{
                 check: "Contains",
             }]

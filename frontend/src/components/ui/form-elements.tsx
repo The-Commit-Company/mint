@@ -28,6 +28,7 @@ interface FormElementProps {
     disabled?: boolean,
     formDescription?: string,
     hideLabel?: boolean,
+    readOnly?: boolean,
 
 }
 
@@ -35,7 +36,7 @@ interface DataFieldProps extends FormElementProps {
     inputProps?: Omit<ComponentProps<"input">, "value" | "onChange" | "onBlur" | "name" | "ref">
 }
 
-export const DataField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel, disabled }: DataFieldProps) => {
+export const DataField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel, disabled, readOnly }: DataFieldProps) => {
 
     const { control } = useFormContext()
     return <FormField
@@ -47,7 +48,7 @@ export const DataField = ({ name, rules, label, isRequired, formDescription, inp
             <FormItem className='flex flex-col'>
                 <FormLabel className={hideLabel ? 'sr-only' : ''}>{label}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
                 <FormControl>
-                    <Input {...field} maxLength={140} {...inputProps} />
+                    <Input {...field} maxLength={140} aria-readonly={readOnly} readOnly={readOnly} {...inputProps} />
                 </FormControl>
                 {formDescription && <FormDescription>{formDescription}</FormDescription>}
                 <FormMessage />
@@ -60,7 +61,7 @@ interface SelectFieldProps extends FormElementProps {
     children: React.ReactNode
 }
 
-export const SelectFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, children, disabled }: SelectFieldProps) => {
+export const SelectFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, children, disabled, readOnly }: SelectFieldProps) => {
 
     const { control } = useFormContext()
 
@@ -73,7 +74,7 @@ export const SelectFormField = ({ name, rules, label, isRequired, formDescriptio
             <FormItem>
                 <FormLabel className={hideLabel ? 'sr-only' : ''}>{label}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
                 <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={disabled || readOnly} aria-readonly={readOnly}>
                         <FormControl>
                             <SelectTrigger className="w-full">
                                 <SelectValue />
@@ -197,7 +198,7 @@ interface SmallTextFieldProps extends FormElementProps {
     inputProps?: Omit<ComponentProps<"textarea">, "value" | "onChange" | "onBlur" | "name" | "ref">
 }
 
-export const SmallTextField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel, disabled }: SmallTextFieldProps) => {
+export const SmallTextField = ({ name, rules, label, isRequired, formDescription, inputProps, hideLabel, disabled, readOnly }: SmallTextFieldProps) => {
 
     const { control } = useFormContext()
     return <FormField
@@ -209,7 +210,7 @@ export const SmallTextField = ({ name, rules, label, isRequired, formDescription
             <FormItem className='flex flex-col'>
                 <FormLabel className={hideLabel ? 'sr-only' : ''}>{label}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
                 <FormControl>
-                    <Textarea {...field} {...inputProps} />
+                    <Textarea {...field} {...inputProps} readOnly={readOnly} aria-readonly={readOnly} />
                 </FormControl>
                 {formDescription && <FormDescription>{formDescription}</FormDescription>}
                 <FormMessage />
@@ -233,7 +234,7 @@ export const AccountFormField = (props: AccountFormFieldProps) => {
         render={({ field }) => (
             <FormItem className='flex flex-col'>
                 <FormLabel className={props.hideLabel ? 'sr-only' : ''}>{props.label}{props.isRequired && <span className="text-destructive">*</span>}</FormLabel>
-                <AccountsDropdown {...props} value={field.value} onChange={field.onChange} useInForm />
+                <AccountsDropdown {...props} value={field.value} onChange={field.onChange} useInForm readOnly={props.readOnly} />
                 {props.formDescription && <FormDescription>{props.formDescription}</FormDescription>}
                 <FormMessage />
             </FormItem>
@@ -245,7 +246,7 @@ interface PartyTypeFormField extends FormElementProps {
     inputProps?: Omit<PartyTypeDropdownProps, 'value' | 'onChange'>
 }
 
-export const PartyTypeFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, inputProps, disabled }: PartyTypeFormField) => {
+export const PartyTypeFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, inputProps, disabled, readOnly }: PartyTypeFormField) => {
 
     const { control } = useFormContext()
 
@@ -257,7 +258,7 @@ export const PartyTypeFormField = ({ name, rules, label, isRequired, formDescrip
         render={({ field }) => (
             <FormItem className='flex flex-col'>
                 <FormLabel className={hideLabel ? 'sr-only' : ''}>{label}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
-                <PartyTypeDropdown {...inputProps} value={field.value} onChange={field.onChange} useInForm />
+                <PartyTypeDropdown {...inputProps} value={field.value} onChange={field.onChange} useInForm readOnly={readOnly} />
                 {formDescription && <FormDescription>{formDescription}</FormDescription>}
                 <FormMessage />
             </FormItem>
@@ -270,7 +271,7 @@ interface CurrencyFormFieldProps extends FormElementProps {
     currency?: string
 }
 
-export const CurrencyFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, currency, disabled }: CurrencyFormFieldProps) => {
+export const CurrencyFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, currency, disabled, readOnly }: CurrencyFormFieldProps) => {
 
     const { control } = useFormContext()
 
@@ -306,6 +307,9 @@ export const CurrencyFormField = ({ name, rules, label, isRequired, formDescript
             }}
             id={formItemId}
             onBlur={field.onBlur}
+            disabled={field.disabled}
+            readOnly={readOnly}
+            aria-readonly={readOnly}
             onFocus={onFocus}
             groupSeparator={groupSeparator}
             decimalSeparator={decimalSeparator}
@@ -349,7 +353,7 @@ export const CurrencyFormField = ({ name, rules, label, isRequired, formDescript
 interface LinkFormFieldProps extends FormElementProps, Omit<LinkFieldComboboxProps, 'value' | 'onChange'> {
 }
 
-export const LinkFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, disabled, ...inputProps }: LinkFormFieldProps) => {
+export const LinkFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, disabled, readOnly, ...inputProps }: LinkFormFieldProps) => {
 
     const { control } = useFormContext()
 
@@ -361,7 +365,7 @@ export const LinkFormField = ({ name, rules, label, isRequired, formDescription,
         render={({ field }) => (
             <FormItem className='flex flex-col'>
                 <FormLabel className={hideLabel ? 'sr-only' : ''}>{label}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
-                <LinkFieldCombobox {...inputProps} value={field.value} onChange={field.onChange} useInForm />
+                <LinkFieldCombobox {...inputProps} value={field.value} onChange={field.onChange} useInForm disabled={disabled} readOnly={readOnly} />
                 {formDescription && <FormDescription>{formDescription}</FormDescription>}
                 <FormMessage />
             </FormItem>

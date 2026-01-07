@@ -1,4 +1,5 @@
 import { MintBankTransactionDescriptionRules } from './MintBankTransactionDescriptionRules'
+import { MintTransactionRuleAccounts } from './MintTransactionRuleAccounts'
 
 export interface MintBankTransactionRule{
 	name: string
@@ -30,9 +31,13 @@ export interface MintBankTransactionRule{
 	/**	Classify As : Select	*/
 	classify_as: "Bank Entry" | "Payment Entry" | "Transfer"
 	/**	Account : Link - Account	*/
-	account: string
-	/**	Party Type : Link - DocType	*/
+	account?: string
+	/**	Bank Entry Type : Select	*/
+	bank_entry_type?: "Single Account" | "Multiple Accounts"
+	/**	Party Type : Link - Party Type	*/
 	party_type?: string
 	/**	Party : Dynamic Link	*/
 	party?: string
+	/**	Accounts : Table - Mint Transaction Rule Accounts	*/
+	accounts?: MintTransactionRuleAccounts[]
 }

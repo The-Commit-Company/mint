@@ -120,10 +120,11 @@ const AccountsDropdown = ({ root_type, report_type, account_type, value, onChang
                         role="combobox"
                         ref={buttonRef}
                         tabIndex={0}
-                        disabled={disabled}
+                        disabled={disabled || readOnly}
+                        aria-readonly={readOnly}
                         aria-expanded={open}
                         className={cn("w-full justify-between font-normal",
-                            readOnly ? "bg-muted" : ""
+                            readOnly ? "bg-muted pointer-events-none" : ""
                             , buttonClassName)}>
                         {value || _('Select Account')}
 
