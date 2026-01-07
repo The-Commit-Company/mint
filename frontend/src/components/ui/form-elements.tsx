@@ -19,6 +19,7 @@ import { getCurrencySymbol } from "@/lib/currency"
 import { getCurrencyFormatInfo } from "@/lib/numbers"
 import LinkFieldCombobox, { LinkFieldComboboxProps } from "../common/LinkFieldCombobox"
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./select"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./input-group"
 
 interface FormElementProps {
     name: string,
@@ -268,10 +269,12 @@ export const PartyTypeFormField = ({ name, rules, label, isRequired, formDescrip
 
 
 interface CurrencyFormFieldProps extends FormElementProps {
-    currency?: string
+    currency?: string,
+    style?: React.CSSProperties,
+    leftSlot?: React.ReactNode,
 }
 
-export const CurrencyFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, currency, disabled, readOnly }: CurrencyFormFieldProps) => {
+export const CurrencyFormField = ({ name, rules, label, isRequired, formDescription, hideLabel, currency, disabled, readOnly, style = {}, leftSlot }: CurrencyFormFieldProps) => {
 
     const { control } = useFormContext()
 
@@ -304,6 +307,7 @@ export const CurrencyFormField = ({ name, rules, label, isRequired, formDescript
             name={field.name}
             style={{
                 textAlign: 'right',
+                ...style
             }}
             id={formItemId}
             onBlur={field.onBlur}
@@ -328,7 +332,7 @@ export const CurrencyFormField = ({ name, rules, label, isRequired, formDescript
                 const newValue = isDecimal ? v : values?.float ?? ''
                 field.onChange(newValue)
             }}
-            customInput={Input}
+            customInput={InputGroupInput}
         />
     }
 
@@ -340,8 +344,13 @@ export const CurrencyFormField = ({ name, rules, label, isRequired, formDescript
         render={({ field }) => (
             <FormItem className='flex flex-col'>
                 <FormLabel className={hideLabel ? 'sr-only' : ''}>{label}{isRequired && <span className="text-destructive">*</span>}</FormLabel>
+
                 <FormControl>
-                    <CurrencyField field={field} />
+                    <InputGroup>
+                        {leftSlot && <InputGroupAddon>{leftSlot}</InputGroupAddon>}
+                        <CurrencyField field={field} />
+                    </InputGroup>
+
                 </FormControl>
                 {formDescription && <FormDescription>{formDescription}</FormDescription>}
                 <FormMessage />

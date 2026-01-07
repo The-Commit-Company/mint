@@ -16,7 +16,7 @@ import { Form } from "@/components/ui/form"
 import { useCallback, useContext, useMemo, useRef, useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Plus, Trash2 } from "lucide-react"
+import { ArrowDownRight, ArrowUpRight, Plus, Trash2 } from "lucide-react"
 import { flt, formatCurrency } from "@/lib/numbers"
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
@@ -219,7 +219,17 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
                                 const transaction_amount = ${selectedTransaction.unallocated_amount ?? 0}
                                 ${expression};
                             `
-                            return eval(script)
+
+                            let value = 0;
+
+                            try {
+                                value = eval(script);
+                            } catch (error: unknown) {
+                                console.error(error);
+                                value = 0;
+                            }
+
+                            return value;
                         }
 
                         const computedDebit = acc?.debit ? flt(computeExpression(acc.debit), 2) : 0
@@ -472,6 +482,7 @@ const Entries = ({ company, isWithdrawal, currency }: { company: string, isWithd
                                     name={`entries.${index}.party_type`}
                                     label={_("Party Type")}
                                     isRequired
+                                    readOnly={index === 0}
                                     hideLabel
                                     inputProps={{
                                         type: isWithdrawal ? 'Payable' : 'Receivable',
@@ -525,24 +536,41 @@ const Entries = ({ company, isWithdrawal, currency }: { company: string, isWithd
                                 hideLabel
                             />
                         </TableCell>
-                        <TableCell className="text-right align-top">
+                        <TableCell className={cn("text-right align-top",
+                            index === 0 ? isWithdrawal ? "" : "" : "")
+                        }>
                             <CurrencyFormField
                                 name={`entries.${index}.debit`}
                                 label={_("Debit")}
                                 isRequired
                                 hideLabel
                                 readOnly={index === 0}
+                                style={index === 0 ? !isWithdrawal ? {
+                                    color: "black",
+                                } : {} : {}}
                                 currency={currency}
+                                leftSlot={index === 0 && !isWithdrawal ? <Tooltip>
+                                    <TooltipTrigger asChild><ArrowDownRight className="text-green-600" /></TooltipTrigger>
+                                    <TooltipContent>{_("Bank account debit for deposit")}</TooltipContent>
+                                </Tooltip> : undefined}
                             />
                         </TableCell>
-                        <TableCell className="text-right align-top">
+                        <TableCell className={cn("text-right align-top",
+                            index === 0 ? isWithdrawal ? "" : "" : "")}>
                             <CurrencyFormField
                                 name={`entries.${index}.credit`}
+                                style={index === 0 && isWithdrawal ? {
+                                    color: "black",
+                                } : {}}
                                 label={_("Credit")}
                                 isRequired
                                 hideLabel
                                 readOnly={index === 0}
                                 currency={currency}
+                                leftSlot={index === 0 && isWithdrawal ? <Tooltip>
+                                    <TooltipTrigger asChild><ArrowUpRight className="text-destructive" /></TooltipTrigger>
+                                    <TooltipContent>{_("Bank account credit for withdrawal")}</TooltipContent>
+                                </Tooltip> : undefined}
                             />
                         </TableCell>
                     </TableRow>
