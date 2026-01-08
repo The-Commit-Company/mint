@@ -165,6 +165,18 @@ export const BANK_LOGOS: { keywords: string[], logo: string }[] = [
         keywords: ['Fi Bank'],
         logo: 'assets/bank-logos/Fi_Bank.svg'
     },
+    {
+        keywords: ['RazorpayX'],
+        logo: 'assets/bank-logos/RazorpayX.webp'
+    },
+    {
+        keywords: ['Revolut'],
+        logo: 'assets/bank-logos/Revolut.png'
+    },
+    {
+        keywords: ['Starling Bank'],
+        logo: 'assets/bank-logos/Starling_Bank.png'
+    },
     // Australia and New Zealand
     {
         keywords: ["Commonwealth Bank", "CBA"],
