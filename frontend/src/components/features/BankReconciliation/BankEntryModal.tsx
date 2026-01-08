@@ -187,6 +187,8 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
             } else {
                 // For multiple accounts, we need to loop over and add entries for each
                 // The last row will just be the remaining amount
+                let hasTotallyEmptyRowEarlier = false;
+
                 let totalDebits = isWithdrawal ? 0 : selectedTransaction.unallocated_amount ?? 0
                 let totalCredits = isWithdrawal ? selectedTransaction.unallocated_amount ?? 0 : 0
 
@@ -194,7 +196,7 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
 
                     const acc = rule.accounts?.[i]
                     // If it's the last row, add the difference amount
-                    if (i === (rule.accounts?.length ?? 0) - 1) {
+                    if (i === (rule.accounts?.length ?? 0) - 1 && !hasTotallyEmptyRowEarlier) {
 
                         const differenceAmount = flt(totalDebits - totalCredits, 2)
                         accounts.push({
@@ -231,6 +233,9 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
                             }
 
                             return value;
+                        }
+                        if (!acc?.debit && !acc?.credit) {
+                            hasTotallyEmptyRowEarlier = true;
                         }
 
                         const computedDebit = acc?.debit ? flt(computeExpression(acc.debit), 2) : 0
@@ -403,17 +408,21 @@ const Entries = ({ company, isWithdrawal, currency }: { company: string, isWithd
 
     const onAdd = useCallback(() => {
         const existingEntries = getValues('entries')
-        const totalDebits = existingEntries.reduce((acc, curr) => acc + (curr.debit ?? 0), 0)
-        const totalCredits = existingEntries.reduce((acc, curr) => acc + (curr.credit ?? 0), 0)
+        const totalDebits = existingEntries.reduce((acc, curr) => flt(acc + (curr.debit ?? 0), 2), 0)
+        const totalCredits = existingEntries.reduce((acc, curr) => flt(acc + (curr.credit ?? 0), 2), 0)
 
-        const remainingAmount = totalDebits - totalCredits
+        const remainingAmount = flt(totalDebits - totalCredits, 2)
+
+        // Remaining amount is credit if it's positive - since some debit is pending to be cleared.
+        const debitAmount = remainingAmount > 0 ? 0 : Math.abs(remainingAmount)
+        const creditAmount = remainingAmount > 0 ? Math.abs(remainingAmount) : 0
+
         append({
             party_type: '',
             party: '',
             account: '',
-            // Remaining amount is credit if it's positive - since some debit is pending to be cleared.
-            debit: remainingAmount > 0 ? 0 : Math.abs(remainingAmount),
-            credit: remainingAmount > 0 ? Math.abs(remainingAmount) : 0,
+            debit: debitAmount,
+            credit: creditAmount,
             cost_center: getCompanyCostCenter(company) ?? ''
         } as JournalEntryAccount, {
             focusName: `entries.${existingEntries.length}.account`
@@ -444,6 +453,43 @@ const Entries = ({ company, isWithdrawal, currency }: { company: string, isWithd
         remove(selectedRows)
         setSelectedRows([])
     }, [remove, selectedRows])
+
+    /**
+     * When add difference is clicked, check if the last row has nothing filled in.
+     * If last row is empty (no debit or credit), then set that row's amount. Else, add a new row with the difference amount.
+     */
+    const onAddDifferenceClicked = () => {
+
+        const existingEntries = getValues('entries')
+        const totalDebits = existingEntries.reduce((acc, curr) => flt(acc + (curr.debit ?? 0), 2), 0)
+        const totalCredits = existingEntries.reduce((acc, curr) => flt(acc + (curr.credit ?? 0), 2), 0)
+
+        const lastIndex = existingEntries.length - 1
+
+        const isLastRowEmpty = (existingEntries[lastIndex]?.debit === 0 || existingEntries[lastIndex]?.debit === undefined) && (existingEntries[lastIndex]?.credit === 0 || existingEntries[lastIndex]?.credit === undefined)
+
+        const remainingAmount = flt(totalDebits - totalCredits, 2)
+
+        // Remaining amount is credit if it's positive - since some debit is pending to be cleared.
+        const debitAmount = remainingAmount > 0 ? 0 : Math.abs(remainingAmount)
+        const creditAmount = remainingAmount > 0 ? Math.abs(remainingAmount) : 0
+
+        if (isLastRowEmpty) {
+            setValue(`entries.${lastIndex}.debit`, debitAmount)
+            setValue(`entries.${lastIndex}.credit`, creditAmount)
+        } else {
+            append({
+                party_type: '',
+                party: '',
+                account: '',
+                debit: debitAmount,
+                credit: creditAmount,
+                cost_center: getCompanyCostCenter(company) ?? ''
+            } as JournalEntryAccount, {
+                focusName: `entries.${existingEntries.length}.account`
+            })
+        }
+    }
 
 
 
@@ -585,7 +631,7 @@ const Entries = ({ company, isWithdrawal, currency }: { company: string, isWithd
                     <Button size='sm' type='button' variant={'destructive'} onClick={onRemove}><Trash2 /> {_("Remove")}</Button>
                 </div>}
             </div>
-            <Summary currency={currency} addRow={onAdd} />
+            <Summary currency={currency} addRow={onAddDifferenceClicked} />
         </div>
     </div>
 
