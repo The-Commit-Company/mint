@@ -20,4 +20,6 @@ export interface MintTransactionRuleAccounts{
 	debit?: string
 	/**	Credit : Data	*/
 	credit?: string
+	/**	User Remark : Small Text	*/
+	user_remark?: string
 }

@@ -202,6 +202,7 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
                             debit: differenceAmount > 0 ? 0 : Math.abs(differenceAmount),
                             credit: differenceAmount > 0 ? Math.abs(differenceAmount) : 0,
                             cost_center: getCompanyCostCenter(selectedTransaction.company ?? '') ?? '',
+                            user_remark: acc?.user_remark ?? '',
                         })
                     } else {
 
@@ -242,6 +243,7 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
                             debit: computedDebit,
                             credit: computedCredit,
                             cost_center: getCompanyCostCenter(selectedTransaction.company ?? '') ?? '',
+                            user_remark: acc?.user_remark ?? '',
                         })
                     }
                 }
@@ -536,9 +538,7 @@ const Entries = ({ company, isWithdrawal, currency }: { company: string, isWithd
                                 hideLabel
                             />
                         </TableCell>
-                        <TableCell className={cn("text-right align-top",
-                            index === 0 ? isWithdrawal ? "" : "" : "")
-                        }>
+                        <TableCell className={cn("text-right align-top")}>
                             <CurrencyFormField
                                 name={`entries.${index}.debit`}
                                 label={_("Debit")}
@@ -555,8 +555,7 @@ const Entries = ({ company, isWithdrawal, currency }: { company: string, isWithd
                                 </Tooltip> : undefined}
                             />
                         </TableCell>
-                        <TableCell className={cn("text-right align-top",
-                            index === 0 ? isWithdrawal ? "" : "" : "")}>
+                        <TableCell className={cn("text-right align-top")}>
                             <CurrencyFormField
                                 name={`entries.${index}.credit`}
                                 style={index === 0 && isWithdrawal ? {

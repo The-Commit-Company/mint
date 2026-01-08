@@ -22,5 +22,6 @@ class MintTransactionRuleAccounts(Document):
 		parenttype: DF.Data
 		party: DF.DynamicLink | None
 		party_type: DF.Link | None
+		user_remark: DF.SmallText | None
 	# end: auto-generated types
 	pass

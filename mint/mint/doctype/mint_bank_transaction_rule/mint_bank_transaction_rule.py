@@ -67,10 +67,10 @@ class MintBankTransactionRule(Document):
 		if self.classify_as == "Bank Entry":
 			if not self.bank_entry_type or self.bank_entry_type == "Single Account":
 				if not self.account:
-					frappe.throw(_("Account is required to create a bank entry."))
+					frappe.throw(_("Please add an account for the Bank Entry rule."))
 			elif self.bank_entry_type == "Multiple Accounts":
 				if not self.accounts:
-					frappe.throw(_("Accounts are required to create a bank entry."))
+					frappe.throw(_("Please configure accounts for the Bank Entry rule."))
 				
 				# Last row should not have any debit or credit set, since it will be computed via formula
 				for index, account in enumerate(self.accounts):

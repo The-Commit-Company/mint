@@ -10,7 +10,8 @@
   "party_type",
   "party",
   "debit",
-  "credit"
+  "credit",
+  "user_remark"
  ],
  "fields": [
   {
@@ -46,13 +47,18 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Credit"
+  },
+  {
+   "fieldname": "user_remark",
+   "fieldtype": "Small Text",
+   "label": "User Remark"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-01-05 16:46:28.410934",
+ "modified": "2026-01-08 13:05:19.923595",
  "modified_by": "Administrator",
  "module": "Mint",
  "name": "Mint Transaction Rule Accounts",
