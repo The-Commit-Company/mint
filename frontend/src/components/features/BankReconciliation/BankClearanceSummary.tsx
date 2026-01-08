@@ -4,7 +4,7 @@ import { bankRecDateAtom, SelectedBank, selectedBankAccountAtom } from "./bankRe
 import { useCurrentCompany } from "@/hooks/useCurrentCompany"
 import { Paragraph } from "@/components/ui/typography"
 import { useMemo, useState } from "react"
-import { useFrappeGetCall, useFrappePostCall } from "frappe-react-sdk"
+import { useFrappeGetCall, useFrappePostCall, useSWRConfig } from "frappe-react-sdk"
 import { QueryReportReturnType } from "@/types/custom/Reports"
 import { formatDate } from "@/lib/date"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -184,6 +184,9 @@ const SetClearanceDateButton = ({ voucher, bankAccount, companyID, mutate }: { v
 
 const ForceClearVoucherForm = ({ voucher, bankAccount, companyID, onClose }: { voucher: BankClearanceSummaryEntry, bankAccount: SelectedBank, companyID: string, onClose: () => void }) => {
 
+    const { mutate } = useSWRConfig()
+
+    const dates = useAtomValue(bankRecDateAtom)
     const form = useForm<{ clearance_date: string }>({
         defaultValues: {
             clearance_date: voucher.posting_date,
@@ -202,6 +205,7 @@ const ForceClearVoucherForm = ({ voucher, bankAccount, companyID, onClose }: { v
             .then(() => {
                 toast.success(_("Clearance date updated"))
                 onClose()
+                mutate(`bank-reconciliation-account-closing-balance-${bankAccount?.name}-${dates.toDate}`)
             })
     }
 
