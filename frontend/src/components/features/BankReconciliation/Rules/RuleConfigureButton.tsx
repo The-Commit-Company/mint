@@ -55,7 +55,7 @@ const RuleConfigureButton = () => {
                     <ZapIcon />
                 </Button>
             </SheetTrigger>
-            <SheetContent className="min-w-xl">
+            <SheetContent className="min-w-3xl">
                 <SheetHeader>
                     <div className="flex items-center gap-2">
                         {(selectedRule || isNewRule) && <Button variant='ghost' size='icon' className="p-0" onClick={() => {

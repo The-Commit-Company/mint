@@ -17,7 +17,7 @@ type Props = {
 
 const EditRule = ({ onClose, ruleID }: Props) => {
 
-    const { data: rule, isValidating, error } = useFrappeGetDoc<MintBankTransactionRule>("Mint Bank Transaction Rule", ruleID, undefined, {
+    const { data: rule, isValidating, error, mutate } = useFrappeGetDoc<MintBankTransactionRule>("Mint Bank Transaction Rule", ruleID, undefined, {
         revalidateOnMount: true
     })
 
@@ -55,7 +55,7 @@ const EditRule = ({ onClose, ruleID }: Props) => {
     }
 
     if (rule) {
-        return <EditRuleForm rule={rule} onClose={onClose} />
+        return <EditRuleForm rule={rule} onClose={onClose} mutate={mutate} />
     }
 
     return null
@@ -63,7 +63,7 @@ const EditRule = ({ onClose, ruleID }: Props) => {
 
 }
 
-const EditRuleForm = ({ rule, onClose }: { rule: MintBankTransactionRule, onClose: VoidFunction }) => {
+const EditRuleForm = ({ rule, onClose, mutate }: { rule: MintBankTransactionRule, onClose: VoidFunction, mutate: VoidFunction }) => {
 
     const form = useForm<MintBankTransactionRule>({
         defaultValues: {
@@ -77,6 +77,7 @@ const EditRuleForm = ({ rule, onClose }: { rule: MintBankTransactionRule, onClos
         updateDoc("Mint Bank Transaction Rule", rule.name, data)
             .then(() => {
                 toast.success(_("Rule updated."))
+                mutate()
                 onClose()
             })
     }

@@ -222,8 +222,9 @@ const LinkFieldCombobox = ({
                         role="combobox"
                         ref={buttonRef}
                         tabIndex={0}
-                        disabled={disabled}
+                        disabled={disabled || readOnly}
                         aria-expanded={open}
+                        aria-readonly={readOnly}
                         className={cn("w-full justify-between font-normal group",
                             readOnly ? "bg-muted" : ""
                             , buttonClassName)}>

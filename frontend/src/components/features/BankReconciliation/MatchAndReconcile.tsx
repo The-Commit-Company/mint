@@ -1,14 +1,13 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { MissingFiltersBanner } from "./MissingFiltersBanner"
-import { bankRecRecordJournalEntryModalAtom, bankRecRecordPaymentModalAtom, bankRecSelectedTransactionAtom, bankRecTransferModalAtom, selectedBankAccountAtom } from "./bankRecAtoms"
+import { bankRecAmountFilter, bankRecRecordJournalEntryModalAtom, bankRecRecordPaymentModalAtom, bankRecSelectedTransactionAtom, bankRecTransactionTypeFilter, bankRecTransferModalAtom, selectedBankAccountAtom } from "./bankRecAtoms"
 import { H4 } from "@/components/ui/typography"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { getCompanyCurrency } from "@/lib/company"
 import ErrorBanner from "@/components/ui/error-banner"
 import { Separator } from "@/components/ui/separator"
 import Fuse from 'fuse.js'
-import { LinkedPayment, UnreconciledTransaction, useGetRuleForTransaction, useGetUnreconciledTransactions, useGetVouchersForTransaction, useIsTransactionWithdrawal, useReconcileTransaction } from "./utils"
-import { useDebounceValue } from 'usehooks-ts'
+import { getSearchResults, LinkedPayment, UnreconciledTransaction, useGetRuleForTransaction, useGetUnreconciledTransactions, useGetVouchersForTransaction, useIsTransactionWithdrawal, useReconcileTransaction, useTransactionSearch } from "./utils"
 import { Input } from "@/components/ui/input"
 import { ArrowDownRight, ArrowRightLeft, ArrowUpRight, BadgeCheck, ChevronDown, DollarSign, Landmark, Loader2, Receipt, Search, User, XCircle, ZapIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -62,20 +61,16 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
 
     const currency = bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? '')
     const currencySymbol = getCurrencySymbol(currency)
-    
     const formatInfo = getCurrencyFormatInfo(currency)
     const groupSeparator = formatInfo.group_sep || ","
     const decimalSeparator = formatInfo.decimal_str || "."
 
     const { data: unreconciledTransactions, isLoading, error } = useGetUnreconciledTransactions()
 
-    const [typeFilter, setTypeFilter] = useState('All')
-    const [amountFilter, setAmountFilter] = useState<{ value: number, stringValue?: string | number }>({
-        value: 0,
-        stringValue: '0.00'
-    })
+    const [typeFilter, setTypeFilter] = useAtom(bankRecTransactionTypeFilter)
+    const [amountFilter, setAmountFilter] = useAtom(bankRecAmountFilter)
 
-    const [search, setSearch] = useDebounceValue('', 500)
+    const [search, setSearch] = useTransactionSearch()
 
     const searchIndex = useMemo(() => {
 
@@ -92,37 +87,7 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
 
     const results = useMemo(() => {
 
-        let r = []
-        if (!searchIndex || !search) {
-            r = unreconciledTransactions?.message ?? []
-        } else {
-            r = searchIndex.search(search).map((result) => result.item)
-        }
-
-        if (typeFilter !== 'All') {
-            r = r.filter((transaction) => {
-                if (typeFilter === 'Debits') {
-                    return transaction.withdrawal && transaction.withdrawal > 0
-                }
-                if (typeFilter === 'Credits') {
-                    return transaction.deposit && transaction.deposit > 0
-                }
-            })
-        }
-
-        if (amountFilter.value > 0) {
-            r = r.filter((transaction) => {
-                if (transaction.withdrawal && transaction.withdrawal > 0) {
-                    return transaction.withdrawal === amountFilter.value
-                }
-                if (transaction.deposit && transaction.deposit > 0) {
-                    return transaction.deposit === amountFilter.value
-                }
-                return false
-            })
-        }
-
-        return r
+        return getSearchResults(searchIndex, search, typeFilter, amountFilter.value, unreconciledTransactions?.message)
 
     }, [searchIndex, search, typeFilter, amountFilter.value, unreconciledTransactions?.message])
 
@@ -142,6 +107,8 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
         onFilterChange()
     }
 
+    const hasFilters = search !== '' || typeFilter !== 'All' || amountFilter.value !== 0
+
     if (isLoading) {
         return <div className="text-sm text-center p-4 text-muted-foreground">{_("Loading")}...</div>
     }
@@ -154,7 +121,7 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
                 "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
             )}>
                 <Search className="w-5 h-5 text-muted-foreground" />
-                <Input placeholder={_("Search")} type='search' onChange={onSearchChange}
+                <Input placeholder={_("Search")} type='search' onChange={onSearchChange} defaultValue={search}
                     className="border-none px-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0" />
                 <div>
                     <span className="text-sm text-muted-foreground text-nowrap whitespace-nowrap">{results?.length} {_(results?.length === 1 ? "result" : "results")}</span>
@@ -206,6 +173,8 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
         </div>
 
         {error && <ErrorBanner error={error} />}
+
+        {results.length === 0 && <MissingFiltersBanner text={hasFilters ? _("No transactions found for the given filters.") : _("No unreconciled transactions found")} />}
 
         <Virtuoso
             data={results}

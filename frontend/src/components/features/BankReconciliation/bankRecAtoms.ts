@@ -36,3 +36,10 @@ export const bankRecRecordJournalEntryModalAtom = atom(false)
 export const bankRecUnreconcileModalAtom = atom<string>('')
 
 export const bankRecMatchFilters = atomWithStorage<string[]>('mint-bank-rec-match-filters', ['payment_entry', 'journal_entry'])
+
+export const bankRecSearchText = atom<string>('')
+export const bankRecAmountFilter = atom<{ value: number, stringValue?: string | number }>({
+    value: 0,
+    stringValue: '0.00'
+})
+export const bankRecTransactionTypeFilter = atom<string>('All')

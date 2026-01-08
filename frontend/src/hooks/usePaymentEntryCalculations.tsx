@@ -124,8 +124,8 @@ export const usePaymentEntryCalculations = () => {
                 base_total_allocated_amount += flt(ref.allocated_amount)
             }
         })
-        setValue('total_allocated_amount', total_allocated_amount)
-        setValue('base_total_allocated_amount', base_total_allocated_amount)
+        setValue('total_allocated_amount', Math.abs(total_allocated_amount))
+        setValue('base_total_allocated_amount', Math.abs(base_total_allocated_amount))
         setUnallocatedAmount()
     }, [getValues, setValue, setUnallocatedAmount])
 

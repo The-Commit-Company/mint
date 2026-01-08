@@ -1,5 +1,5 @@
-import { bankRecDateAtom, bankRecMatchFilters, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { bankRecAmountFilter, bankRecDateAtom, bankRecMatchFilters, bankRecSearchText, bankRecSelectedTransactionAtom, bankRecTransactionTypeFilter, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { useFrappeGetCall, useFrappeGetDoc, useFrappePostCall, useSWRConfig } from 'frappe-react-sdk'
 import { BankTransaction } from '@/types/Accounts/BankTransaction'
@@ -11,6 +11,10 @@ import { getErrorMessage } from '@/lib/frappe'
 import { useCurrentCompany } from '@/hooks/useCurrentCompany'
 import _ from '@/lib/translate'
 import { MintBankTransactionRule } from '@/types/Mint/MintBankTransactionRule'
+import { useRef } from 'react'
+import type { DebouncedState } from 'usehooks-ts'
+import { useDebounceCallback } from 'usehooks-ts'
+import Fuse from 'fuse.js'
 
 export const useGetAccountOpeningBalance = () => {
 
@@ -131,6 +135,10 @@ export const useRefreshUnreconciledTransactions = () => {
 
     const { mutate } = useSWRConfig()
 
+    const searchString = useAtomValue(bankRecSearchText)
+    const typeFilter = useAtomValue(bankRecTransactionTypeFilter)
+    const amountFilter = useAtomValue(bankRecAmountFilter)
+
     const { data: unreconciledTransactions } = useGetUnreconciledTransactions()
 
     /** 
@@ -149,13 +157,23 @@ export const useRefreshUnreconciledTransactions = () => {
             return
         }
 
-        const currentIndex = unreconciledTransactions?.message.findIndex(t => t.name === transaction.name)
+        // From unreconciled transactions list, first apply the filters based on the search criteria and other filters
+
+        const searchIndex = unreconciledTransactions ? new Fuse(unreconciledTransactions.message, {
+            keys: ['description', 'reference_number'],
+            threshold: 0.5,
+            includeScore: true
+        }) : null
+
+        const results = getSearchResults(searchIndex, searchString, typeFilter, amountFilter.value, unreconciledTransactions?.message)
+
+        const currentIndex = results.findIndex(t => t.name === transaction.name)
         let nextTransaction = null
 
-        if (currentIndex) {
+        if (currentIndex !== -1) {
             // Check if there is a next transaction
-            if (currentIndex < (unreconciledTransactions?.message.length || 0) - 1) {
-                nextTransaction = unreconciledTransactions?.message[currentIndex + 1]
+            if (currentIndex < (results.length || 0) - 1) {
+                nextTransaction = results[currentIndex + 1]
             }
         }
 
@@ -168,22 +186,12 @@ export const useRefreshUnreconciledTransactions = () => {
                     if (nextTransactionObj) {
                         setSelectedTransaction([nextTransactionObj])
                     } else {
-                        // If the next transaction is not there in the response, we need to select the first unreconciled transaction
-                        const firstTransaction = res?.message && res?.message.length > 0 ? res?.message[0] : null
-                        if (firstTransaction) {
-                            setSelectedTransaction([firstTransaction])
-                        } else {
-                            setSelectedTransaction([])
-                        }
-                    }
-                } else {
-                    // If there is no next transaction, we need to select the first unreconciled transaction
-                    const firstTransaction = res?.message && res?.message.length > 0 ? res?.message[0] : null
-                    if (firstTransaction) {
-                        setSelectedTransaction([firstTransaction])
-                    } else {
+                        // If the next transaction is not there in the response, we need to clear the selection
                         setSelectedTransaction([])
                     }
+                } else {
+                    // If there is no next transaction, we need to clear the selection
+                    setSelectedTransaction([])
                 }
             })
         mutate(`bank-reconciliation-account-closing-balance-${selectedBank?.name}-${dates.toDate}`)
@@ -300,4 +308,72 @@ export const useGetRuleForTransaction = (transaction: UnreconciledTransaction) =
         revalidateIfStale: false
     }
     )
+}
+
+/** Hook to handle the search input while maintaining debouncing and global state. */
+export function useTransactionSearch(): [string, DebouncedState<(value: string) => void>] {
+    const delay = 500
+    const unwrappedInitialValue = ''
+    const eq = (left: string, right: string) => left === right
+    const [debouncedValue, setDebouncedValue] = useAtom(bankRecSearchText)
+    const previousValueRef = useRef<string | undefined>(unwrappedInitialValue)
+
+    const updateDebouncedValue = useDebounceCallback(
+        setDebouncedValue,
+        delay,
+    )
+
+    // Update the debounced value if the initial value changes
+    if (!eq(previousValueRef.current as string, unwrappedInitialValue)) {
+        updateDebouncedValue(unwrappedInitialValue)
+        previousValueRef.current = unwrappedInitialValue
+    }
+
+    return [debouncedValue, updateDebouncedValue]
+}
+
+/** Utility function to get the search results based on the search index, search string, type filter, amount filter and unreconciled transactions */
+export const getSearchResults = (
+    /** Fuse index of the unreconciled transactions */
+    searchIndex: Fuse<UnreconciledTransaction> | null,
+    /** Search string */
+    search: string,
+    /** Type filter */
+    typeFilter: string,
+    /** Amount filter */
+    amountFilter: number,
+    /** Unreconciled transactions */
+    unreconciledTransactions?: UnreconciledTransaction[]) => {
+
+    let r = []
+    if (!searchIndex || !search) {
+        r = unreconciledTransactions ?? []
+    } else {
+        r = searchIndex.search(search).map((result) => result.item)
+    }
+
+    if (typeFilter !== 'All') {
+        r = r.filter((transaction) => {
+            if (typeFilter === 'Debits') {
+                return transaction.withdrawal && transaction.withdrawal > 0
+            }
+            if (typeFilter === 'Credits') {
+                return transaction.deposit && transaction.deposit > 0
+            }
+        })
+    }
+
+    if (amountFilter > 0) {
+        r = r.filter((transaction) => {
+            if (transaction.withdrawal && transaction.withdrawal > 0) {
+                return transaction.withdrawal === amountFilter
+            }
+            if (transaction.deposit && transaction.deposit > 0) {
+                return transaction.deposit === amountFilter
+            }
+            return false
+        })
+    }
+
+    return r
 }
