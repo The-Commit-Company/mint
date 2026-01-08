@@ -205,8 +205,6 @@ const ForceClearVoucherForm = ({ voucher, bankAccount, companyID, onClose }: { v
             .then(() => {
                 toast.success(_("Clearance date updated"))
                 onClose()
-
-                mutate(`bank-reconciliation-unreconciled-transactions-${bankAccount?.name}-${dates.fromDate}-${dates.toDate}`)
                 mutate(`bank-reconciliation-account-closing-balance-${bankAccount?.name}-${dates.toDate}`)
             })
     }
