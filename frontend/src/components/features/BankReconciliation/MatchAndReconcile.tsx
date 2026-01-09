@@ -29,6 +29,9 @@ import RecordPaymentModal from "./RecordPaymentModal"
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import SelectedTransactionsTable from "./SelectedTransactionsTable"
 import MatchFilters from "./MatchFilters"
+import { useHotkeys } from "react-hotkeys-hook"
+import { KeyboardMetaKeyIcon } from "@/components/ui/keyboard-keys"
+import { Kbd, KbdGroup } from "@/components/ui/kbd"
 
 const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
     const selectedBank = useAtomValue(selectedBankAccountAtom)
@@ -266,11 +269,48 @@ const VouchersSection = ({ contentHeight }: { contentHeight: number }) => {
     </div>
 }
 
-const OptionsForMultipleTransactions = ({ transactions }: { transactions: UnreconciledTransaction[] }) => {
-
+const useKeyboardShortcuts = () => {
     const setTransferModalOpen = useSetAtom(bankRecTransferModalAtom)
     const setRecordPaymentModalOpen = useSetAtom(bankRecRecordPaymentModalAtom)
     const setRecordJournalEntryModalOpen = useSetAtom(bankRecRecordJournalEntryModalAtom)
+
+    useHotkeys('meta+p', () => {
+        // 
+        setRecordPaymentModalOpen(true)
+    }, {
+        enabled: true,
+        enableOnFormTags: false,
+        preventDefault: true
+    })
+
+    useHotkeys('meta+b', () => {
+        // 
+        setRecordJournalEntryModalOpen(true)
+    }, {
+        enabled: true,
+        enableOnFormTags: false,
+        preventDefault: true
+    })
+
+    useHotkeys('meta+i', () => {
+        // 
+        setTransferModalOpen(true)
+    }, {
+        enabled: true,
+        enableOnFormTags: false,
+        preventDefault: true
+    })
+
+    return {
+        setTransferModalOpen,
+        setRecordPaymentModalOpen,
+        setRecordJournalEntryModalOpen
+    }
+}
+
+const OptionsForMultipleTransactions = ({ transactions }: { transactions: UnreconciledTransaction[] }) => {
+
+    const { setTransferModalOpen, setRecordPaymentModalOpen, setRecordJournalEntryModalOpen } = useKeyboardShortcuts()
 
     return <div className="flex flex-col py-4">
         <Card className="gap-2">
@@ -285,7 +325,6 @@ const OptionsForMultipleTransactions = ({ transactions }: { transactions: Unreco
                 </CardTitle>
             </CardHeader>
             <CardContent>
-
                 <SelectedTransactionsTable />
 
                 <CardAction className="mt-4">
@@ -304,6 +343,10 @@ const OptionsForMultipleTransactions = ({ transactions }: { transactions: Unreco
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         {_("Record a journal entry for expenses, income or split transactions")}
+                                        <KbdGroup className="ml-2">
+                                            <Kbd><KeyboardMetaKeyIcon /></Kbd>
+                                            <Kbd>B</Kbd>
+                                        </KbdGroup>
                                     </TooltipContent>
                                 </Tooltip>
                                 <Tooltip>
@@ -318,6 +361,10 @@ const OptionsForMultipleTransactions = ({ transactions }: { transactions: Unreco
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         {_("Record a payment entry against a customer or supplier")}
+                                        <KbdGroup className="ml-2">
+                                            <Kbd><KeyboardMetaKeyIcon /></Kbd>
+                                            <Kbd>P</Kbd>
+                                        </KbdGroup>
                                     </TooltipContent>
                                 </Tooltip>
 
@@ -333,6 +380,10 @@ const OptionsForMultipleTransactions = ({ transactions }: { transactions: Unreco
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         {_("Record an internal transfer to another bank/credit card/cash account")}
+                                        <KbdGroup className="ml-2">
+                                            <Kbd><KeyboardMetaKeyIcon /></Kbd>
+                                            <Kbd>I</Kbd>
+                                        </KbdGroup>
                                     </TooltipContent>
                                 </Tooltip>
 
@@ -349,9 +400,7 @@ const OptionsForMultipleTransactions = ({ transactions }: { transactions: Unreco
 
 const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transaction: UnreconciledTransaction, contentHeight: number }) => {
 
-    const setTransferModalOpen = useSetAtom(bankRecTransferModalAtom)
-    const setRecordPaymentModalOpen = useSetAtom(bankRecRecordPaymentModalAtom)
-    const setRecordJournalEntryModalOpen = useSetAtom(bankRecRecordJournalEntryModalAtom)
+    const { setTransferModalOpen, setRecordPaymentModalOpen, setRecordJournalEntryModalOpen } = useKeyboardShortcuts()
 
     return <div className="flex flex-col gap-3">
         <TooltipProvider>
@@ -368,6 +417,10 @@ const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transacti
                         </TooltipTrigger>
                         <TooltipContent>
                             {_("Record a payment entry against a customer or supplier")}
+                            <KbdGroup className="ml-2">
+                                <Kbd><KeyboardMetaKeyIcon /></Kbd>
+                                <Kbd>P</Kbd>
+                            </KbdGroup>
                         </TooltipContent>
                     </Tooltip>
                     <Tooltip>
@@ -381,6 +434,10 @@ const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transacti
                         </TooltipTrigger>
                         <TooltipContent>
                             {_("Record a journal entry for expenses, income or split transactions")}
+                            <KbdGroup className="ml-2">
+                                <Kbd><KeyboardMetaKeyIcon /></Kbd>
+                                <Kbd>B</Kbd>
+                            </KbdGroup>
                         </TooltipContent>
                     </Tooltip>
                     <Tooltip >
@@ -394,6 +451,10 @@ const OptionsForSingleTransaction = ({ transaction, contentHeight }: { transacti
                         </TooltipTrigger>
                         <TooltipContent>
                             {_("Record an internal transfer to another bank/credit card/cash account")}
+                            <KbdGroup className="ml-2">
+                                <Kbd><KeyboardMetaKeyIcon /></Kbd>
+                                <Kbd>I</Kbd>
+                            </KbdGroup>
                         </TooltipContent>
                     </Tooltip>
                 </div>
