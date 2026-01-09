@@ -52,6 +52,7 @@
     "react-day-picker": "^9.8.1",
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.61.1",
+    "react-hotkeys-hook": "^5.2.1",
     "react-markdown": "^10.1.0",
     "react-virtuoso": "^4.13.0",
     "rehype-raw": "^7.0.0",
