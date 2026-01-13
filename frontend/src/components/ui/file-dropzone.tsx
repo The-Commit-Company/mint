@@ -35,7 +35,10 @@ export const FileDropzone = ({ files, setFiles, accept }: Props) => {
                     </div>
                     <Button type='button' variant='ghost' size='icon'
                         className='text-muted-foreground hover:text-gray-900 hover:bg-transparent'
-                        onClick={() => setFiles(files.filter(f => f.name !== f.name))}>
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            setFiles(files.filter(file => file.name !== f.name))
+                        }}>
                         <Trash2Icon className='w-4 h-4' />
                     </Button>
                 </div>)}
