@@ -170,7 +170,10 @@ def create_internal_transfer(bank_transaction_name: str,
         # Reconcile the mirror transaction
         reconcile_vouchers(mirror_transaction_name, vouchers, is_new_voucher=False)
 
-    return transaction_id
+    return {
+        "transaction": transaction_id,
+        "payment_entry": pe,
+    }
 
 @frappe.whitelist(methods=['POST'])
 def create_bulk_bank_entry_and_reconcile(bank_transactions: list[str], 
@@ -302,11 +305,16 @@ def create_bank_entry_and_reconcile(bank_transaction_name: str,
     else:
         paid_amount = bank_transaction.withdrawal
 
-    return reconcile_vouchers(bank_transaction_name, json.dumps([{
+    transaction = reconcile_vouchers(bank_transaction_name, json.dumps([{
         "payment_doctype": "Journal Entry",
         "payment_name": bank_entry.name,
         "amount": paid_amount,
     }]), is_new_voucher=True)
+
+    return {
+        "transaction": transaction,
+        "journal_entry": bank_entry,
+    }
 
 @frappe.whitelist(methods=['POST'])
 def create_bulk_payment_entry_and_reconcile(bank_transaction_names: list, 
@@ -375,11 +383,16 @@ def create_payment_entry_and_reconcile(bank_transaction_name: str,
     })
     payment_entry.insert()
     payment_entry.submit()
-    return reconcile_vouchers(bank_transaction_name, json.dumps([{
+    transaction = reconcile_vouchers(bank_transaction_name, json.dumps([{
         "payment_doctype": "Payment Entry",
         "payment_name": payment_entry.name,
         "amount": payment_entry.paid_amount,
     }]), is_new_voucher=True)
+
+    return {
+        "transaction": transaction,
+        "payment_entry": payment_entry,
+    }
 
 
 @frappe.whitelist(methods=['GET'])

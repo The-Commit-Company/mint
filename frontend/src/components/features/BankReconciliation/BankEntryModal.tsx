@@ -22,6 +22,10 @@ import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import SelectedTransactionsTable from "./SelectedTransactionsTable"
 import { JournalEntryAccount } from "@/types/Accounts/JournalEntryAccount"
+import { BankTransaction } from "@/types/Accounts/BankTransaction"
+import FileUploadBanner from "@/components/common/FileUploadBanner"
+import { Label } from "@/components/ui/label"
+import { FileDropzone } from "@/components/ui/file-dropzone"
 
 const BankEntryModal = () => {
 
@@ -154,6 +158,7 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
         const accounts: Partial<JournalEntryAccount>[] = [
             {
                 account: selectedBankAccount?.account ?? '',
+                bank_account: selectedTransaction.bank_account,
                 // Bank is debited if it's a deposit
                 debit: isWithdrawal ? 0 : selectedTransaction.unallocated_amount,
                 credit: isWithdrawal ? selectedTransaction.unallocated_amount : 0,
@@ -272,16 +277,23 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
 
     const onReconcile = useRefreshUnreconciledTransactions()
 
-    const { call: createBankEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_bank_entry_and_reconcile')
+    const { call: createBankEntry, loading, error, isCompleted } = useFrappePostCall<{ message: { transaction: BankTransaction, journal_entry: JournalEntry } }>('mint.apis.bank_reconciliation.create_bank_entry_and_reconcile')
 
     const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
+
+    const { file: frappeFile } = useContext(FrappeContext) as FrappeConfig
+
+    const [isUploading, setIsUploading] = useState(false)
+    const [uploadProgress, setUploadProgress] = useState(0)
+
+    const [files, setFiles] = useState<File[]>([])
 
     const onSubmit = (data: BankEntryFormData) => {
 
         createBankEntry({
             bank_transaction_name: selectedTransaction.name,
             ...data
-        }).then(() => {
+        }).then(async ({ message }) => {
             toast.success(_("Bank Entry Created"), {
                 duration: 4000,
                 closeButton: true,
@@ -293,10 +305,49 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
                     backgroundColor: "rgb(0, 138, 46)"
                 }
             })
+
+            if (files.length > 0) {
+                setIsUploading(true)
+
+                const uploadPromises = files.map(f => {
+                    return frappeFile.uploadFile(f, {
+                        isPrivate: true,
+                        doctype: "Journal Entry",
+                        docname: message.journal_entry.name,
+                    }, (_bytesUploaded, _totalBytes, progress) => {
+
+                        setUploadProgress((currentProgress) => {
+                            //If there are multiple files, we need to add the progress to the current progress
+                            return currentProgress + ((progress?.progress ?? 0) / files.length)
+                        })
+
+                    })
+                })
+
+                return Promise.all(uploadPromises).then(() => {
+                    setUploadProgress(0)
+                    setIsUploading(false)
+                }).catch((error) => {
+                    console.error(error)
+                    toast.error(_("Error uploading attachments"), {
+                        duration: 4000,
+                    })
+                    setIsUploading(false)
+                })
+            } else {
+                return Promise.resolve()
+            }
+
+        }).then(() => {
             onReconcile(selectedTransaction)
             onClose()
         })
     }
+
+    if (isUploading && isCompleted) {
+        return <FileUploadBanner uploadProgress={uploadProgress} />
+    }
+
     return <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className='flex flex-col gap-4'>
@@ -338,6 +389,13 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
                             name='user_remark'
                             label={_("Remarks")}
                         />
+                        <div
+                            data-slot="form-item"
+                            className="flex flex-col gap-2"
+                        >
+                            <Label>{_("Attachments")}</Label>
+                            <FileDropzone files={files} setFiles={setFiles} />
+                        </div>
                     </div>
                 </div>
 
