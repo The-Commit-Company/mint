@@ -243,7 +243,7 @@ const ClosingBalanceForm = ({ defaultBalance, date, bankAccount, onClose }: { de
     return <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
-                <DialogTitle>{_("Set Closing Balance as per Bank Statement")}</DialogTitle>
+                <DialogTitle>{_("Set closing balance as per bank statement")}</DialogTitle>
                 <DialogDescription>
                     {_("Enter the closing balance you see in your bank statement for {0} as of the {1}", [bankAccount?.account_name ?? bankAccount?.name ?? '', formatDate(date, 'Do MMM YYYY')])}
                 </DialogDescription>
@@ -252,7 +252,7 @@ const ClosingBalanceForm = ({ defaultBalance, date, bankAccount, onClose }: { de
             <div className="py-4">
                 <CurrencyFormField
                     name="balance"
-                    label={_("Closing Balance on statement as of {0}", [formatDate(date, 'Do MMM YYYY')])}
+                    label={_("Closing balance on bank statement as of {0}", [formatDate(date, 'Do MMM YYYY')])}
                     isRequired
                     currency={currency}
                 />
