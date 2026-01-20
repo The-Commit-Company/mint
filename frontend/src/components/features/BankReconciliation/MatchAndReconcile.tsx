@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator"
 import Fuse from 'fuse.js'
 import { getSearchResults, LinkedPayment, UnreconciledTransaction, useGetRuleForTransaction, useGetUnreconciledTransactions, useGetVouchersForTransaction, useIsTransactionWithdrawal, useReconcileTransaction, useTransactionSearch } from "./utils"
 import { Input } from "@/components/ui/input"
-import { AlertCircle, ArrowDownRight, ArrowRightLeft, ArrowUpRight, BadgeCheck, ChevronDown, DollarSign, Landmark, Loader2, Receipt, Search, User, XCircle, ZapIcon } from "lucide-react"
+import { AlertCircle, ArrowDownRight, ArrowRightIcon, ArrowRightLeft, ArrowUpRight, BadgeCheck, ChevronDown, DollarSign, Landmark, Loader2, Receipt, Search, User, XCircle, ZapIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
@@ -816,6 +816,8 @@ const OlderUnreconciledTransactionsBanner = () => {
     }>("mint.apis.transactions.get_older_unreconciled_transactions", {
         bank_account: selectedBank?.name,
         from_date: dates.fromDate,
+    }, undefined, {
+        revalidateOnFocus: false,
     })
 
     if (data && data.message.count > 0) {
@@ -827,17 +829,18 @@ const OlderUnreconciledTransactionsBanner = () => {
                         <AlertCircle className="w-6 h-6 text-amber-600" />
                     </div>
                     <div className="flex flex-col gap-0.5">
-                        <span className="text-sm font-medium text-amber-600">{_("There are {0} unreconciled transactions before {1}.", [data.message.count.toString(), formatDate(data.message.oldest_date)])}</span>
+                        <span className="text-sm font-medium text-amber-600">{_("There are {0} unreconciled transactions before {1}.", [data.message.count.toString(), formatDate(dates.fromDate)])}</span>
                         <span className="text-sm text-amber-600">{_("The opening balance might not match your bank statement. Would you like to reconcile them?")}</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 w-fit pl-4">
                         <Button
                             size='sm'
                             type='button'
                             className="shadow-none"
                             onClick={() => setDates({ fromDate: data.message.oldest_date, toDate: dates.toDate })}
                             variant='outline'>
-                            <span>{_("Set date to {0}", [formatDate(data.message.oldest_date)])}</span>
+                            <span>{_("View older transactions")}</span>
+                            <ArrowRightIcon className="w-4 h-4" />
                         </Button>
                     </div>
                 </div>
