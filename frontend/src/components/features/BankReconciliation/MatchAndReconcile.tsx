@@ -1,6 +1,6 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { MissingFiltersBanner } from "./MissingFiltersBanner"
-import { bankRecAmountFilter, bankRecRecordJournalEntryModalAtom, bankRecRecordPaymentModalAtom, bankRecSelectedTransactionAtom, bankRecTransactionTypeFilter, bankRecTransferModalAtom, selectedBankAccountAtom } from "./bankRecAtoms"
+import { bankRecAmountFilter, bankRecDateAtom, bankRecRecordJournalEntryModalAtom, bankRecRecordPaymentModalAtom, bankRecSelectedTransactionAtom, bankRecTransactionTypeFilter, bankRecTransferModalAtom, selectedBankAccountAtom } from "./bankRecAtoms"
 import { H4 } from "@/components/ui/typography"
 import { useMemo } from "react"
 import { getCompanyCurrency } from "@/lib/company"
@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator"
 import Fuse from 'fuse.js'
 import { getSearchResults, LinkedPayment, UnreconciledTransaction, useGetRuleForTransaction, useGetUnreconciledTransactions, useGetVouchersForTransaction, useIsTransactionWithdrawal, useReconcileTransaction, useTransactionSearch } from "./utils"
 import { Input } from "@/components/ui/input"
-import { ArrowDownRight, ArrowRightLeft, ArrowUpRight, BadgeCheck, ChevronDown, DollarSign, Landmark, Loader2, Receipt, Search, User, XCircle, ZapIcon } from "lucide-react"
+import { AlertCircle, ArrowDownRight, ArrowRightIcon, ArrowRightLeft, ArrowUpRight, BadgeCheck, ChevronDown, DollarSign, Landmark, Loader2, Receipt, Search, User, XCircle, ZapIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
@@ -32,6 +32,7 @@ import MatchFilters from "./MatchFilters"
 import { useHotkeys } from "react-hotkeys-hook"
 import { KeyboardMetaKeyIcon } from "@/components/ui/keyboard-keys"
 import { Kbd, KbdGroup } from "@/components/ui/kbd"
+import { useFrappeGetCall } from "frappe-react-sdk"
 
 const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
     const selectedBank = useAtomValue(selectedBankAccountAtom)
@@ -176,6 +177,8 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
         </div>
 
         {error && <ErrorBanner error={error} />}
+
+        <OlderUnreconciledTransactionsBanner />
 
         {results.length === 0 && <MissingFiltersBanner text={hasFilters ? _("No transactions found for the given filters.") : _("No unreconciled transactions found")} />}
 
@@ -797,6 +800,56 @@ const MatchBadge = ({ matchType, label }: { matchType: 'full' | 'partial' | 'non
             {label}
         </TooltipContent>
     </Tooltip>
+}
+
+const OlderUnreconciledTransactionsBanner = () => {
+
+    // A banner to show when there are unreconciled transactions for the given bank account before the current selected date
+    const [dates, setDates] = useAtom(bankRecDateAtom)
+    const selectedBank = useAtomValue(selectedBankAccountAtom)
+
+    const { data } = useFrappeGetCall<{
+        message: {
+            count: number,
+            oldest_date: string
+        }
+    }>("mint.apis.transactions.get_older_unreconciled_transactions", {
+        bank_account: selectedBank?.name,
+        from_date: dates.fromDate,
+    }, undefined, {
+        revalidateOnFocus: false,
+    })
+
+    if (data && data.message.count > 0) {
+
+        return <div className="flex flex-col gap-2">
+            <div className="border border-amber-500 rounded-md p-4">
+                <div className="flex items-center gap-2">
+                    <div className="min-w-8">
+                        <AlertCircle className="w-6 h-6 text-amber-600" />
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                        <span className="text-sm font-medium text-amber-600">{_("There are {0} unreconciled transactions before {1}.", [data.message.count.toString(), formatDate(dates.fromDate)])}</span>
+                        <span className="text-sm text-amber-600">{_("The opening balance might not match your bank statement. Would you like to reconcile them?")}</span>
+                    </div>
+                    <div className="flex items-center gap-2 w-fit pl-4">
+                        <Button
+                            size='sm'
+                            type='button'
+                            className="shadow-none"
+                            onClick={() => setDates({ fromDate: data.message.oldest_date, toDate: dates.toDate })}
+                            variant='outline'>
+                            <span>{_("View older transactions")}</span>
+                            <ArrowRightIcon className="w-4 h-4" />
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    return null
+
 }
 
 export default MatchAndReconcile
