@@ -1,0 +1,101 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:bank_account",
+ "creation": "2026-01-22 13:55:51.010180",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "bank_account",
+  "column_break_cefj",
+  "statement_type",
+  "section_break_qhnf",
+  "column_mapping"
+ ],
+ "fields": [
+  {
+   "fieldname": "bank_account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Bank Account",
+   "link_filters": "[[\"Bank Account\",\"is_company_account\",\"=\",1]]",
+   "options": "Bank Account",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "section_break_qhnf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_mapping",
+   "fieldtype": "Table",
+   "label": "Column Mapping",
+   "options": "Mint Bank Statement Import Template Columns"
+  },
+  {
+   "fieldname": "column_break_cefj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Excel/CSV",
+   "fieldname": "statement_type",
+   "fieldtype": "Select",
+   "label": "Statement Type",
+   "options": "Excel/CSV",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-01-22 14:21:25.387491",
+ "modified_by": "Administrator",
+ "module": "Mint",
+ "name": "Mint Bank Statement Import Template",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
