@@ -1,7 +1,7 @@
 import { bankRecAmountFilter, bankRecDateAtom, bankRecMatchFilters, bankRecSearchText, bankRecSelectedTransactionAtom, bankRecTransactionTypeFilter, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
-import { useFrappeGetCall, useFrappeGetDoc, useFrappePostCall, useSWRConfig } from 'frappe-react-sdk'
+import { SWRConfiguration, useFrappeGetCall, useFrappeGetDoc, useFrappePostCall, useSWRConfig } from 'frappe-react-sdk'
 import { BankTransaction } from '@/types/Accounts/BankTransaction'
 import { BankAccount } from '@/types/Accounts/BankAccount'
 import dayjs from 'dayjs'
@@ -62,6 +62,23 @@ export const useGetAccountClosingBalance = () => {
         }
     )
 
+}
+
+/**
+ * Hook to fetch the closing balance set in the database for the given bank and date
+ */
+export const useGetAccountClosingBalanceAsPerStatement = (swrConfig: SWRConfiguration = {}) => {
+
+    const dates = useAtomValue(bankRecDateAtom)
+    const bankAccount = useAtomValue(selectedBankAccountAtom)
+
+    return useFrappeGetCall<{ message: { balance: number, date?: string } }>("mint.apis.bank_account.get_closing_balance_as_per_statement", {
+        bank_account: bankAccount?.name,
+        date: dates.toDate
+    }, `bank-reconciliation-account-closing-balance-as-per-statement-${bankAccount?.name}-${dates.toDate}`, {
+        revalidateOnFocus: false,
+        ...swrConfig
+    })
 }
 
 export type UnreconciledTransaction = Pick<BankTransaction, 'name' | 'matched_rule' | 'date' | 'withdrawal' | 'deposit' | 'currency' | 'description' | 'status' | 'transaction_type' | 'reference_number' | 'party_type' | 'party' | 'bank_account' | 'company' | 'unallocated_amount'>

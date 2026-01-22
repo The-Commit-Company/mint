@@ -1,24 +1,15 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-08-06 15:28:35.870320",
+ "creation": "2026-01-20 14:11:02.466920",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_sttk",
   "bank_account",
-  "status",
-  "file",
-  "file_type",
-  "transactions",
-  "error",
-  "amended_from"
+  "date",
+  "balance"
  ],
  "fields": [
-  {
-   "fieldname": "section_break_sttk",
-   "fieldtype": "Section Break"
-  },
   {
    "fieldname": "bank_account",
    "fieldtype": "Link",
@@ -29,59 +20,28 @@
    "reqd": 1
   },
   {
-   "default": "Not Started",
-   "fieldname": "status",
-   "fieldtype": "Select",
+   "fieldname": "date",
+   "fieldtype": "Date",
    "in_list_view": 1,
-   "label": "Status",
-   "options": "Not Started\nCompleted\nError",
-   "read_only": 1,
+   "label": "Date",
    "reqd": 1
   },
   {
-   "fieldname": "file",
-   "fieldtype": "Attach",
+   "fieldname": "balance",
+   "fieldtype": "Currency",
    "in_list_view": 1,
-   "label": "File"
-  },
-  {
-   "fieldname": "file_type",
-   "fieldtype": "Select",
-   "label": "File Type",
-   "options": "PDF"
-  },
-  {
-   "fieldname": "error",
-   "fieldtype": "Code",
-   "label": "Error",
-   "read_only": 1
-  },
-  {
-   "allow_bulk_edit": 1,
-   "fieldname": "transactions",
-   "fieldtype": "Table",
-   "label": "Transactions",
-   "options": "Mint Bank Statement Import Transactions"
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Mint Bank Statement Import",
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
+   "label": "Balance",
+   "non_negative": 1,
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "links": [],
- "modified": "2026-01-20 14:13:33.413074",
+ "modified": "2026-01-20 14:12:21.566477",
  "modified_by": "Administrator",
  "module": "Mint",
- "name": "Mint Bank Statement Import",
+ "name": "Mint Bank Statement Balance",
  "owner": "Administrator",
  "permissions": [
   {
@@ -94,7 +54,6 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
-   "submit": 1,
    "write": 1
   },
   {
@@ -123,7 +82,8 @@
   }
  ],
  "row_format": "Dynamic",
- "sort_field": "modified",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
  "sort_order": "DESC",
  "states": []
 }
