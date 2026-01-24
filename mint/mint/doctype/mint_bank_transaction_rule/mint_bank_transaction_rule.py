@@ -42,7 +42,7 @@ class MintBankTransactionRule(Document):
 			highest_priority = frappe.db.get_value(
 				"Mint Bank Transaction Rule",
 				filters={"company": self.company},
-				fieldname="MAX(priority)",
+				fieldname="priority",
 				order_by="priority DESC"
 			)
 			
