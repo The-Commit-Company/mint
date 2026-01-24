@@ -32,7 +32,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Maps To",
-   "options": "Do not import\nDate\nDescription\nAmount\nBalance\nDeposit\nWithdrawal\nReference",
+   "options": "Do not import\nDate\nDescription\nAmount\nBalance\nDeposit\nWithdrawal\nReference\nTransaction Type",
    "reqd": 1
   },
   {
@@ -42,7 +42,7 @@
    "in_list_view": 1,
    "label": "Amount expressed as",
    "mandatory_depends_on": "eval: doc.maps_to == \"Amount\";",
-   "options": "Contains \"Cr\"/\"Dr\"\nPositive/Negative Value"
+   "options": "Contains Cr/Dr\nPositive/Negative Value\nTransaction Type containing Cr/Dr\nTransaction Type containing Deposit/Withdrawal"
   },
   {
    "depends_on": "eval: doc.maps_to == \"Amount\";",
@@ -58,7 +58,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-01-22 14:17:43.312871",
+ "modified": "2026-01-23 13:59:33.995194",
  "modified_by": "Administrator",
  "module": "Mint",
  "name": "Mint Bank Statement Import Template Columns",

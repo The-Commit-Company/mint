@@ -15,9 +15,9 @@ class MintBankStatementImportTemplateColumns(Document):
 		from frappe.types import DF
 
 		amount_deposit_treatment: DF.Literal["Dr", "Cr", "Positive", "Negative"]
-		amount_expressed_as: DF.Literal["Contains \"Cr\"/\"Dr\"", "Positive/Negative Value"]
+		amount_expressed_as: DF.Literal["Contains Cr/Dr", "Positive/Negative Value", "Transaction Type containing Cr/Dr", "Transaction Type containing Deposit/Withdrawal"]
 		header_text: DF.Data
-		maps_to: DF.Literal["Do not import", "Date", "Description", "Amount", "Balance", "Deposit", "Withdrawal", "Reference"]
+		maps_to: DF.Literal["Do not import", "Date", "Description", "Amount", "Balance", "Deposit", "Withdrawal", "Reference", "Transaction Type"]
 		parent: DF.Data
 		parentfield: DF.Data
 		parenttype: DF.Data
