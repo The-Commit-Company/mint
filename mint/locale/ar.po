@@ -589,7 +589,7 @@ msgid "For example, if set to 4, Mint will try to find matching transactions in 
 msgstr "على سبيل المثال، إذا تم التعيين على 4، فستحاول Mint العثور على المعاملات المطابقة في البنوك الأخرى قبل 4 أيام من تاريخ المعاملة وبعده. "
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:175
-msgid "Force Evaluate All"
+msgid "Force evaluate all"
 msgstr "تقييم الكل"
 
 #: frontend/src/components/features/BankReconciliation/Rules/RuleConfigureButton.tsx:173
@@ -880,7 +880,7 @@ msgid "Not Started"
 msgstr "لم يبدأ"
 
 #: frontend/src/components/features/Settings/Settings.tsx:78
-msgid "Number of Days to Match Transfers"
+msgid "Number of days to match transfers"
 msgstr "عدد الأيام لمطابقة التحويلات"
 
 #. Description of the 'Match Transfers across (days)' (Int) field in DocType
@@ -1041,11 +1041,11 @@ msgid "Posting Date"
 msgstr "تاريخ النشر"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:713
-msgid "Posting Date does not match the transaction date"
+msgid "Posting date does not match the transaction date"
 msgstr "تاريخ الترحيل لا يتطابق مع تاريخ المعاملة"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:713
-msgid "Posting Date matches the transaction date"
+msgid "Posting date matches the transaction date"
 msgstr "تاريخ الترحيل يطابق تاريخ المعاملة"
 
 #. Label of a Int field in DocType 'Mint Bank Transaction Rule'
@@ -1169,7 +1169,7 @@ msgid "Reference Date"
 msgstr "تاريخ مرجعي"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:721
-msgid "Reference Date does not match the transaction date"
+msgid "Reference date does not match the transaction date"
 msgstr "تاريخ المرجع لا يتطابق مع تاريخ المعاملة"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:222
@@ -1177,7 +1177,7 @@ msgid "Reference Date is required"
 msgstr "تاريخ المرجعي مطلوب"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:721
-msgid "Reference Date matches the transaction date"
+msgid "Reference date matches the transaction date"
 msgstr "التاريخ المرجعي يطابق تاريخ المعاملة"
 
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:595
@@ -1187,11 +1187,11 @@ msgstr "المستند المرجعي"
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:226
 #: frontend/src/components/features/BankReconciliation/RecordPaymentModal.tsx:391
 #: frontend/src/components/features/BankReconciliation/TransferModal.tsx:230
-msgid "Reference No"
+msgid "Reference"
 msgstr "رقم مرجعي"
 
 #: frontend/src/components/features/BankReconciliation/BankEntryModal.tsx:228
-msgid "Reference No is required"
+msgid "Reference is required"
 msgstr "الرقم المرجعي مطلوب"
 
 #: frontend/src/components/features/BankReconciliation/MatchAndReconcile.tsx:735

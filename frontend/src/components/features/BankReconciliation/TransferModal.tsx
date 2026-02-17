@@ -271,7 +271,7 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
                                 inputProps={{ autoFocus: false }}
                             />
                         </div>
-                        <DataField name='reference_no' label={_("Reference No")} isRequired inputProps={{ autoFocus: false }} />
+                        <DataField name='reference_no' label={_("Reference")} isRequired inputProps={{ autoFocus: false }} />
                     </div>
                 </div>
 

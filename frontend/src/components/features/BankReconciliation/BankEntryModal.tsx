@@ -373,9 +373,9 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
                                 }}
                             />
                         </div>
-                        <DataField name='cheque_no' label={_("Reference No")} isRequired inputProps={{ autoFocus: false }}
+                        <DataField name='cheque_no' label={_("Reference")} isRequired inputProps={{ autoFocus: false }}
                             rules={{
-                                required: _("Reference No is required"),
+                                required: _("Reference is required"),
                             }} />
                     </div>
                 </div>

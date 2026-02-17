@@ -432,7 +432,7 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
                                 inputProps={{ autoFocus: false }}
                             />
                         </div>
-                        <DataField name='reference_no' label={_("Reference No")} isRequired inputProps={{ autoFocus: false }} />
+                        <DataField name='reference_no' label={_("Reference")} isRequired inputProps={{ autoFocus: false }} />
                         <div
                             data-slot="form-item"
                             className="flex flex-col gap-2"

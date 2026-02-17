@@ -743,7 +743,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                                 <span>{_("Posted On")}: <span className="font-bold">{formatDate(voucher.posting_date)}</span></span>
                                 <MatchBadge
                                     matchType={postingDateMatches ? "full" : "none"}
-                                    label={postingDateMatches ? _("Posting Date matches the transaction date") : _("Posting Date does not match the transaction date")}
+                                    label={postingDateMatches ? _("Posting date matches the transaction date") : _("Posting date does not match the transaction date")}
                                 />
                             </div>
                             {voucher.reference_date && <Separator orientation="vertical" className="h-4" />}
@@ -751,7 +751,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
                                 <span>{_("Reference Date")}: <span className="font-bold">{formatDate(voucher.reference_date)}</span></span>
                                 <MatchBadge
                                     matchType={referenceDateMatches ? "full" : "none"}
-                                    label={referenceDateMatches ? `${_("Reference Date matches the transaction date")}` : `${_("Reference Date does not match the transaction date")}`}
+                                    label={referenceDateMatches ? `${_("Reference date matches the transaction date")}` : `${_("Reference date does not match the transaction date")}`}
                                 />
                             </div>}
                         </div>

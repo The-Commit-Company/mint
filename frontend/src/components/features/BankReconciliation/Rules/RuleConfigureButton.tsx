@@ -31,6 +31,7 @@ import {
     useSortable,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 const RuleConfigureButton = () => {
 
@@ -50,11 +51,18 @@ const RuleConfigureButton = () => {
 
     return (
         <Sheet open={isOpen} onOpenChange={onOpenChange}>
-            <SheetTrigger asChild>
-                <Button size='icon' variant='outline' title={_("Transaction Matching Rules")}>
-                    <ZapIcon />
-                </Button>
-            </SheetTrigger>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <SheetTrigger asChild>
+                        <Button size='icon' variant='outline' title={_("Transaction Matching Rules")}>
+                            <ZapIcon />
+                        </Button>
+                    </SheetTrigger>
+                </TooltipTrigger>
+                <TooltipContent>
+                    {_("Transaction Matching Rules")}
+                </TooltipContent>
+            </Tooltip>
             <SheetContent className="min-w-3xl">
                 <SheetHeader>
                     <div className="flex items-center gap-2">
@@ -174,7 +182,7 @@ const RuleList = ({ setSelectedRule, setIsNewRule }: { setSelectedRule: (rule: s
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => handleRunRules(true)} disabled={isRunningRules} title={_("Force re-evaluate all unreconciled transactions, even if they were previously evaluated")}>
                                 <RefreshCw className="w-4 h-4 mr-2" />
-                                {_("Force Evaluate All")}
+                                {_("Force evaluate all")}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
 
