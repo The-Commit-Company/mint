@@ -24,6 +24,7 @@ import { useFrappePostCall, useSWRConfig } from 'frappe-react-sdk'
 import { toast } from 'sonner'
 import { getErrorMessage } from '@/lib/frappe'
 import ErrorBanner from '@/components/ui/error-banner'
+import SelectedTransactionDetails from '../BankReconciliation/SelectedTransactionDetails'
 
 const ActionLog = () => {
 
@@ -79,16 +80,12 @@ const ActionLogDialogContent = () => {
                     <div className='ml-2 border-l border-l-gray-300 py-1'>
                         <div className='ml-5'>
                             {action.items.map((item, index) => (
-                                <div className='flex items-center gap-2 group' key={item.bankTransaction.name}>
-                                    <Row
-                                        item={item}
-                                        index={index}
-                                        isLast={index === action.items.length - 1} />
-                                    <div className='w-10 h-10 flex items-center justify-center'>
-                                        <CancelActionLogItem item={item} type={action.type} timestamp={action.timestamp} />
-                                    </div>
-                                </div>
-
+                                <Row
+                                    item={item}
+                                    key={item.bankTransaction.name}
+                                    index={index}
+                                    action={action}
+                                    isLast={index === action.items.length - 1} />
                             ))}
                         </div>
                     </div>
@@ -100,7 +97,254 @@ const ActionLogDialogContent = () => {
     </div>
 }
 
-const CancelActionLogItem = ({ item, type, timestamp }: { item: ActionLogItem, type: ActionLogType['type'], timestamp: number }) => {
+
+
+const ActionGroupHeader = ({ action }: { action: ActionLogType }) => {
+
+    const label = useMemo(() => {
+        switch (action.type) {
+            case 'match':
+                return _("Matched")
+            case 'payment':
+                if (action.isBulk) {
+                    return _("Bulk Payment")
+                }
+                return _("Payment")
+
+            case 'transfer':
+                if (action.isBulk) {
+                    return _("Bulk Transfer")
+                }
+                return _("Transfer")
+
+            case 'bank_entry':
+                if (action.isBulk) {
+                    return _("Bulk Bank Entry")
+                }
+                return _("Bank Entry")
+
+            default:
+                return _("Action")
+        }
+    }, [action])
+
+    return <div className='flex items-center gap-2 text-muted-foreground'>
+        {action.type === 'match' && <GitCompareIcon className='w-4 h-4' />}
+        {action.type === 'payment' && <ReceiptIcon className='w-4 h-4' />}
+        {action.type === 'transfer' && <ArrowRightLeftIcon className='w-4 h-4' />}
+        {action.type === 'bank_entry' && <LandmarkIcon className='w-4 h-4' />}
+        <span className='flex items-center gap-2 text-sm'>
+            {label} - {dayjs(action.timestamp).fromNow()}
+        </span>
+    </div>
+}
+
+const Row = ({ item, index, isLast, action }: { item: ActionLogItem, index: number, isLast: boolean, action: ActionLogType }) => {
+
+    const isWithdrawal = item.bankTransaction.withdrawal && item.bankTransaction.withdrawal > 0
+
+    const { banks } = useGetBankAccounts()
+
+    const bank = useMemo(() => {
+        if (item.bankTransaction.bank_account) {
+            return banks?.find((bank) => bank.name === item.bankTransaction.bank_account)
+        }
+        return null
+    }, [item.bankTransaction.bank_account, banks])
+
+    const amount = item.bankTransaction.withdrawal ? item.bankTransaction.withdrawal : item.bankTransaction.deposit
+
+    const currency = item.bankTransaction.currency || getCompanyCurrency(item.bankTransaction.company ?? '')
+
+    return <div className='flex items-center gap-2 group'>
+        <div className={cn('p-3.5 group-hover:bg-accent border-l border-r border-t w-full', isLast ? 'rounded-b-sm border-b' : '', index === 0 ? 'rounded-t-sm' : '')}>
+            <div className='flex justify-between items-center'>
+                <div className='flex flex-col gap-2'>
+                    <p>{item.bankTransaction.description}</p>
+                    <div className='flex items-center gap-3'>
+                        <div className='flex gap-2 items-center'>
+                            {bank?.logo ? <img
+                                src={`/assets/mint/mint/${bank?.logo}`}
+                                alt={bank?.bank || ''}
+                                className="max-w-10 object-left h-5 object-contain"
+                            /> : <LandmarkIcon className='w-4 h-4' />}
+                            <span className='text-sm text-muted-foreground'>{item.bankTransaction.bank_account}</span>
+                        </div>
+                        <Separator orientation='vertical' />
+                        <div className='flex items-center gap-2 text-muted-foreground text-sm' title={_("Transaction Date")}>
+                            <CalendarIcon className='w-4 h-4' />
+                            <span className='text-sm'>{formatDate(item.bankTransaction.date, 'Do MMM YYYY')}</span>
+                        </div>
+                        <Separator orientation='vertical' />
+                        <div>
+                            <div className='flex items-center gap-1' title={isWithdrawal ? _("Spent") : _("Received")}>
+                                {isWithdrawal ? <ArrowUpRight className="w-5 h-5 text-destructive" /> : <ArrowDownRight className="w-5 h-5 text-green-500" />}
+                                <span className='text-sm text-muted-foreground'>{formatCurrency(amount, currency)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='flex justify-end items-center gap-2'>
+                    <div className='text-right flex flex-col gap-2'>
+                        <a
+                            href={`/app/${slug(item.voucher.reference_doctype)}/${item.voucher.reference_name}`}
+                            target='_blank'
+                            className='underline underline-offset-4'>
+                            {["Payment Entry", "Journal Entry"].includes(item.voucher.reference_doctype) ? "" : _("{} :", [item.voucher.reference_doctype])} {item.voucher.reference_name}
+                        </a>
+                        {item.voucher.reference_doctype === "Payment Entry" && item.voucher.doc && <PaymentEntryDetails item={item} />}
+                        {item.voucher.reference_doctype === "Journal Entry" && <JournalEntryDetails item={item} bank={bank} />}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div className='w-10 h-10 flex items-center justify-center'>
+            <CancelActionLogItem item={item} type={action.type} timestamp={action.timestamp} bank={bank} />
+        </div>
+    </div>
+}
+
+const JournalEntryDetails = ({ item, bank }: { item: ActionLogItem, bank?: SelectedBank | null }) => {
+
+    return <div className='flex items-center gap-2 text-muted-foreground justify-end'>
+        <WalletIcon className='w-4 h-4' />
+        <JournalEntryAccountsTable item={item} bank={bank} />
+    </div>
+}
+
+const JournalEntryAccountsTable = ({ item, bank }: { item: ActionLogItem, bank?: SelectedBank | null }) => {
+
+    const accounts = useMemo(() => {
+
+        const allAccounts = (item.voucher.doc as JournalEntry).accounts
+
+        return allAccounts.filter((acc) => bank ? acc.account !== bank.account : true)
+
+    }, [item, bank])
+
+    return <>
+        {accounts.length === 1 ? <span className='text-sm'>{accounts[0].account}</span> :
+            <HoverCard>
+                <HoverCardTrigger>
+                    <span className='text-sm cursor-pointer hover:underline underline-offset-4'>{_("Split across {} accounts", [accounts.length.toString()])}</span>
+                </HoverCardTrigger>
+                <HoverCardContent className='w-full' align='end'>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>{_("Account")}</TableHead>
+                                <TableHead className='text-right'>{_("Debit")}</TableHead>
+                                <TableHead className='text-right'>{_("Credit")}</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {accounts.map((account) => (
+                                <TableRow key={account.account}>
+                                    <TableCell>{account.account}</TableCell>
+                                    <TableCell className='text-right font-mono'>{formatCurrency(account.debit ?? 0, account.account_currency ?? '')}</TableCell>
+                                    <TableCell className='text-right font-mono'>{formatCurrency(account.credit ?? 0, account.account_currency ?? '')}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </HoverCardContent>
+            </HoverCard>
+        }</>
+}
+
+const PaymentEntryDetails = ({ item, className }: { item: ActionLogItem, className?: string }) => {
+    if ((item.voucher.doc as PaymentEntry).payment_type === "Internal Transfer") {
+        return <TransferDetails item={item} className={className} />
+    }
+
+    const invoices = (item.voucher.doc as PaymentEntry).references ?? []
+
+    const currency = item.bankTransaction.withdrawal && item.bankTransaction.withdrawal > 0 ? (item.voucher.doc as PaymentEntry)?.paid_to_account_currency : (item.voucher.doc as PaymentEntry)?.paid_from_account_currency
+
+    return <div className='flex items-center gap-3'>
+        <div className={cn('flex items-center gap-2 text-muted-foreground text-sm', className)}>
+            <UserIcon className='w-4 h-4' />
+            <span className='text-sm'>{(item.voucher.doc as PaymentEntry).party_name}</span>
+        </div>
+        <Separator orientation='vertical' />
+        <HoverCard>
+            <HoverCardTrigger>
+                <div className={cn('flex items-center gap-2 text-muted-foreground text-sm', className)}>
+                    <ReceiptTextIcon className='w-4 h-4' />
+                    <span className='text-sm cursor-pointer hover:underline underline-offset-4'>{invoices.length === 0 ? _("No invoice linked") : invoices.length === 1 ? _("1 invoice") : _("{} invoices", [invoices.length.toString()])}</span>
+                </div>
+            </HoverCardTrigger>
+            <HoverCardContent className='w-full' align='end'>
+                <div className='flex flex-col gap-2'>
+                    {invoices.map((invoice) => (
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>{_("Document")}</TableHead>
+                                    <TableHead>{_("Invoice No")}</TableHead>
+                                    <TableHead>{_("Due Date")}</TableHead>
+                                    <TableHead className='text-right'>{_("Grand Total")}</TableHead>
+                                    <TableHead className='text-right'>{_("Allocated")}</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell><a href={`/app/${slug(invoice.reference_doctype)}/${invoice.reference_name}`} target='_blank' className='underline underline-offset-4'>{invoice.reference_doctype}: {invoice.reference_name}</a></TableCell>
+                                    <TableCell>{invoice.bill_no ?? "-"}</TableCell>
+                                    <TableCell>{formatDate(invoice.due_date)}</TableCell>
+                                    <TableCell className='text-right font-mono'>{formatCurrency(invoice.total_amount, currency ?? '')}</TableCell>
+                                    <TableCell className='text-right font-mono'>{formatCurrency(invoice.allocated_amount, currency ?? '')}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    ))}
+                </div>
+            </HoverCardContent>
+        </HoverCard>
+
+    </div>
+}
+
+const TransferDetails = ({ item, className }: { item: ActionLogItem, className?: string }) => {
+
+    const { banks } = useGetBankAccounts()
+
+    const bank = useMemo(() => {
+
+        const isWithdrawal = item.bankTransaction.withdrawal && item.bankTransaction.withdrawal > 0
+
+        let transferAccount = ""
+
+        if (isWithdrawal) {
+            transferAccount = (item.voucher.doc as PaymentEntry).paid_to
+        } else {
+            transferAccount = (item.voucher.doc as PaymentEntry).paid_from
+        }
+
+        const transferBankAccount = banks?.find((bank) => bank.account === transferAccount)
+
+        return transferBankAccount
+
+    }, [banks, item])
+
+    return <div className={cn('flex items-center gap-2 text-muted-foreground text-sm', className)}>
+        {bank?.logo ? <img
+            src={`/assets/mint/mint/${bank.logo}`}
+            alt={bank?.bank || ''}
+            className="object-left h-5 object-contain"
+        /> : <LandmarkIcon className='w-4 h-4' />}
+        <span className='text-sm'>{bank?.account}</span>
+    </div>
+}
+
+const ACTION_TYPE_MAP = {
+    'bank_entry': _("Bank Entry"),
+    'payment': _("Payment"),
+    'transfer': _("Transfer"),
+    'match': _("Match"),
+}
+
+const CancelActionLogItem = ({ item, type, timestamp, bank }: { item: ActionLogItem, type: ActionLogType['type'], timestamp: number, bank?: SelectedBank | null }) => {
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -170,12 +414,49 @@ const CancelActionLogItem = ({ item, type, timestamp }: { item: ActionLogItem, t
                 {_("Cancel")}
             </TooltipContent>
         </Tooltip>
-        <AlertDialogContent>
+        <AlertDialogContent className='min-w-3xl'>
             <AlertDialogHeader>
                 <AlertDialogTitle>{type === 'match' ? _("Unmatch Transaction?") : _("Undo {}?", [item.voucher.reference_doctype])}</AlertDialogTitle>
-                <AlertDialogDescription>{type === 'match' ? _("Are you sure you want to unmatch the voucher from this transaction?") : _("Are you sure you want to cancel this {}?", [item.voucher.reference_doctype])}</AlertDialogDescription>
+                <AlertDialogDescription>{type === 'match' ? _("Are you sure you want to unmatch the voucher from this transaction?") : _("Are you sure you want to cancel this {} {}?", [_(item.voucher.reference_doctype), item.voucher.reference_name])}</AlertDialogDescription>
             </AlertDialogHeader>
             {error && <ErrorBanner error={error} />}
+            <div className='flex flex-col gap-2'>
+                <SelectedTransactionDetails transaction={item.bankTransaction} />
+                <Table>
+                    <TableRow>
+                        <TableHead>{_("Action Type")}</TableHead>
+                        <TableCell>{ACTION_TYPE_MAP[type]}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableHead>{_("Voucher Type")}</TableHead>
+                        <TableCell>{_(item.voucher.reference_doctype)}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableHead>{_("Voucher Name")}</TableHead>
+                        <TableCell><a href={`/app/${slug(item.voucher.reference_doctype)}/${item.voucher.reference_name}`} target='_blank' className='underline underline-offset-4'>{item.voucher.reference_name}</a></TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableHead>{_("Posting Date")}</TableHead>
+                        <TableCell>{formatDate(item.voucher.posting_date, 'Do MMM YYYY')}</TableCell>
+                    </TableRow>
+                    {type === 'transfer' && item.voucher.doc && <TableRow>
+                        <TableHead>{_("Transfer Account")}</TableHead>
+                        <TableCell>
+                            <TransferDetails item={item} className='text-accent-foreground' />
+                        </TableCell>
+                    </TableRow>}
+                    {type === 'payment' && item.voucher.doc && <TableRow>
+                        <TableHead>{_("Payment Details")}</TableHead>
+                        <TableCell>
+                            <PaymentEntryDetails item={item} className='text-accent-foreground' />
+                        </TableCell>
+                    </TableRow>}
+                    {type === 'bank_entry' && item.voucher.doc && <TableRow>
+                        <TableHead>{_("Account")}</TableHead>
+                        <TableCell><JournalEntryAccountsTable item={item} bank={bank} /></TableCell>
+                    </TableRow>}
+                </Table>
+            </div>
             <AlertDialogFooter>
                 <AlertDialogCancel disabled={loading}>
                     {_("Close")}
@@ -186,198 +467,6 @@ const CancelActionLogItem = ({ item, type, timestamp }: { item: ActionLogItem, t
             </AlertDialogFooter>
         </AlertDialogContent>
     </AlertDialog>
-}
-
-const ActionGroupHeader = ({ action }: { action: ActionLogType }) => {
-
-    const label = useMemo(() => {
-        switch (action.type) {
-            case 'match':
-                return _("Matched")
-            case 'payment':
-                if (action.isBulk) {
-                    return _("Bulk Payment")
-                }
-                return _("Payment")
-
-            case 'transfer':
-                if (action.isBulk) {
-                    return _("Bulk Transfer")
-                }
-                return _("Transfer")
-
-            case 'bank_entry':
-                if (action.isBulk) {
-                    return _("Bulk Bank Entry")
-                }
-                return _("Bank Entry")
-
-            default:
-                return _("Action")
-        }
-    }, [action])
-
-    return <div className='flex items-center gap-2 text-muted-foreground'>
-        {action.type === 'match' && <GitCompareIcon className='w-4 h-4' />}
-        {action.type === 'payment' && <ReceiptIcon className='w-4 h-4' />}
-        {action.type === 'transfer' && <ArrowRightLeftIcon className='w-4 h-4' />}
-        {action.type === 'bank_entry' && <LandmarkIcon className='w-4 h-4' />}
-        <span className='flex items-center gap-2 text-sm'>
-            {label} - {dayjs(action.timestamp).fromNow()}
-        </span>
-    </div>
-}
-
-const Row = ({ item, index, isLast }: { item: ActionLogItem, index: number, isLast: boolean }) => {
-
-    const isWithdrawal = item.bankTransaction.withdrawal && item.bankTransaction.withdrawal > 0
-
-    const { banks } = useGetBankAccounts()
-
-    const bank = useMemo(() => {
-        if (item.bankTransaction.bank_account) {
-            return banks?.find((bank) => bank.name === item.bankTransaction.bank_account)
-        }
-        return null
-    }, [item.bankTransaction.bank_account, banks])
-
-    const amount = item.bankTransaction.withdrawal ? item.bankTransaction.withdrawal : item.bankTransaction.deposit
-
-    const currency = item.bankTransaction.currency || getCompanyCurrency(item.bankTransaction.company ?? '')
-
-    return <div className={cn('p-3.5 group-hover:bg-accent border-l border-r border-t w-full', isLast ? 'rounded-b-sm border-b' : '', index === 0 ? 'rounded-t-sm' : '')}>
-        <div className='flex justify-between items-center'>
-            <div className='flex flex-col gap-2'>
-                <p>{item.bankTransaction.description}</p>
-                <div className='flex items-center gap-3'>
-                    <div className='flex gap-2 items-center'>
-                        {bank?.logo ? <img
-                            src={`/assets/mint/mint/${bank?.logo}`}
-                            alt={bank?.bank || ''}
-                            className="max-w-10 object-left h-5 object-contain"
-                        /> : <LandmarkIcon className='w-4 h-4' />}
-                        <span className='text-sm text-muted-foreground'>{item.bankTransaction.bank_account}</span>
-                    </div>
-                    <Separator orientation='vertical' />
-                    <div className='flex items-center gap-2 text-muted-foreground text-sm' title={_("Transaction Date")}>
-                        <CalendarIcon className='w-4 h-4' />
-                        <span className='text-sm'>{formatDate(item.bankTransaction.date, 'Do MMM YYYY')}</span>
-                    </div>
-                    <Separator orientation='vertical' />
-                    <div>
-                        <div className='flex items-center gap-1' title={isWithdrawal ? _("Spent") : _("Received")}>
-                            {isWithdrawal ? <ArrowUpRight className="w-5 h-5 text-destructive" /> : <ArrowDownRight className="w-5 h-5 text-green-500" />}
-                            <span className='text-sm text-muted-foreground'>{formatCurrency(amount, currency)}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className='flex justify-end items-center gap-2'>
-                <div className='text-right flex flex-col gap-2'>
-                    <a
-                        href={`/app/${slug(item.voucher.reference_doctype)}/${item.voucher.reference_name}`}
-                        target='_blank'
-                        className='underline underline-offset-4'>
-                        {["Payment Entry", "Journal Entry"].includes(item.voucher.reference_doctype) ? "" : _("{} :", [item.voucher.reference_doctype])} {item.voucher.reference_name}
-                    </a>
-                    {item.voucher.reference_doctype === "Payment Entry" && item.voucher.doc && <PaymentEntryDetails item={item} />}
-                    {item.voucher.reference_doctype === "Journal Entry" && <JournalEntryDetails item={item} bank={bank} />}
-                </div>
-            </div>
-        </div>
-    </div>
-}
-
-const JournalEntryDetails = ({ item, bank }: { item: ActionLogItem, bank?: SelectedBank | null }) => {
-
-    const accounts = useMemo(() => {
-
-        const allAccounts = (item.voucher.doc as JournalEntry).accounts
-
-        return allAccounts.filter((acc) => bank ? acc.account !== bank.account : true)
-
-    }, [item, bank])
-
-    return <div className='flex items-center gap-2 text-muted-foreground justify-end'>
-        <WalletIcon className='w-4 h-4' />
-        {accounts.length === 1 ? <span className='text-sm'>{accounts[0].account}</span> :
-            <HoverCard>
-                <HoverCardTrigger>
-                    <span className='text-sm cursor-pointer hover:underline underline-offset-4'>{_("Split across {} accounts", [accounts.length.toString()])}</span>
-                </HoverCardTrigger>
-                <HoverCardContent className='w-full' align='end'>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>{_("Account")}</TableHead>
-                                <TableHead className='text-right'>{_("Debit")}</TableHead>
-                                <TableHead className='text-right'>{_("Credit")}</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {accounts.map((account) => (
-                                <TableRow key={account.account}>
-                                    <TableCell>{account.account}</TableCell>
-                                    <TableCell className='text-right font-mono'>{formatCurrency(account.debit ?? 0, account.account_currency ?? '')}</TableCell>
-                                    <TableCell className='text-right font-mono'>{formatCurrency(account.credit ?? 0, account.account_currency ?? '')}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </HoverCardContent>
-            </HoverCard>
-        }
-    </div>
-}
-
-const PaymentEntryDetails = ({ item }: { item: ActionLogItem }) => {
-    if ((item.voucher.doc as PaymentEntry).payment_type === "Internal Transfer") {
-        return <TransferDetails item={item} />
-    }
-
-    return <div className='flex items-center gap-3'>
-        <div className='flex items-center gap-2 text-muted-foreground text-sm'>
-            <UserIcon className='w-4 h-4' />
-            <span className='text-sm'>{(item.voucher.doc as PaymentEntry).party_name}</span>
-        </div>
-        <Separator orientation='vertical' />
-        <div className='flex items-center gap-2 text-muted-foreground text-sm'>
-            <ReceiptTextIcon className='w-4 h-4' />
-            <span className='text-sm'>{(item.voucher.doc as PaymentEntry).references?.length ?? 0} {_("invoices")}</span>
-        </div>
-    </div>
-}
-
-const TransferDetails = ({ item }: { item: ActionLogItem }) => {
-
-    const { banks } = useGetBankAccounts()
-
-    const bank = useMemo(() => {
-
-        const isWithdrawal = item.bankTransaction.withdrawal && item.bankTransaction.withdrawal > 0
-
-        let transferAccount = ""
-
-        if (isWithdrawal) {
-            transferAccount = (item.voucher.doc as PaymentEntry).paid_to
-        } else {
-            transferAccount = (item.voucher.doc as PaymentEntry).paid_from
-        }
-
-        const transferBankAccount = banks?.find((bank) => bank.account === transferAccount)
-
-        return transferBankAccount
-
-    }, [banks, item])
-
-    return <div className='flex items-center gap-2 text-muted-foreground text-sm'>
-        {bank?.logo ? <img
-            src={`/assets/mint/mint/${bank.logo}`}
-            alt={bank?.bank || ''}
-            className="object-left h-5 object-contain"
-        /> : <LandmarkIcon className='w-4 h-4' />}
-        <span className='text-sm'>{bank?.account}</span>
-    </div>
 }
 
 export default ActionLog
