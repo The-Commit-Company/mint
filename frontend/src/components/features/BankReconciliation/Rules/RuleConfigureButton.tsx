@@ -336,7 +336,7 @@ const SortableRuleItem = ({
                                 {rule.rule_name}
                             </Button>
                             <div title={rule.transaction_type === "Any" ? _("Any") : rule.transaction_type === "Withdrawal" ? _("Withdrawal") : _("Deposit")}>
-                                {rule.transaction_type === "Any" ? <ArrowDownUp className="text-muted-foreground w-4 h-4" /> : rule.transaction_type === "Withdrawal" ? <ArrowUpRight className="text-destructive w-5 h-5" /> : <ArrowDownRight className="text-green-500 w-5 h-5" />}
+                                {rule.transaction_type === "Any" ? <ArrowDownUp className="text-muted-foreground w-4 h-4" /> : rule.transaction_type === "Withdrawal" ? <ArrowUpRight className="text-destructive w-5 h-5" /> : <ArrowDownRight className="text-green-600 w-5 h-5" />}
                             </div>
                         </div>
                         <span className="text-sm text-muted-foreground">
