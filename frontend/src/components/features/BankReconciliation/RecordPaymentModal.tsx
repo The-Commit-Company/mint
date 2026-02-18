@@ -1,8 +1,8 @@
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
-import { bankRecActionLog, bankRecRecordPaymentModalAtom, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from "./bankRecAtoms"
+import { bankRecRecordPaymentModalAtom, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from "./bankRecAtoms"
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogClose, DialogTrigger } from "@/components/ui/dialog"
 import _ from "@/lib/translate"
-import { UnreconciledTransaction, useGetRuleForTransaction, useRefreshUnreconciledTransactions } from "./utils"
+import { UnreconciledTransaction, useGetRuleForTransaction, useRefreshUnreconciledTransactions, useUpdateActionLog } from "./utils"
 import { useFieldArray, useForm, useFormContext, useWatch } from "react-hook-form"
 import { getCompanyCostCenter, getCompanyCurrency } from "@/lib/company"
 import { FrappeConfig, FrappeContext, useFrappeGetCall, useFrappePostCall } from "frappe-react-sdk"
@@ -97,7 +97,7 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
 
     const onReconcile = useRefreshUnreconciledTransactions()
 
-    const setActionLog = useSetAtom(bankRecActionLog)
+    const addToActionLog = useUpdateActionLog()
 
     const onSubmit = (data: { party_type: PaymentEntry['party_type'], party: PaymentEntry['party'], account: string, mode_of_payment: PaymentEntry['mode_of_payment'] }) => {
 
@@ -108,7 +108,7 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
             account: data.account
         }).then(({ message }) => {
 
-            setActionLog((prev) => [{
+            addToActionLog({
                 type: 'payment',
                 timestamp: (new Date()).getTime(),
                 isBulk: true,
@@ -130,7 +130,7 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
                     party: data.party,
                     account: data.account,
                 }
-            }, ...prev])
+            })
 
             toast.success(_("Payment Recorded"), {
                 duration: 4000,
@@ -320,7 +320,7 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
 
     const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
 
-    const setActionLog = useSetAtom(bankRecActionLog)
+    const addToActionLog = useUpdateActionLog()
 
     const { file: frappeFile } = useContext(FrappeContext) as FrappeConfig
 
@@ -338,7 +338,7 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
                 custom_remarks: data.remarks ? true : false
             }
         }).then(async ({ message }) => {
-            setActionLog((prev) => [{
+            addToActionLog({
                 type: 'payment',
                 timestamp: (new Date()).getTime(),
                 isBulk: false,
@@ -351,13 +351,11 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
                             reference_no: message.payment_entry.reference_no,
                             reference_date: message.payment_entry.reference_date,
                             posting_date: message.payment_entry.posting_date,
-                            party_type: message.payment_entry.party_type,
-                            party: message.payment_entry.party,
                             doc: message.payment_entry,
                         }
                     }
                 ]
-            }, ...prev])
+            })
             toast.success(_("Payment Entry Created"), {
                 duration: 4000,
                 closeButton: true,

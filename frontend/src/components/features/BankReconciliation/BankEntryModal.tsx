@@ -1,8 +1,8 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
-import { bankRecActionLog, bankRecRecordJournalEntryModalAtom, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, selectedBankAccountAtom } from "./bankRecAtoms"
+import { bankRecRecordJournalEntryModalAtom, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, selectedBankAccountAtom } from "./bankRecAtoms"
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogClose } from "@/components/ui/dialog"
 import _ from "@/lib/translate"
-import { UnreconciledTransaction, useGetRuleForTransaction, useRefreshUnreconciledTransactions } from "./utils"
+import { UnreconciledTransaction, useGetRuleForTransaction, useRefreshUnreconciledTransactions, useUpdateActionLog } from "./utils"
 import { useFieldArray, useForm, useFormContext, useWatch } from "react-hook-form"
 import { JournalEntry } from "@/types/Accounts/JournalEntry"
 import { getCompanyCostCenter, getCompanyCurrency } from "@/lib/company"
@@ -82,7 +82,7 @@ const BulkBankEntryForm = ({ selectedTransactions }: { selectedTransactions: Unr
     const { call, loading, error } = useFrappePostCall<{ message: { transaction: BankTransaction, journal_entry: JournalEntry }[] }>('mint.apis.bank_reconciliation.create_bulk_bank_entry_and_reconcile')
 
     const onReconcile = useRefreshUnreconciledTransactions()
-    const setActionLog = useSetAtom(bankRecActionLog)
+    const addToActionLog = useUpdateActionLog()
 
     const setIsOpen = useSetAtom(bankRecRecordJournalEntryModalAtom)
 
@@ -93,7 +93,7 @@ const BulkBankEntryForm = ({ selectedTransactions }: { selectedTransactions: Unr
             account: data.account
         }).then(({ message }) => {
 
-            setActionLog((prev) => [{
+            addToActionLog({
                 type: 'bank_entry',
                 timestamp: (new Date()).getTime(),
                 isBulk: true,
@@ -109,7 +109,7 @@ const BulkBankEntryForm = ({ selectedTransactions }: { selectedTransactions: Unr
                 bulkCommonData: {
                     account: data.account,
                 }
-            }, ...prev])
+            })
 
             toast.success(_("Bank Entries Created"), {
                 duration: 4000,
@@ -299,7 +299,7 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
     const { call: createBankEntry, loading, error, isCompleted } = useFrappePostCall<{ message: { transaction: BankTransaction, journal_entry: JournalEntry } }>('mint.apis.bank_reconciliation.create_bank_entry_and_reconcile')
 
     const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
-    const setActionLog = useSetAtom(bankRecActionLog)
+    const addToActionLog = useUpdateActionLog()
 
     const { file: frappeFile } = useContext(FrappeContext) as FrappeConfig
 
@@ -315,7 +315,7 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
             ...data
         }).then(async ({ message }) => {
 
-            setActionLog((prev) => [{
+            addToActionLog({
                 type: 'bank_entry',
                 isBulk: false,
                 timestamp: (new Date()).getTime(),
@@ -332,7 +332,7 @@ const BankEntryForm = ({ selectedTransaction }: { selectedTransaction: Unreconci
                         }
                     }
                 ]
-            }, ...prev])
+            })
             toast.success(_("Bank Entry Created"), {
                 duration: 4000,
                 closeButton: true,

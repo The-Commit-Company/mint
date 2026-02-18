@@ -1,7 +1,7 @@
 import { BankAccount } from "@/types/Accounts/BankAccount";
 import { getDatesForTimePeriod } from "@/lib/date";
 import { atom } from "jotai";
-import { atomFamily, atomWithStorage } from "jotai/utils";
+import { atomFamily, atomWithStorage, createJSONStorage } from "jotai/utils";
 import { UnreconciledTransaction } from "./utils";
 import { BankTransaction } from "@/types/Accounts/BankTransaction";
 import { PaymentEntry } from "@/types/Accounts/PaymentEntry";
@@ -72,4 +72,8 @@ export interface ActionLogItem {
     },
 }
 
-export const bankRecActionLog = atom<ActionLog[]>([])
+const actionLogStorage = createJSONStorage<ActionLog[]>(() => sessionStorage)
+
+export const bankRecActionLog = atomWithStorage<ActionLog[]>('mint-bank-rec-action-log', [], actionLogStorage, {
+    getOnInit: true,
+})

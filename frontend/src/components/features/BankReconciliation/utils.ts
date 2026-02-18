@@ -1,4 +1,4 @@
-import { bankRecActionLog, bankRecAmountFilter, bankRecDateAtom, bankRecMatchFilters, bankRecSearchText, bankRecSelectedTransactionAtom, bankRecTransactionTypeFilter, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
+import { ActionLog, bankRecActionLog, bankRecAmountFilter, bankRecDateAtom, bankRecMatchFilters, bankRecSearchText, bankRecSelectedTransactionAtom, bankRecTransactionTypeFilter, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { SWRConfiguration, useFrappeGetCall, useFrappeGetDoc, useFrappePostCall, useSWRConfig } from 'frappe-react-sdk'
@@ -226,7 +226,7 @@ export const useReconcileTransaction = () => {
 
     const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
 
-    const setActionLog = useSetAtom(bankRecActionLog)
+    const addToActionLog = useUpdateActionLog()
 
     const reconcileTransaction = (transaction: UnreconciledTransaction, voucher: LinkedPayment) => {
 
@@ -238,7 +238,7 @@ export const useReconcileTransaction = () => {
                 "amount": voucher.paid_amount
             }])
         }).then((res) => {
-            setActionLog((prev) => [{
+            addToActionLog({
                 type: 'match',
                 timestamp: (new Date()).getTime(),
                 isBulk: false,
@@ -251,12 +251,10 @@ export const useReconcileTransaction = () => {
                             reference_no: voucher.reference_no,
                             reference_date: voucher.reference_date,
                             posting_date: voucher.posting_date,
-                            party_type: voucher.party_type,
-                            party: voucher.party,
                         }
                     }
                 ]
-            }, ...prev])
+            })
             onReconcileTransaction(transaction, res.message)
             toast.success(_("Reconciled"), {
                 duration: 4000,
@@ -414,4 +412,22 @@ export const getSearchResults = (
     }
 
     return r
+}
+
+export const useUpdateActionLog = () => {
+
+    const setActionLog = useSetAtom(bankRecActionLog)
+
+    const addToActionLog = (action: ActionLog) => {
+        // Store at max 100 actions
+        setActionLog((prev) => {
+            const newActions = [action, ...prev]
+            if (newActions.length > 100) {
+                return newActions.slice(0, 100)
+            }
+            return newActions
+        })
+    }
+
+    return addToActionLog
 }

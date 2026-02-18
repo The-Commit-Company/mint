@@ -1,8 +1,8 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { bankRecActionLog, bankRecSelectedTransactionAtom, bankRecTransferModalAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
+import { bankRecSelectedTransactionAtom, bankRecTransferModalAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogClose, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import _ from '@/lib/translate'
-import { UnreconciledTransaction, useGetBankAccounts, useGetRuleForTransaction, useRefreshUnreconciledTransactions } from './utils'
+import { UnreconciledTransaction, useGetBankAccounts, useGetRuleForTransaction, useRefreshUnreconciledTransactions, useUpdateActionLog } from './utils'
 import { Button } from '@/components/ui/button'
 import SelectedTransactionDetails from './SelectedTransactionDetails'
 import { PaymentEntry } from '@/types/Accounts/PaymentEntry'
@@ -78,7 +78,7 @@ const BulkInternalTransferForm = ({ transactions }: { transactions: Unreconciled
     const { call: createPaymentEntry, loading, error } = useFrappePostCall<{ message: { transaction: BankTransaction, payment_entry: PaymentEntry }[] }>('mint.apis.bank_reconciliation.create_bulk_internal_transfer')
 
     const onReconcile = useRefreshUnreconciledTransactions()
-    const setActionLog = useSetAtom(bankRecActionLog)
+    const addToActionLog = useUpdateActionLog()
 
     const onSubmit = (data: { bank_account: string }) => {
 
@@ -86,7 +86,7 @@ const BulkInternalTransferForm = ({ transactions }: { transactions: Unreconciled
             bank_transaction_names: transactions.map((transaction) => transaction.name),
             bank_account: data.bank_account
         }).then(({ message }) => {
-            setActionLog((prev) => [{
+            addToActionLog({
                 type: 'transfer',
                 timestamp: (new Date()).getTime(),
                 isBulk: true,
@@ -102,7 +102,7 @@ const BulkInternalTransferForm = ({ transactions }: { transactions: Unreconciled
                 bulkCommonData: {
                     bank_account: data.bank_account,
                 }
-            }, ...prev])
+            })
             toast.success(_("Transfer Recorded"), {
                 duration: 4000,
                 closeButton: true,
@@ -184,7 +184,7 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
     const { call: createPaymentEntry, loading, error, isCompleted } = useFrappePostCall<{ message: { transaction: BankTransaction, payment_entry: PaymentEntry } }>('mint.apis.bank_reconciliation.create_internal_transfer')
 
     const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
-    const setActionLog = useSetAtom(bankRecActionLog)
+    const addToActionLog = useUpdateActionLog()
 
     const { file: frappeFile } = useContext(FrappeContext) as FrappeConfig
 
@@ -202,7 +202,7 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
             // Pass this to reconcile both at the same time
             mirror_transaction_name: data.mirror_transaction_name
         }).then(async ({ message }) => {
-            setActionLog((prev) => [{
+            addToActionLog({
                 type: 'transfer',
                 timestamp: (new Date()).getTime(),
                 isBulk: false,
@@ -215,13 +215,11 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
                             reference_no: message.payment_entry.reference_no,
                             reference_date: message.payment_entry.reference_date,
                             posting_date: message.payment_entry.posting_date,
-                            party_type: message.payment_entry.party_type,
-                            party: message.payment_entry.party,
                             doc: message.payment_entry,
                         }
                     }
                 ]
-            }, ...prev])
+            })
             toast.success(_("Transfer Recorded"), {
                 duration: 4000,
                 closeButton: true,
