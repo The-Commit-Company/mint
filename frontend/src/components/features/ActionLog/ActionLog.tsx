@@ -25,6 +25,7 @@ import { toast } from 'sonner'
 import { getErrorMessage } from '@/lib/frappe'
 import ErrorBanner from '@/components/ui/error-banner'
 import SelectedTransactionDetails from '../BankReconciliation/SelectedTransactionDetails'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 const ActionLog = () => {
 
@@ -93,7 +94,13 @@ const ActionLogDialogContent = () => {
             </div>
         ))}
 
-        {actionLog.length === 0 && <div className='text-center text-muted-foreground bg-muted p-16 rounded-sm'>{_("You have not performed any reconciliation actions in this session yet.")}</div>}
+        {actionLog.length === 0 && <Alert variant='default'>
+            <HistoryIcon />
+            <AlertTitle>{_("No reconciliation actions found")}</AlertTitle>
+            <AlertDescription>
+                {_("You have not performed any reconciliations in this session yet.")}
+            </AlertDescription>
+        </Alert>}
     </div>
 }
 
@@ -178,7 +185,7 @@ const Row = ({ item, index, isLast, action }: { item: ActionLogItem, index: numb
                         <Separator orientation='vertical' />
                         <div>
                             <div className='flex items-center gap-1' title={isWithdrawal ? _("Spent") : _("Received")}>
-                                {isWithdrawal ? <ArrowUpRight className="w-5 h-5 text-destructive" /> : <ArrowDownRight className="w-5 h-5 text-green-500" />}
+                                {isWithdrawal ? <ArrowUpRight className="w-5 h-5 text-destructive" /> : <ArrowDownRight className="w-5 h-5 text-green-600" />}
                                 <span className='text-sm text-muted-foreground'>{formatCurrency(amount, currency)}</span>
                             </div>
                         </div>
