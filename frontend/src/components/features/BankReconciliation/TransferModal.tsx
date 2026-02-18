@@ -2,7 +2,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { bankRecSelectedTransactionAtom, bankRecTransferModalAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from './bankRecAtoms'
 import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogClose, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import _ from '@/lib/translate'
-import { UnreconciledTransaction, useGetBankAccounts, useGetRuleForTransaction, useRefreshUnreconciledTransactions } from './utils'
+import { UnreconciledTransaction, useGetBankAccounts, useGetRuleForTransaction, useRefreshUnreconciledTransactions, useUpdateActionLog } from './utils'
 import { Button } from '@/components/ui/button'
 import SelectedTransactionDetails from './SelectedTransactionDetails'
 import { PaymentEntry } from '@/types/Accounts/PaymentEntry'
@@ -20,11 +20,11 @@ import SelectedTransactionsTable from './SelectedTransactionsTable'
 import { useCurrentCompany } from '@/hooks/useCurrentCompany'
 import { formatDate } from '@/lib/date'
 import { useContext, useMemo, useState } from 'react'
-import { BANK_LOGOS } from './logos'
 import { formatCurrency } from '@/lib/numbers'
 import { Label } from '@/components/ui/label'
 import { FileDropzone } from '@/components/ui/file-dropzone'
 import FileUploadBanner from '@/components/common/FileUploadBanner'
+import { BankTransaction } from '@/types/Accounts/BankTransaction'
 
 const TransferModal = () => {
 
@@ -75,16 +75,34 @@ const BulkInternalTransferForm = ({ transactions }: { transactions: Unreconciled
 
     const setIsOpen = useSetAtom(bankRecTransferModalAtom)
 
-    const { call: createPaymentEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_bulk_internal_transfer')
+    const { call: createPaymentEntry, loading, error } = useFrappePostCall<{ message: { transaction: BankTransaction, payment_entry: PaymentEntry }[] }>('mint.apis.bank_reconciliation.create_bulk_internal_transfer')
 
     const onReconcile = useRefreshUnreconciledTransactions()
+    const addToActionLog = useUpdateActionLog()
 
     const onSubmit = (data: { bank_account: string }) => {
 
         createPaymentEntry({
             bank_transaction_names: transactions.map((transaction) => transaction.name),
             bank_account: data.bank_account
-        }).then(() => {
+        }).then(({ message }) => {
+            addToActionLog({
+                type: 'transfer',
+                timestamp: (new Date()).getTime(),
+                isBulk: true,
+                items: message.map((item) => ({
+                    bankTransaction: item.transaction,
+                    voucher: {
+                        reference_doctype: "Payment Entry",
+                        reference_name: item.payment_entry.name,
+                        posting_date: item.payment_entry.posting_date,
+                        doc: item.payment_entry,
+                    }
+                })),
+                bulkCommonData: {
+                    bank_account: data.bank_account,
+                }
+            })
             toast.success(_("Transfer Recorded"), {
                 duration: 4000,
                 closeButton: true,
@@ -163,9 +181,10 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
 
     const onReconcile = useRefreshUnreconciledTransactions()
 
-    const { call: createPaymentEntry, loading, error, isCompleted } = useFrappePostCall<{ message: { transaction: string, payment_entry: PaymentEntry } }>('mint.apis.bank_reconciliation.create_internal_transfer')
+    const { call: createPaymentEntry, loading, error, isCompleted } = useFrappePostCall<{ message: { transaction: BankTransaction, payment_entry: PaymentEntry } }>('mint.apis.bank_reconciliation.create_internal_transfer')
 
     const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
+    const addToActionLog = useUpdateActionLog()
 
     const { file: frappeFile } = useContext(FrappeContext) as FrappeConfig
 
@@ -183,6 +202,24 @@ const InternalTransferForm = ({ selectedBankAccount, selectedTransaction }: { se
             // Pass this to reconcile both at the same time
             mirror_transaction_name: data.mirror_transaction_name
         }).then(async ({ message }) => {
+            addToActionLog({
+                type: 'transfer',
+                timestamp: (new Date()).getTime(),
+                isBulk: false,
+                items: [
+                    {
+                        bankTransaction: message.transaction,
+                        voucher: {
+                            reference_doctype: "Payment Entry",
+                            reference_name: message.payment_entry.name,
+                            reference_no: message.payment_entry.reference_no,
+                            reference_date: message.payment_entry.reference_date,
+                            posting_date: message.payment_entry.posting_date,
+                            doc: message.payment_entry,
+                        }
+                    }
+                ]
+            })
             toast.success(_("Transfer Recorded"), {
                 duration: 4000,
                 closeButton: true,
@@ -425,16 +462,9 @@ const RecommendedTransferAccount = ({ transaction, onAccountChange }: { transact
     // Get bank accounts to find the logo
     const { banks } = useGetBankAccounts()
 
-    const bankLogo = useMemo(() => {
+    const bank = useMemo(() => {
         if (data?.message?.bank_account && banks) {
-            const bankAccount = banks.find(bank => bank.name === data.message.bank_account)
-            if (bankAccount?.bank) {
-                return BANK_LOGOS.find((logo) =>
-                    logo.keywords.some((keyword) =>
-                        bankAccount.bank?.toLowerCase().includes(keyword.toLowerCase())
-                    )
-                )
-            }
+            return banks.find(bank => bank.name === data.message.bank_account)
         }
         return null
     }, [data?.message?.bank_account, banks])
@@ -484,10 +514,10 @@ const RecommendedTransferAccount = ({ transaction, onAccountChange }: { transact
                 </div>
                 <div className='flex flex-col items-end justify-between gap-2 h-full w-[30%]'>
                     <div className="flex items-center gap-2">
-                        {bankLogo ? (
+                        {bank?.logo ? (
                             <img
-                                src={`/assets/mint/mint/${bankLogo.logo}`}
-                                alt={bankLogo.keywords.join(', ') || ''}
+                                src={`/assets/mint/mint/${bank.logo}`}
+                                alt={bank.bank}
                                 className="h-8 max-w-24 object-contain"
                             />
                         ) : (

@@ -701,7 +701,7 @@ const VoucherItem = ({ voucher, index }: { voucher: LinkedPayment, index: number
         if (!selectedTransaction) {
             return
         }
-        reconcileTransaction(selectedTransaction[0], [voucher])
+        reconcileTransaction(selectedTransaction[0], voucher)
     }
 
     return <div className="py-1 px-1">
