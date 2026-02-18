@@ -1,5 +1,5 @@
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
-import { bankRecRecordPaymentModalAtom, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from "./bankRecAtoms"
+import { bankRecActionLog, bankRecRecordPaymentModalAtom, bankRecSelectedTransactionAtom, bankRecUnreconcileModalAtom, SelectedBank, selectedBankAccountAtom } from "./bankRecAtoms"
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader, DialogFooter, DialogClose, DialogTrigger } from "@/components/ui/dialog"
 import _ from "@/lib/translate"
 import { UnreconciledTransaction, useGetRuleForTransaction, useRefreshUnreconciledTransactions } from "./utils"
@@ -93,9 +93,11 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
         mode_of_payment: PaymentEntry['mode_of_payment']
     }>()
 
-    const { call: createPaymentEntry, loading, error } = useFrappePostCall('mint.apis.bank_reconciliation.create_bulk_payment_entry_and_reconcile')
+    const { call: createPaymentEntry, loading, error } = useFrappePostCall<{ message: { transaction: BankTransaction, payment_entry: PaymentEntry }[] }>('mint.apis.bank_reconciliation.create_bulk_payment_entry_and_reconcile')
 
     const onReconcile = useRefreshUnreconciledTransactions()
+
+    const setActionLog = useSetAtom(bankRecActionLog)
 
     const onSubmit = (data: { party_type: PaymentEntry['party_type'], party: PaymentEntry['party'], account: string, mode_of_payment: PaymentEntry['mode_of_payment'] }) => {
 
@@ -104,7 +106,32 @@ const BulkPaymentEntryForm = ({ transactions }: { transactions: UnreconciledTran
             party_type: data.party_type,
             party: data.party,
             account: data.account
-        }).then(() => {
+        }).then(({ message }) => {
+
+            setActionLog((prev) => [{
+                type: 'payment',
+                timestamp: (new Date()).getTime(),
+                isBulk: true,
+                items: message.map((item) => ({
+                    bankTransaction: item.transaction,
+                    voucher: {
+                        reference_doctype: "Payment Entry",
+                        reference_name: item.payment_entry.name,
+                        reference_no: item.payment_entry.reference_no,
+                        reference_date: item.payment_entry.reference_date,
+                        posting_date: item.payment_entry.posting_date,
+                        party_type: item.payment_entry.party_type,
+                        party: item.payment_entry.party,
+                        doc: item.payment_entry,
+                    }
+                })),
+                bulkCommonData: {
+                    party_type: data.party_type,
+                    party: data.party,
+                    account: data.account,
+                }
+            }, ...prev])
+
             toast.success(_("Payment Recorded"), {
                 duration: 4000,
                 closeButton: true,
@@ -293,6 +320,8 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
 
     const setBankRecUnreconcileModalAtom = useSetAtom(bankRecUnreconcileModalAtom)
 
+    const setActionLog = useSetAtom(bankRecActionLog)
+
     const { file: frappeFile } = useContext(FrappeContext) as FrappeConfig
 
     const [isUploading, setIsUploading] = useState(false)
@@ -309,6 +338,26 @@ const PaymentEntryForm = ({ selectedTransaction, selectedBankAccount }: { select
                 custom_remarks: data.remarks ? true : false
             }
         }).then(async ({ message }) => {
+            setActionLog((prev) => [{
+                type: 'payment',
+                timestamp: (new Date()).getTime(),
+                isBulk: false,
+                items: [
+                    {
+                        bankTransaction: message.transaction,
+                        voucher: {
+                            reference_doctype: "Payment Entry",
+                            reference_name: message.payment_entry.name,
+                            reference_no: message.payment_entry.reference_no,
+                            reference_date: message.payment_entry.reference_date,
+                            posting_date: message.payment_entry.posting_date,
+                            party_type: message.payment_entry.party_type,
+                            party: message.payment_entry.party,
+                            doc: message.payment_entry,
+                        }
+                    }
+                ]
+            }, ...prev])
             toast.success(_("Payment Entry Created"), {
                 duration: 4000,
                 closeButton: true,
