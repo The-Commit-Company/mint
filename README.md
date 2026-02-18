@@ -90,10 +90,24 @@ If you matched it to an existing voucher, "Undo" will simply unlink the transact
 
 <img width="2214" height="1454" alt="CleanShot 2025-08-08 at 16 14 00@2x" src="https://github.com/user-attachments/assets/a6d1595f-6d74-4d6b-818d-e73cb2cdde0c" />
 
+
 ##### Reconcile transactions in bulk
 If you want to create Journal or Payment Entries for multiple transactions at once, simply press "Shift" on your keyboard and select multiple unreconciled transactions. Then choose whether you want to create a Bank Entry, Transfer or Payment entry.
 
 <img width="3934" height="2146" alt="CleanShot 2025-08-08 at 18 30 51@2x" src="https://github.com/user-attachments/assets/a17a283b-5a60-401a-84ca-e8ac5f0546eb" />
+
+
+##### View log of all reconciliation actions
+When reconciling a lot of transactions quickly (especially in bulk), sometimes you might classify a transaction incorrectly. While the app shows a toast on every reconciliation to undo - this is not available for bulk actions, and the toast is short lived. The only option is to go to the bank transactions list and try to find the exact transaction. Even then, if a transaction was matched to more than 1 voucher in the system, the undo action would unreconcile the entire bank transaction.
+
+Mint offers a log of all actions performed during a session. Users can see an entire history of all reconciliation actions taken by them. This can be accessed by either clicking the "Reconciliation History" button or by using the keyboard shortcut `Ctrl+Z`/`Cmd+Z`
+
+<img width="3130" height="1822" alt="image" src="https://github.com/user-attachments/assets/3bce6986-bc62-40fc-aa51-604f2d7b02c1" />
+
+Bulk actions are grouped together and you can cancel each reconciliation action individually.
+
+<img width="3130" height="1822" alt="image" src="https://github.com/user-attachments/assets/676fa756-b665-4d80-b9f7-16ca19301ffe" />
+
 
 ##### Create rules for automatic classification
 You can create "rules" for transactions as they come in. These can be used to suggest actions based on the matching criteria. Click on the "zap" button at the top to get started.

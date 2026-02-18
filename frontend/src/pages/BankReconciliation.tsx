@@ -10,7 +10,9 @@ import IncorrectlyClearedEntries from "@/components/features/BankReconciliation/
 import MatchAndReconcile from "@/components/features/BankReconciliation/MatchAndReconcile"
 import RuleConfigureButton from "@/components/features/BankReconciliation/Rules/RuleConfigureButton"
 import Settings from "@/components/features/Settings/Settings"
+import ActionLog from "@/components/features/ActionLog/ActionLog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { H1 } from "@/components/ui/typography"
 import _ from "@/lib/translate"
 import { useLayoutEffect, useRef, useState } from "react"
@@ -36,8 +38,11 @@ const BankReconciliation = () => {
                 <div className="flex justify-between">
                     <H1 className="text-base font-medium"><span className="text-4xl font-extrabold text-emerald-500">mint</span>&nbsp; {_("Bank Reconciliation")}</H1>
                     <div className="flex items-center gap-2">
-                        <RuleConfigureButton />
-                        <Settings />
+                        <TooltipProvider>
+                            <RuleConfigureButton />
+                            <Settings />
+                            <ActionLog />
+                        </TooltipProvider>
                         <CompanySelector />
                         <BankRecDateFilter />
                     </div>
