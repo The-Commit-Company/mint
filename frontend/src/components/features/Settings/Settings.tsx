@@ -3,6 +3,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import ErrorBanner from '@/components/ui/error-banner'
 import { Form } from '@/components/ui/form'
 import { DataField } from '@/components/ui/form-elements'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 // import { getErrorMessage } from '@/lib/frappe'
 import _ from '@/lib/translate'
@@ -19,11 +20,18 @@ const Settings = () => {
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-                <Button variant={'outline'} size='icon'>
-                    <SettingsIcon />
-                </Button>
-            </DialogTrigger>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <DialogTrigger asChild>
+                        <Button variant={'outline'} size='icon'>
+                            <SettingsIcon />
+                        </Button>
+                    </DialogTrigger>
+                </TooltipTrigger>
+                <TooltipContent>
+                    {_("Settings")}
+                </TooltipContent>
+            </Tooltip>
             <DialogContent>
                 <SettingsDialogContent onClose={() => setIsOpen(false)} />
             </DialogContent>
@@ -75,7 +83,7 @@ const SettingsDialogContent = ({ onClose }: { onClose: VoidFunction }) => {
 
                 <DataField
                     name='transfer_match_days'
-                    label={_("Number of Days to Match Transfers")}
+                    label={_("Number of days to match transfers")}
                     isRequired
                     inputProps={{
                         type: 'number',

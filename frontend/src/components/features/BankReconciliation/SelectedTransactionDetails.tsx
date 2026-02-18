@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 import { ArrowDownRight, ArrowUpRight, Calendar, Landmark } from 'lucide-react'
 import { formatCurrency } from '@/lib/numbers'
 import { formatDate } from '@/lib/date'
-import { BANK_LOGOS } from './logos'
 import { UnreconciledTransaction, useGetBankAccounts } from './utils'
 import { getCompanyCurrency } from '@/lib/company'
 import { Card, CardContent } from '@/components/ui/card'
@@ -21,10 +20,9 @@ const SelectedTransactionDetails = ({ transaction, showAccount = false, account 
 
     const { banks } = useGetBankAccounts()
 
-    const bankLogo = useMemo(() => {
+    const bank = useMemo(() => {
         if (transaction.bank_account) {
-            const bankName = banks?.find((bank) => bank.name === transaction.bank_account)?.bank ?? ''
-            return BANK_LOGOS.find((logo) => logo.keywords.some((keyword) => bankName?.toLowerCase().includes(keyword.toLowerCase())))
+            return banks?.find((bank) => bank.name === transaction.bank_account)
         }
         return null
     }, [transaction.bank_account, banks])
@@ -39,9 +37,9 @@ const SelectedTransactionDetails = ({ transaction, showAccount = false, account 
                 <div className='flex flex-col gap-2'>
                     <div className='flex justify-between'>
                         <div className='flex flex-col gap-2'>
-                            <div className='flex flex-col'> {bankLogo ? <img
-                                src={`/assets/mint/mint/${bankLogo.logo}`}
-                                alt={bankLogo?.keywords.join(', ') || ''}
+                            <div className='flex flex-col'> {bank?.logo ? <img
+                                src={`/assets/mint/mint/${bank.logo}`}
+                                alt={bank.bank}
                                 className="max-w-20 object-left h-10 object-contain"
                             /> :
                                 <Landmark size={'30px'} />
