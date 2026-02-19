@@ -823,7 +823,7 @@ const OlderUnreconciledTransactionsBanner = () => {
     if (data && data.message.count > 0) {
 
         return <div className="flex flex-col gap-2">
-            <div className="border border-amber-500 rounded-md p-4">
+            <div className="border border-amber-500 rounded-md p-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <div className="min-w-8">
                         <AlertCircle className="w-6 h-6 text-amber-600" />
@@ -836,17 +836,18 @@ const OlderUnreconciledTransactionsBanner = () => {
                         )}
                         <span className="text-sm text-amber-600">{_("The opening balance might not match your bank statement. Would you like to reconcile them?")}</span>
                     </div>
-                    <div className="flex items-center gap-2 w-fit pl-4">
-                        <Button
-                            size='sm'
-                            type='button'
-                            className="shadow-none"
-                            onClick={() => setDates({ fromDate: data.message.oldest_date, toDate: dates.toDate })}
-                            variant='outline'>
-                            <span>{data.message.count > 1 ? _("View older transactions") : _("View older transaction")}</span>
-                            <ArrowRightIcon className="w-4 h-4" />
-                        </Button>
-                    </div>
+
+                </div>
+                <div className="flex items-center gap-2 w-fit pl-4">
+                    <Button
+                        size='sm'
+                        type='button'
+                        className="shadow-none"
+                        onClick={() => setDates({ fromDate: data.message.oldest_date, toDate: dates.toDate })}
+                        variant='outline'>
+                        <span>{data.message.count > 1 ? _("View older transactions") : _("View older transaction")}</span>
+                        <ArrowRightIcon className="w-4 h-4" />
+                    </Button>
                 </div>
             </div>
         </div>
