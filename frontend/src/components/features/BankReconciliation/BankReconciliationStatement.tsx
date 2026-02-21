@@ -124,7 +124,7 @@ const BankReconciliationStatementView = () => {
                             </TableCell>
                             <TableCell className="text-right">{formatCurrency(row.debit, row.account_currency)}</TableCell>
                             <TableCell className="text-right">{formatCurrency(row.credit, row.account_currency)}</TableCell>
-                            <TableCell><a target="_blank" className="underline underline-offset-4" href={`/app/account/${row.against_account}`}>{row.against_account}</a></TableCell>
+                            <TableCell className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap" title={row.against_account}><a target="_blank" className="underline underline-offset-4" href={`/app/account/${row.against_account}`}>{row.against_account}</a></TableCell>
                             <TableCell>
                                 <Tooltip delayDuration={500}>
                                     <TooltipTrigger onClick={() => onCopy(row.reference_no)}>
