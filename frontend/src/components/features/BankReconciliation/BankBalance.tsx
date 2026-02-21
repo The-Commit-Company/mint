@@ -122,7 +122,7 @@ const ReconcileProgress = () => {
         ['docstatus', '=', 1],
         ['date', '<=', dates?.toDate],
         ['date', '>=', dates?.fromDate]
-    ], false, false, undefined, {
+    ], false, undefined, {
         revalidateOnFocus: false
     })
 

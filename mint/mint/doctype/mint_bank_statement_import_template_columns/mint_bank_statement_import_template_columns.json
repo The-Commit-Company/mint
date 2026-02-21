@@ -8,9 +8,7 @@
  "field_order": [
   "header_text",
   "variable",
-  "maps_to",
-  "amount_expressed_as",
-  "amount_deposit_treatment"
+  "maps_to"
  ],
  "fields": [
   {
@@ -34,31 +32,13 @@
    "label": "Maps To",
    "options": "Do not import\nDate\nDescription\nAmount\nBalance\nDeposit\nWithdrawal\nReference\nTransaction Type",
    "reqd": 1
-  },
-  {
-   "depends_on": "eval: doc.maps_to == \"Amount\";",
-   "fieldname": "amount_expressed_as",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Amount expressed as",
-   "mandatory_depends_on": "eval: doc.maps_to == \"Amount\";",
-   "options": "Contains Cr/Dr\nPositive/Negative Value\nTransaction Type containing Cr/Dr\nTransaction Type containing Deposit/Withdrawal"
-  },
-  {
-   "depends_on": "eval: doc.maps_to == \"Amount\";",
-   "fieldname": "amount_deposit_treatment",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Consider amount as deposit if",
-   "mandatory_depends_on": "eval: doc.maps_to == \"Amount\";",
-   "options": "Dr\nCr\nPositive\nNegative"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-01-23 13:59:33.995194",
+ "modified": "2026-02-19 16:53:22.374935",
  "modified_by": "Administrator",
  "module": "Mint",
  "name": "Mint Bank Statement Import Template Columns",

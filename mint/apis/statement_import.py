@@ -5,9 +5,12 @@ from frappe.utils.xlsxutils import (
 	read_xlsx_file_from_attached_file,
 )
 from frappe import _
+from frappe.utils import getdate
+
+from datetime import datetime
 
 @frappe.whitelist()
-def get_statement_details():
+def get_statement_details(file_url: str):
     """
     Given a file path, try to get bank statement details.
 
@@ -18,12 +21,14 @@ def get_statement_details():
     4. Opening and Closing dates of the statement and balance
     """
 
-    file_path = "/private/files/DetailedStatement.xlsx"
+    # file_path = "/private/files/DetailedStatement.xlsx"
     # file_path = "/private/files/HDFC.xls"
     # file_path = "/private/files/SBI.xlsx"
     # file_path = "/private/files/ICICI.xls"
 
-    data = get_data(file_path)
+    data = get_data(file_url)
+
+    file_name = file_url.split("/")[-1]
 
     # print(data)
 
@@ -31,19 +36,32 @@ def get_statement_details():
 
     header_row = data[header_index]
 
-    column_mapping = get_column_mapping(header_row)
+    columns, column_mapping = get_column_mapping(header_row)
 
     transaction_rows, transaction_starting_index, transaction_ending_index = get_transaction_rows(data, header_index, column_mapping)
 
-    print(len(transaction_rows))
+    date_format, amount_format = get_file_properties(transaction_rows)
+
+    statement_start_date, statement_end_date, closing_balance = get_closing_balance(transaction_rows, date_format)
+
+    # print(len(transaction_rows))
 
     return {
+        "file_name": file_name,
+        "file_path": file_url,
+        "data": data,
         "header_index": header_index,
         "header_row": header_row,
+        "columns": columns,
         "column_mapping": column_mapping,
-        "transaction_rows": transaction_rows,
         "transaction_starting_index": transaction_starting_index,
         "transaction_ending_index": transaction_ending_index,
+        "transaction_rows": transaction_rows,
+        "date_format": date_format,
+        "amount_format": amount_format,
+        "statement_start_date": statement_start_date,
+        "statement_end_date": statement_end_date,
+        "closing_balance": closing_balance,
     }
 
 def get_data(file_path: str):
@@ -97,42 +115,60 @@ def get_header_row_index(data: list[list[str]]):
 
 def get_column_mapping(header_row: list[str]):
     """
-    Given the header row, try to map each column index to a standard variable
+    Given the header row, try to map each column index to a standard variable, or set it to "Do not import"
     """
     standard_variables = {
-        "date": ["date", "transaction date"], 
-        "amount": ["amount"], 
-        "description": ["description", "particulars", "remarks", "narration", "detail"], 
-        "reference": ["reference", "ref", "tran id", "transaction id", "cheque", "check"], 
-        "cr/dr": ["cr/dr", "dr/cr"], 
-        "balance": ["balance"],
-        "withdrawal": ["withdrawal", "debit"],
-        "deposit": ["deposit", "credit"],
+        "Date": ["date", "transaction date"], 
+        "Amount": ["amount"], 
+        "Description": ["description", "particulars", "remarks", "narration", "detail"], 
+        "Reference": ["reference", "ref", "tran id", "transaction id", "cheque", "check"], 
+        "Transaction Type": ["transaction type", "cr/dr", "dr/cr"], 
+        "Balance": ["balance"],
+        "Withdrawal": ["withdrawal", "debit"],
+        "Deposit": ["deposit", "credit"],
     }
 
     # A standard variable can be represented by multiple names
 
     column_mapping = {}
 
-    for standard_variable, names in standard_variables.items():
+    # Loop over all columns and check if they contain any of the standard variable names
+    # If not, we do not import it
+    # If they do, we map the column index to the standard variable
 
-        if standard_variable in column_mapping.keys():
-            continue
-        
+    columns = []
+
+    for idx, cell in enumerate(header_row):
+
        
-        for idx, cell in enumerate(header_row):
-            if not cell:
-                continue
 
-            # If cell is a string, then we need to check if it contains any of the keywords
-            if not isinstance(cell, str):
-                continue
+        if not cell:
+            continue
 
+        if not isinstance(cell, str):
+            continue
+
+        column = {
+            "index": idx,
+            "header_text": cell,
+            "variable": cell.strip().lower().replace(" ", "_").replace("?", "").replace(".", ""),
+            "maps_to": "Do not import",
+        }
+
+        for standard_variable, names in standard_variables.items():
             if any(name in cell.lower().replace(".", "") for name in names):
-                column_mapping[standard_variable] = idx
-                break
 
-    return column_mapping
+                if not column_mapping.get(standard_variable, None):
+                    column["maps_to"] = standard_variable
+
+                    column_mapping[standard_variable] = idx
+
+                break
+        
+        columns.append(column)
+    
+
+    return columns, column_mapping
 
 
 def get_transaction_rows(data: list[list[str]], header_index: int, column_mapping: dict[str, int]):
@@ -155,11 +191,11 @@ def get_transaction_rows(data: list[list[str]], header_index: int, column_mappin
 
     for row_index, row in enumerate(valid_rows):
 
-        date = row[column_mapping["date"]] if "date" in column_map_keys else None
-        amount = row[column_mapping["amount"]] if "amount" in column_map_keys else None
-        withdrawal = row[column_mapping["withdrawal"]] if "withdrawal" in column_map_keys else None
-        deposit = row[column_mapping["deposit"]] if "deposit" in column_map_keys else None
-        balance = row[column_mapping["balance"]] if "balance" in column_map_keys else None
+        date = row[column_mapping["Date"]] if "Date" in column_map_keys else None
+        amount = row[column_mapping["Amount"]] if "Amount" in column_map_keys else None
+        withdrawal = row[column_mapping["Withdrawal"]] if "Withdrawal" in column_map_keys else None
+        deposit = row[column_mapping["Deposit"]] if "Deposit" in column_map_keys else None
+        balance = row[column_mapping["Balance"]] if "Balance" in column_map_keys else None
 
         if not date:
             continue
@@ -194,22 +230,22 @@ def get_transaction_rows(data: list[list[str]], header_index: int, column_mappin
             "date_format": row_date_format,
         }
 
-        if "date" in column_map_keys:
-            transaction_row["date"] = row[column_mapping["date"]]
-        if "amount" in column_map_keys:
-            transaction_row["amount"] = row[column_mapping["amount"]]
-        if "withdrawal" in column_map_keys:
-            transaction_row["withdrawal"] = row[column_mapping["withdrawal"]]
-        if "deposit" in column_map_keys:
-            transaction_row["deposit"] = row[column_mapping["deposit"]]
-        if "balance" in column_map_keys:
-            transaction_row["balance"] = row[column_mapping["balance"]]
-        if "reference" in column_map_keys:
-            transaction_row["reference"] = row[column_mapping["reference"]]
-        if "description" in column_map_keys:
-            transaction_row["description"] = row[column_mapping["description"]]
-        if "cr/dr" in column_map_keys:
-            transaction_row["cr/dr"] = row[column_mapping["cr/dr"]]
+        if "Date" in column_map_keys:
+            transaction_row["date"] = row[column_mapping["Date"]]
+        if "Amount" in column_map_keys:
+            transaction_row["amount"] = row[column_mapping["Amount"]]
+        if "Withdrawal" in column_map_keys:
+            transaction_row["withdrawal"] = row[column_mapping["Withdrawal"]]
+        if "Deposit" in column_map_keys:
+            transaction_row["deposit"] = row[column_mapping["Deposit"]]
+        if "Balance" in column_map_keys:
+            transaction_row["balance"] = row[column_mapping["Balance"]]
+        if "Reference" in column_map_keys:
+            transaction_row["reference"] = row[column_mapping["Reference"]]
+        if "Description" in column_map_keys:
+            transaction_row["description"] = row[column_mapping["Description"]]
+        if "Transaction Type" in column_map_keys:
+            transaction_row["transaction_type"] = row[column_mapping["Transaction Type"]]
         
         transaction_rows.append(transaction_row)
     
@@ -235,3 +271,83 @@ def get_float_amount(amount):
         amount = float(amount)
 
     return amount
+
+def get_file_properties(transactions: list):
+    """
+    From the transaction rows, try to figure out the following:
+    1. Most common date format
+    2. Amount format - does it contain "CR/Dr" text or is it in a separate column (maybe transaction type?). Amount could also be positive and negative.
+    """
+
+    date_format_frequency = {}
+
+    amount_format_frequency = {
+        "separate_columns_for_withdrawal_and_deposit": 0,
+        "dr_cr_in_amount": 0,
+        "positive_negative_in_amount": 0,
+        "cr_dr_in_transaction_type": 0,
+        "deposit_withdrawal_in_transaction_type": 0,
+    }
+
+    for transaction in transactions:
+        date_format = transaction.get("date_format")
+
+        if date_format:
+            date_format_frequency[date_format] = date_format_frequency.get(date_format, 0) + 1
+        
+        # Check if there's an amount column
+        # If there's a separate column for withdrawal and deposit, we can skip this
+        if transaction.get("withdrawal", None) or transaction.get("deposit", None):
+            amount_format_frequency["separate_columns_for_withdrawal_and_deposit"] += 1
+            continue
+
+        amount = transaction.get("amount", None)
+
+        if not amount:
+            continue
+
+        if isinstance(amount, str) and ("cr" in amount.lower() or "dr" in amount.lower()):
+            amount_format_frequency["dr_cr_in_amount"] += 1
+        
+        # Check if there's a transaction type column containing "cr"/"dr"
+        if transaction.get("transaction_type", None):
+            if "cr" in transaction.get("transaction_type", "").lower() or "dr" in transaction.get("transaction_type", "").lower():
+                amount_format_frequency["cr_dr_in_transaction_type"] += 1
+            if "deposit" in transaction.get("transaction_type", "").lower() or "withdrawal" in transaction.get("transaction_type", "").lower():
+                amount_format_frequency["deposit_withdrawal_in_transaction_type"] += 1
+        
+        # Else assume that the amount is expressed as positive/negative value
+        else:
+            amount_format_frequency["positive_negative_in_amount"] += 1
+    
+    most_common_date_format = max(date_format_frequency, key=date_format_frequency.get)
+    most_common_amount_format = max(amount_format_frequency, key=amount_format_frequency.get)
+
+    return most_common_date_format, most_common_amount_format
+
+
+def get_closing_balance(transactions: list, date_format: str):
+    """
+    Given the transactions and date format, try to get the statement start date, end date and closing balance
+    """
+
+    statement_start_date = None
+    statement_end_date = None
+    closing_balance = None
+
+    for transaction in transactions:
+        date = transaction.get("date")
+        if not date:
+            continue
+
+        tx_date = datetime.strptime(date, date_format)
+
+        if statement_start_date is None or tx_date < statement_start_date:
+            statement_start_date = tx_date
+
+        if statement_end_date is None or tx_date >= statement_end_date:
+            statement_end_date = tx_date
+
+            closing_balance = transaction.get("balance")
+
+    return getdate(statement_start_date), getdate(statement_end_date), closing_balance

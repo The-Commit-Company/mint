@@ -5,7 +5,7 @@
 from frappe.model.document import Document
 
 
-class MintBankStatementImportTemplateColumns(Document):
+class MintBankStatementImportLog(Document):
 	# begin: auto-generated types
 	# This code is auto-generated. Do not modify anything in this block.
 
@@ -14,12 +14,12 @@ class MintBankStatementImportTemplateColumns(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		header_text: DF.Data
-		maps_to: DF.Literal["Do not import", "Date", "Description", "Amount", "Balance", "Deposit", "Withdrawal", "Reference", "Transaction Type"]
-		parent: DF.Data
-		parentfield: DF.Data
-		parenttype: DF.Data
-		variable: DF.Data | None
+		bank_account: DF.Link
+		closing_balance: DF.Currency
+		end_date: DF.Date | None
+		file: DF.Attach
+		number_of_transactions: DF.Int
+		start_date: DF.Date | None
 	# end: auto-generated types
 
 	pass

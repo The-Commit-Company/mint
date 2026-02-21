@@ -15,8 +15,11 @@ class MintBankStatementImportTemplate(Document):
 		from frappe.types import DF
 		from mint.mint.doctype.mint_bank_statement_import_template_columns.mint_bank_statement_import_template_columns import MintBankStatementImportTemplateColumns
 
+		amount_expressed_as: DF.Literal["Contains Cr/Dr", "Positive/Negative Value", "Transaction Type containing Cr/Dr", "Transaction Type containing Deposit/Withdrawal"]
 		bank_account: DF.Link
 		column_mapping: DF.Table[MintBankStatementImportTemplateColumns]
+		consider_amount_as_deposit_if: DF.Literal[None]
+		header_index: DF.Int
 		statement_type: DF.Literal["Excel/CSV"]
 	# end: auto-generated types
 

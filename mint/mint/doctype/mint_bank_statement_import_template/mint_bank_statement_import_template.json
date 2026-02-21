@@ -10,7 +10,11 @@
   "column_break_cefj",
   "statement_type",
   "section_break_qhnf",
-  "column_mapping"
+  "column_mapping",
+  "settings_section",
+  "amount_expressed_as",
+  "consider_amount_as_deposit_if",
+  "header_index"
  ],
  "fields": [
   {
@@ -44,12 +48,34 @@
    "label": "Statement Type",
    "options": "Excel/CSV",
    "reqd": 1
+  },
+  {
+   "fieldname": "settings_section",
+   "fieldtype": "Section Break",
+   "label": "Settings"
+  },
+  {
+   "fieldname": "amount_expressed_as",
+   "fieldtype": "Select",
+   "label": "Amount is expressed as",
+   "options": "Contains Cr/Dr\nPositive/Negative Value\nTransaction Type containing Cr/Dr\nTransaction Type containing Deposit/Withdrawal"
+  },
+  {
+   "fieldname": "consider_amount_as_deposit_if",
+   "fieldtype": "Select",
+   "label": "Consider amount as deposit if"
+  },
+  {
+   "description": "Index count starts from 0",
+   "fieldname": "header_index",
+   "fieldtype": "Int",
+   "label": "Header Index"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-01-22 14:21:25.387491",
+ "modified": "2026-02-19 16:54:44.107651",
  "modified_by": "Administrator",
  "module": "Mint",
  "name": "Mint Bank Statement Import Template",

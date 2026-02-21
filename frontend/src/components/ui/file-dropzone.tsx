@@ -8,22 +8,30 @@ import { Trash2Icon } from 'lucide-react'
 
 type Props = {
     files: File[],
-    setFiles: Dispatch<SetStateAction<File[]>>
+    setFiles?: Dispatch<SetStateAction<File[]>>
     accept?: Accept,
+    multiple?: boolean
+    onDrop?: (acceptedFiles: File[]) => void,
+    className?: string
 }
 
-export const FileDropzone = ({ files, setFiles, accept }: Props) => {
+export const FileDropzone = ({ files, setFiles, accept, multiple = true, onDrop, className }: Props) => {
 
-    const onDrop = useCallback((acceptedFiles: File[]) => {
+    const onFileDrop = useCallback((acceptedFiles: File[]) => {
         // Do something with the files
-        setFiles((prev) => [...prev, ...acceptedFiles])
+        if (multiple) {
+            setFiles?.((prev) => [...prev, ...acceptedFiles])
+        } else {
+            setFiles?.(acceptedFiles)
+        }
+        onDrop?.(acceptedFiles)
 
-    }, [setFiles])
-    const { getRootProps, getInputProps } = useDropzone({ onDrop, accept })
+    }, [setFiles, onDrop, multiple])
+    const { getRootProps, getInputProps } = useDropzone({ onDrop: onFileDrop, accept, multiple })
     return (
-        <div {...getRootProps()} className='border border-border border-dashed p-4 rounded-sm bg-muted/20'>
+        <div {...getRootProps()} className={cn('border border-border border-dashed p-4 rounded-sm bg-muted/20', className)}>
             <input {...getInputProps()} />
-            {files.length === 0 ? <p className='text-sm text-muted-foreground text-center h-8 flex items-center justify-center'>{_("Drop some files here, or click to select files")}</p> : null}
+            {files.length === 0 ? <p className='text-sm text-muted-foreground text-center h-8 flex items-center justify-center'>{multiple ? _("Drop some files here, or click to select files") : _("Drop a file here, or click to select a file")}</p> : null}
             <div className='flex flex-col gap-4'>
                 {files.map(f => <div key={f.name} className='flex justify-between items-center'>
                     <div className='flex items-center gap-2'>
@@ -37,7 +45,7 @@ export const FileDropzone = ({ files, setFiles, accept }: Props) => {
                         className='text-muted-foreground hover:text-gray-900 hover:bg-transparent'
                         onClick={(e) => {
                             e.stopPropagation()
-                            setFiles(files.filter(file => file.name !== f.name))
+                            setFiles?.(files.filter(file => file.name !== f.name))
                         }}>
                         <Trash2Icon className='w-4 h-4' />
                     </Button>
