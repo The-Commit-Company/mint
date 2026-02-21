@@ -126,7 +126,7 @@ const BankClearanceSummaryView = () => {
                                 </Tooltip>
                             </TableCell>
                             <TableCell>{formatDate(row.clearance_date)}</TableCell>
-                            <TableCell><a target="_blank" className="underline underline-offset-4" href={`/app/account/${row.against}`}>{row.against}</a></TableCell>
+                            <TableCell className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap" title={row.against}>{row.against}</TableCell>
                             <TableCell className="text-right">{formatCurrency(row.amount, bankAccount?.account_currency ?? getCompanyCurrency(companyID))}</TableCell>
                             <TableCell>
                                 {row.clearance_date ? <Badge variant="outline" className="text-foreground px-1.5">
