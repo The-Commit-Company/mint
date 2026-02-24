@@ -9,7 +9,7 @@ import { getTimeago } from "@/lib/date"
 import ErrorBanner from "@/components/ui/error-banner"
 import _ from "@/lib/translate"
 
-const BankPicker = () => {
+const BankPicker = ({ className, size = 'base' }: { className?: string, size?: 'base' | 'sm' }) => {
 
     const setSelectedBank = useSetAtom(selectedBankAccountAtom)
 
@@ -37,7 +37,7 @@ const BankPicker = () => {
     return (
         <div
             className={cn("flex gap-3 items-stretch w-full overflow-x-auto bank-picker-scrollbar pr-4",
-                banks?.length > 4 ? 'pb-2' : ''
+                banks?.length > 4 ? 'pb-2' : '', className,
             )}
             style={{
                 scrollbarWidth: 'thin',
@@ -46,14 +46,14 @@ const BankPicker = () => {
         >
             {
                 banks?.map((bank) => (
-                    <BankPickerItem key={bank.name} bank={bank} />
+                    <BankPickerItem key={bank.name} bank={bank} size={size} />
                 ))
             }
         </div>
     )
 }
 
-const BankPickerItem = ({ bank }: { bank: SelectedBank }) => {
+const BankPickerItem = ({ bank, size = 'base' }: { bank: SelectedBank, size?: 'base' | 'sm' }) => {
 
     const [selectedBank, setSelectedBank] = useAtom(selectedBankAccountAtom)
 
@@ -71,34 +71,49 @@ const BankPickerItem = ({ bank }: { bank: SelectedBank }) => {
         title={`Select ${bank.account_name}`}
         onClick={onSelect}
         className={cn('rounded-md border-2 border-gray-200 min-w-80 relative p-2 bg-card overflow-hidden cursor-pointer',
-            isSelected ? 'border-primary bg-primary-foreground' : 'hover:bg-gray-50'
+            isSelected ? 'border-primary bg-primary-foreground' : 'hover:bg-gray-50',
+            {
+                "max-w-60 min-w-60": size === 'sm',
+            }
         )}
     >
         {bank.logo ? <img
             src={`/assets/mint/mint/${bank.logo}`}
             alt={bank.bank || bank.name || ''}
-            className="max-w-24 object-left h-10 object-contain mb-1"
-        /> : <div className="rounded-md flex items-center h-10 gap-2">
-            <Landmark size={'30px'} />
-            <H4 className="text-base mb-0">{bank.bank}</H4>
+            className={cn("max-w-24 object-left h-10 object-contain mb-1", {
+                'h-6 max-w-18 mb-2': size === 'sm',
+            })}
+        /> : <div className={cn("rounded-md flex items-center h-10 gap-2", {
+            "h-6 mb-2": size === 'sm',
+        })}>
+            <Landmark size={size === 'sm' ? '16px' : '30px'} />
+            <H4 className={cn("text-base mb-0", {
+                'text-xs': size === 'sm',
+            })}>{bank.bank}</H4>
         </div>}
 
         <div className="flex flex-col gap-0.5">
-            <span className="tracking-tight text-sm font-medium">{bank.account_name}</span>
-            <span title="GL Account" className="text-sm">{bank.account}</span>
-
-            {bank.last_integration_date && <span className="text-xs text-muted-foreground">{_("Last Synced Transaction")}: {getTimeago(bank.last_integration_date)}</span>}
+            <span className={cn("tracking-tight font-medium", {
+                'text-xs': size === 'sm',
+            })}>{bank.account_name}</span>
+            <span title={_("GL Account")} className={cn("text-ellipsis line-clamp-1", size === 'sm' ? 'text-xs' : "text-sm")}>{bank.account}</span>
+            {bank.last_integration_date && size !== 'sm' && <span className="text-xs text-muted-foreground">{_("Last Synced Transaction")}: {getTimeago(bank.last_integration_date)}</span>}
         </div>
 
-        <div className="absolute -top-1 right-0">
-            <span className={cn("uppercase rounded-bl-sm text-xs tracking-tight font-semibold py-1 px-1.5",
-                isSelected ? 'bg-primary text-primary-foreground' : 'bg-gray-200 text-secondary-foreground/70'
+        <div className={cn("absolute -top-1 right-0", {
+            "-top-1.5": size === 'sm',
+        })}>
+            {bank.account_type && <span className={cn("uppercase rounded-bl-sm text-xs tracking-tight font-semibold py-1 px-1.5",
+                isSelected ? 'bg-primary text-primary-foreground' : 'bg-gray-200 text-secondary-foreground/70',
+                {
+                    'text-[10px]': size === 'sm',
+                }
             )}>
                 {bank.account_type?.slice(0, 24)}
-            </span>
+            </span>}
         </div>
 
-    </div>
+    </div >
 }
 
 export default BankPicker

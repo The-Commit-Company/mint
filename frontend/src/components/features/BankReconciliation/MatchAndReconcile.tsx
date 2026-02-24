@@ -1,15 +1,14 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
-import { MissingFiltersBanner } from "./MissingFiltersBanner"
 import { bankRecAmountFilter, bankRecDateAtom, bankRecRecordJournalEntryModalAtom, bankRecRecordPaymentModalAtom, bankRecSelectedTransactionAtom, bankRecTransactionTypeFilter, bankRecTransferModalAtom, selectedBankAccountAtom } from "./bankRecAtoms"
 import { H4 } from "@/components/ui/typography"
-import { useMemo } from "react"
+import { useMemo, useRef } from "react"
 import { getCompanyCurrency } from "@/lib/company"
 import ErrorBanner from "@/components/ui/error-banner"
 import { Separator } from "@/components/ui/separator"
 import Fuse from 'fuse.js'
 import { getSearchResults, LinkedPayment, UnreconciledTransaction, useGetRuleForTransaction, useGetUnreconciledTransactions, useGetVouchersForTransaction, useIsTransactionWithdrawal, useReconcileTransaction, useTransactionSearch } from "./utils"
 import { Input } from "@/components/ui/input"
-import { AlertCircle, ArrowDownRight, ArrowRightIcon, ArrowRightLeft, ArrowUpRight, BadgeCheck, ChevronDown, DollarSign, Landmark, Loader2, Receipt, Search, User, XCircle, ZapIcon } from "lucide-react"
+import { AlertCircle, ArrowDownRight, ArrowRightIcon, ArrowRightLeft, ArrowUpRight, BadgeCheck, ChevronDown, DollarSign, Landmark, LandmarkIcon, ListIcon, Loader2, Receipt, ReceiptIcon, Search, User, XCircle, ZapIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
@@ -33,12 +32,21 @@ import { useHotkeys } from "react-hotkeys-hook"
 import { KeyboardMetaKeyIcon } from "@/components/ui/keyboard-keys"
 import { Kbd, KbdGroup } from "@/components/ui/kbd"
 import { useFrappeGetCall } from "frappe-react-sdk"
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
+import { Link } from "react-router"
 
 const MatchAndReconcile = ({ contentHeight }: { contentHeight: number }) => {
     const selectedBank = useAtomValue(selectedBankAccountAtom)
 
     if (!selectedBank) {
-        return <MissingFiltersBanner text={_("Select a bank account to reconcile")} />
+        return <Empty className="bg-muted/30 h-64">
+            <EmptyHeader>
+                <EmptyMedia variant="icon">
+                    <LandmarkIcon />
+                </EmptyMedia>
+                <EmptyTitle>{_("Select a bank account to reconcile")}</EmptyTitle>
+            </EmptyHeader>
+        </Empty>
     }
 
     return <>
@@ -68,6 +76,8 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
     const formatInfo = getCurrencyFormatInfo(currency)
     const groupSeparator = formatInfo.group_sep || ","
     const decimalSeparator = formatInfo.decimal_str || "."
+
+    const inputRef = useRef<HTMLInputElement>(null)
 
     const { data: unreconciledTransactions, isLoading, error } = useGetUnreconciledTransactions()
 
@@ -111,10 +121,20 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
         onFilterChange()
     }
 
+    const onClearFilters = () => {
+        setSearch('')
+        if (inputRef.current) {
+            inputRef.current.value = ''
+        }
+        setTypeFilter('All')
+        setAmountFilter({ value: 0, stringValue: '' })
+        onFilterChange()
+    }
+
     const hasFilters = search !== '' || typeFilter !== 'All' || amountFilter.value !== 0
 
     if (isLoading) {
-        return <div className="text-sm text-center p-4 text-muted-foreground">{_("Loading")}...</div>
+        return <UnreconciledTransactionsLoadingState />
     }
 
     return <div className="space-y-1">
@@ -125,7 +145,12 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
                 "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
             )}>
                 <Search className="w-5 h-5 text-muted-foreground" />
-                <Input placeholder={_("Search")} type='search' onChange={onSearchChange} defaultValue={search}
+                <Input
+                    placeholder={_("Search")}
+                    type='search'
+                    onChange={onSearchChange}
+                    defaultValue={search}
+                    ref={inputRef}
                     className="border-none px-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0" />
                 <div>
                     <span className="text-sm text-muted-foreground text-nowrap whitespace-nowrap">{results?.length} {_(results?.length === 1 ? "result" : "results")}</span>
@@ -138,7 +163,7 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
                     decimalSeparator={decimalSeparator}
                     placeholder={`${currencySymbol}0${decimalSeparator}00`}
                     decimalsLimit={2}
-                    // value={amountFilter.stringValue}
+                    value={amountFilter.stringValue}
                     maxLength={12}
                     decimalScale={2}
                     prefix={currencySymbol}
@@ -180,7 +205,10 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
 
         <OlderUnreconciledTransactionsBanner />
 
-        {results.length === 0 && <MissingFiltersBanner text={hasFilters ? _("No transactions found for the given filters.") : _("No unreconciled transactions found")} />}
+        {results.length === 0 && <NoTransactionsFoundBanner
+            onClearFilters={hasFilters ? onClearFilters : undefined}
+            text={hasFilters ? _("No transactions found for the given filters.") : _("No unreconciled transactions found")}
+            description={hasFilters ? _("Try adjusting your search or filter criteria.") : _("Import your bank statement to get started.")} />}
 
         <Virtuoso
             data={results}
@@ -191,6 +219,41 @@ const UnreconciledTransactions = ({ contentHeight }: { contentHeight: number }) 
             totalCount={results?.length}
         />
 
+    </div>
+}
+
+const NoTransactionsFoundBanner = ({ text, description, onClearFilters }: { text: string, description?: string, onClearFilters?: () => void }) => {
+
+    return <Empty className="h-64">
+        <EmptyHeader>
+            <EmptyMedia variant="icon">
+                <ListIcon />
+            </EmptyMedia>
+            <EmptyTitle>{text}</EmptyTitle>
+            {description && <EmptyDescription>{description}</EmptyDescription>}
+        </EmptyHeader>
+        <EmptyContent>
+            {onClearFilters ? <Button type='button' size='sm' variant='outline' onClick={onClearFilters}>Clear Filters</Button> :
+                <Button type='button' asChild size='sm' variant='outline'>
+                    <Link to="/statement-importer">
+                        {_("Import Bank Statement")}
+                    </Link>
+                </Button>}
+        </EmptyContent>
+    </Empty>
+}
+
+const UnreconciledTransactionsLoadingState = () => {
+
+    return <div className="flex flex-col gap-2 py-2">
+        <div className="flex items-center gap-2 pb-2">
+            <Skeleton className="h-9.5 w-full" />
+            <Skeleton className="h-9.5 min-w-36" />
+            <Skeleton className="h-9.5 min-w-32" />
+        </div>
+        {Array.from({ length: 6 }).map((_, index) => (
+            <Skeleton key={index} className="h-16 w-full" />
+        ))}
     </div>
 }
 
@@ -260,7 +323,14 @@ const VouchersSection = ({ contentHeight }: { contentHeight: number }) => {
 
 
     if (selectedTransactions.length === 0) {
-        return <MissingFiltersBanner text={_("Select a transaction to match and reconcile with vouchers")} />
+        return <Empty className="h-64 my-4">
+            <EmptyHeader>
+                <EmptyMedia variant="icon">
+                    <ReceiptIcon />
+                </EmptyMedia>
+                <EmptyTitle>{_("Select a transaction to match and reconcile with vouchers")}</EmptyTitle>
+            </EmptyHeader>
+        </Empty>
     }
 
     if (selectedTransactions.length > 1) {
@@ -654,7 +724,14 @@ const VouchersForTransaction = ({ transaction, contentHeight }: { transaction: U
             <span>or</span>
             <Separator className="flex-1" />
         </div>
-        {vouchers?.message.length === 0 && <MissingFiltersBanner text={_("No vouchers found for this transaction")} className="min-h-[10vh]" />}
+        {vouchers?.message.length === 0 && <Empty className="h-64 my-4">
+            <EmptyHeader>
+                <EmptyMedia variant="icon">
+                    <ReceiptIcon />
+                </EmptyMedia>
+                <EmptyTitle>{_("No vouchers found for this transaction")}</EmptyTitle>
+            </EmptyHeader>
+        </Empty>}
         <Virtuoso
             data={vouchers?.message}
             itemContent={(index, voucher) => (
@@ -823,7 +900,7 @@ const OlderUnreconciledTransactionsBanner = () => {
     if (data && data.message.count > 0) {
 
         return <div className="flex flex-col gap-2">
-            <div className="border border-amber-500 rounded-md p-4">
+            <div className="border border-amber-500 rounded-md p-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <div className="min-w-8">
                         <AlertCircle className="w-6 h-6 text-amber-600" />
@@ -836,17 +913,18 @@ const OlderUnreconciledTransactionsBanner = () => {
                         )}
                         <span className="text-sm text-amber-600">{_("The opening balance might not match your bank statement. Would you like to reconcile them?")}</span>
                     </div>
-                    <div className="flex items-center gap-2 w-fit pl-4">
-                        <Button
-                            size='sm'
-                            type='button'
-                            className="shadow-none"
-                            onClick={() => setDates({ fromDate: data.message.oldest_date, toDate: dates.toDate })}
-                            variant='outline'>
-                            <span>{data.message.count > 1 ? _("View older transactions") : _("View older transaction")}</span>
-                            <ArrowRightIcon className="w-4 h-4" />
-                        </Button>
-                    </div>
+
+                </div>
+                <div className="flex items-center gap-2 w-fit pl-4">
+                    <Button
+                        size='sm'
+                        type='button'
+                        className="shadow-none"
+                        onClick={() => setDates({ fromDate: data.message.oldest_date, toDate: dates.toDate })}
+                        variant='outline'>
+                        <span>{data.message.count > 1 ? _("View older transactions") : _("View older transaction")}</span>
+                        <ArrowRightIcon className="w-4 h-4" />
+                    </Button>
                 </div>
             </div>
         </div>

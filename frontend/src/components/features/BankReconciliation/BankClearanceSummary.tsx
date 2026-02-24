@@ -7,7 +7,7 @@ import { useMemo, useState } from "react"
 import { useFrappeGetCall, useFrappePostCall, useSWRConfig } from "frappe-react-sdk"
 import { QueryReportReturnType } from "@/types/custom/Reports"
 import { formatDate } from "@/lib/date"
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatCurrency } from "@/lib/numbers"
 import { getCompanyCurrency } from "@/lib/company"
 import { slug } from "@/lib/frappe"
@@ -24,6 +24,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { Form } from "@/components/ui/form"
 import { useForm } from "react-hook-form"
 import { DateField } from "@/components/ui/form-elements"
+import { TableVirtuoso } from "react-virtuoso"
 
 const BankClearanceSummary = () => {
     const bankAccount = useAtomValue(selectedBankAccountAtom)
@@ -94,53 +95,58 @@ const BankClearanceSummaryView = () => {
 
         {error && <ErrorBanner error={error} />}
 
-        {data && data.message.result.length > 0 &&
-            <Table>
-                <TableCaption>{_("Bank Clearance Summary")}</TableCaption>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>{_("Document Type")}</TableHead>
-                        <TableHead>{_("Payment Document")}</TableHead>
-                        <TableHead>{_("Posting Date")}</TableHead>
-                        <TableHead>{_("Cheque/Reference Number")}</TableHead>
-                        <TableHead>{_("Clearance Date")}</TableHead>
-                        <TableHead>{_("Against Account")}</TableHead>
-                        <TableHead className="text-right">{_("Amount")}</TableHead>
-                        <TableHead>{_("Status")}</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {data.message.result.map((row: BankClearanceSummaryEntry) => (
-                        <TableRow key={row.payment_entry}>
-                            <TableCell>{_(row.payment_document_type)}</TableCell>
-                            <TableCell><a target="_blank" className="underline underline-offset-4" href={`/app/${slug(row.payment_document_type)}/${row.payment_entry}`}>{row.payment_entry}</a></TableCell>
-                            <TableCell>{formatDate(row.posting_date)}</TableCell>
-                            <TableCell title={row.cheque_no}>
-                                <Tooltip delayDuration={500}>
-                                    <TooltipTrigger onClick={() => onCopy(row.cheque_no ?? "")}>
-                                        {row.cheque_no?.slice(0, 40)}{row.cheque_no?.length && row.cheque_no?.length > 40 ? "..." : ""}
-                                    </TooltipTrigger>
-                                    <TooltipContent align='start'>
-                                        {_("Copy to clipboard")}
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TableCell>
-                            <TableCell>{formatDate(row.clearance_date)}</TableCell>
-                            <TableCell className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap" title={row.against}>{row.against}</TableCell>
-                            <TableCell className="text-right">{formatCurrency(row.amount, bankAccount?.account_currency ?? getCompanyCurrency(companyID))}</TableCell>
-                            <TableCell>
-                                {row.clearance_date ? <Badge variant="outline" className="text-foreground px-1.5">
-                                    <CheckCircle2 width={16} height={16} className="text-green-600 dark:text-green-500" />
-                                    {_("Cleared")}</Badge> : <div className="flex items-center gap-2"><Badge variant="destructive" className="bg-destructive/10 text-destructive">
-                                        <XCircle className="-mt-0.5 text-destructive" />
-                                        {_("Not Cleared")}</Badge>
-                                    <SetClearanceDateButton voucher={row} bankAccount={bankAccount} companyID={companyID} mutate={mutate} />
-                                </div>}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>}
+        <TableVirtuoso
+            data={data?.message.result}
+            style={{ minHeight: 'calc(100vh - 200px)' }}
+            fixedHeaderContent={() => (
+                <TableRow>
+                    <TableHead>{_("Document Type")}</TableHead>
+                    <TableHead>{_("Payment Document")}</TableHead>
+                    <TableHead>{_("Posting Date")}</TableHead>
+                    <TableHead>{_("Cheque/Reference Number")}</TableHead>
+                    <TableHead>{_("Clearance Date")}</TableHead>
+                    <TableHead>{_("Against Account")}</TableHead>
+                    <TableHead className="text-right">{_("Amount")}</TableHead>
+                    <TableHead>{_("Status")}</TableHead>
+                </TableRow>
+            )}
+            components={{
+                Table: Table,
+                TableBody: TableBody,
+                TableRow: TableRow,
+            }}
+            itemContent={(_index, row) => (
+                <>
+                    <TableCell>{_(row.payment_document_type)}</TableCell>
+                    <TableCell><a target="_blank" className="underline underline-offset-4" href={`/app/${slug(row.payment_document_type)}/${row.payment_entry}`}>{row.payment_entry}</a></TableCell>
+                    <TableCell>{formatDate(row.posting_date)}</TableCell>
+                    <TableCell title={row.cheque_no}>
+                        <Tooltip delayDuration={500}>
+                            <TooltipTrigger onClick={() => onCopy(row.cheque_no ?? "")}>
+                                {row.cheque_no?.slice(0, 40)}{row.cheque_no?.length && row.cheque_no?.length > 40 ? "..." : ""}
+                            </TooltipTrigger>
+                            <TooltipContent align='start'>
+                                {_("Copy to clipboard")}
+                            </TooltipContent>
+                        </Tooltip>
+                    </TableCell>
+                    <TableCell>{formatDate(row.clearance_date)}</TableCell>
+                    <TableCell className="max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap" title={row.against}>{row.against}</TableCell>
+                    <TableCell className="text-right">{formatCurrency(row.amount, bankAccount?.account_currency ?? getCompanyCurrency(companyID))}</TableCell>
+                    <TableCell>
+                        {row.clearance_date ? <Badge variant="outline" className="text-foreground px-1.5">
+                            <CheckCircle2 width={16} height={16} className="text-green-600 dark:text-green-500" />
+                            {_("Cleared")}</Badge> : <div className="flex items-center gap-2"><Badge variant="destructive" className="bg-destructive/10 text-destructive">
+                                <XCircle className="-mt-0.5 text-destructive" />
+                                {_("Not Cleared")}</Badge>
+                            <SetClearanceDateButton voucher={row} bankAccount={bankAccount} companyID={companyID} mutate={mutate} />
+                        </div>}
+                    </TableCell>
+                </>
+            )}
+        />
+
+
 
         {data && data.message.result.length === 0 &&
             <Alert variant='default'>

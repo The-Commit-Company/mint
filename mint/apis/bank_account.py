@@ -1,5 +1,6 @@
 import frappe
 from pypika import Order
+import datetime
 
 @frappe.whitelist(methods=["GET"])
 @frappe.read_only()
@@ -51,7 +52,7 @@ def get_closing_balance_as_per_statement(bank_account: str, date: str):
     }
 
 @frappe.whitelist()
-def set_closing_balance_as_per_statement(bank_account: str, date: str, balance: float):
+def set_closing_balance_as_per_statement(bank_account: str, date: str | datetime.date, balance: float):
     """
     Set the closing balance as per statement for a bank account and date
     """
