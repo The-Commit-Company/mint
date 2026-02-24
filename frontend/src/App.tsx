@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { FrappeProvider } from 'frappe-react-sdk'
-import BankReconciliation from './pages/BankReconciliation'
 import { Toaster } from './components/ui/sonner'
+import BankStatementImporter from './pages/BankStatementImporter'
+import BankReconciliation from './pages/BankReconciliation'
 
 function App() {
 	useEffect(() => {
@@ -27,7 +29,15 @@ function App() {
 			}}
 			socketPort={import.meta.env.VITE_SOCKET_PORT}
 			siteName={window.frappe?.boot?.sitename ?? import.meta.env.VITE_SITE_NAME}>
-			{window.frappe?.boot?.user?.name && window.frappe?.boot?.user?.name !== 'Guest' && <BankReconciliation />}
+			{window.frappe?.boot?.user?.name && window.frappe?.boot?.user?.name !== 'Guest' &&
+				<BrowserRouter>
+					<Routes>
+						<Route index element={<BankReconciliation />} />
+						<Route path="/statement-importer" element={<BankStatementImporter />} />
+						<Route path="*" element={<Navigate to="/" />} />
+					</Routes>
+				</BrowserRouter>
+			}
 			<Toaster richColors theme='light' />
 		</FrappeProvider>
 	)

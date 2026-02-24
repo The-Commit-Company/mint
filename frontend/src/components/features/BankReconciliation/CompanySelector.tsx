@@ -19,7 +19,7 @@ import {
 import { cn } from "@/lib/utils"
 import _ from "@/lib/translate"
 
-const CompanySelector = () => {
+const CompanySelector = ({ onChange }: { onChange?: (company: string) => void }) => {
     const [open, setOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
 
@@ -33,6 +33,7 @@ const CompanySelector = () => {
         setSelectedCompany(company)
         setSearchQuery("")
         setOpen(false)
+        onChange?.(company)
     }
 
     return (<Popover open={open} onOpenChange={setOpen}>
@@ -43,8 +44,10 @@ const CompanySelector = () => {
                 aria-expanded={open}
                 className="justify-between"
             >
-                <Building2 />
-                {selectedCompany}
+                <div className="flex items-center gap-2">
+                    <Building2 />
+                    {selectedCompany}
+                </div>
                 <ChevronDown className="opacity-50" />
             </Button>
         </PopoverTrigger>
