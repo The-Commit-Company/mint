@@ -170,7 +170,7 @@ const ClosingBalanceAsPerStatement = () => {
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogTrigger>
                     <Tooltip>
-                        <TooltipTrigger>
+                        <TooltipTrigger asChild>
                             <div className="flex items-center gap-4 underline cursor-pointer underline-offset-6">
                                 {isLoading ? <Skeleton className="w-[150px] h-9" /> : <StatValue className="font-mono">{formatCurrency(flt(data?.message?.balance, 2), bankAccount?.account_currency ?? getCompanyCurrency(bankAccount?.company ?? ''))}</StatValue>}
                                 <Edit className="w-4 h-4" />
@@ -180,7 +180,6 @@ const ClosingBalanceAsPerStatement = () => {
                             {_("Click to set the closing balance as per statement")}
                         </TooltipContent>
                     </Tooltip>
-
                 </DialogTrigger>
                 <DialogContent>
                     <ClosingBalanceForm
