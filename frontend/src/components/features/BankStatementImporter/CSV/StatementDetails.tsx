@@ -254,7 +254,7 @@ const StatementDetails = ({ data, bank }: Props) => {
                 </Table>
             </div>
 
-            <Separator />
+            {data.conflicting_transactions.length > 0 && <Separator />}
 
             {data.conflicting_transactions.length > 0 ? <div className='flex flex-col gap-4'>
                 <div className='flex flex-col gap-1'>
