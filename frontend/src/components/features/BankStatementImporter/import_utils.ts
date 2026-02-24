@@ -26,11 +26,29 @@ export interface GetStatementDetailsResponse {
     statement_start_date: string,
     statement_end_date: string,
     closing_balance: number,
+    conflicting_transactions: Array<{
+        name: string,
+        date: string,
+        withdrawal: number,
+        deposit: number,
+        description: string,
+        reference_number: string,
+        currency: string,
+    }>,
+    final_transactions: Array<{
+        date: string,
+        withdrawal: number,
+        deposit: number,
+        description: string,
+        reference: string,
+        transaction_type: string,
+    }>,
 }
 
-export const useGetStatementDetails = (fileURL: string) => {
+export const useGetStatementDetails = (fileURL: string, bankAccount: string) => {
     return useFrappeGetCall<{ message: GetStatementDetailsResponse }>("mint.apis.statement_import.get_statement_details", {
         file_url: fileURL,
+        bank_account: bankAccount,
     })
 
 }

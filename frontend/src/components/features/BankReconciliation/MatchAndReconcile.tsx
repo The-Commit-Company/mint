@@ -236,7 +236,7 @@ const NoTransactionsFoundBanner = ({ text, description, onClearFilters }: { text
             {onClearFilters ? <Button type='button' size='sm' variant='outline' onClick={onClearFilters}>Clear Filters</Button> :
                 <Button type='button' asChild size='sm' variant='outline'>
                     <Link to="/statement-importer">
-                        Import Statement
+                        {_("Import Bank Statement")}
                     </Link>
                 </Button>}
         </EmptyContent>

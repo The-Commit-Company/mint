@@ -9,8 +9,10 @@ from frappe.utils import getdate
 
 from datetime import datetime
 
-@frappe.whitelist()
-def get_statement_details(file_url: str):
+from mint.apis.bank_account import set_closing_balance_as_per_statement
+
+@frappe.whitelist(methods=["GET"])
+def get_statement_details(file_url: str, bank_account: str):
     """
     Given a file path, try to get bank statement details.
 
@@ -44,7 +46,9 @@ def get_statement_details(file_url: str):
 
     statement_start_date, statement_end_date, closing_balance = get_closing_balance(transaction_rows, date_format)
 
-    # print(len(transaction_rows))
+    conflicting_transactions = check_for_conflicts(bank_account, statement_start_date, statement_end_date)
+
+    final_transactions = get_final_transactions(transaction_rows, date_format, amount_format)
 
     return {
         "file_name": file_name,
@@ -62,6 +66,86 @@ def get_statement_details(file_url: str):
         "statement_start_date": statement_start_date,
         "statement_end_date": statement_end_date,
         "closing_balance": closing_balance,
+        "conflicting_transactions": conflicting_transactions,
+        "final_transactions": final_transactions,
+    }
+
+@frappe.whitelist(methods=["POST"])
+def import_statement(file_url: str, bank_account: str):
+    """
+    Given a file path and bank account, try to import the statement
+    """
+
+    if not frappe.has_permission("Bank Transaction", "write"):
+        frappe.throw(_("You do not have permission to import bank transactions"), title="Permission Denied")
+    
+    if not frappe.has_permission("Bank Transaction", "create"):
+        frappe.throw(_("You do not have permission to import bank transactions"), title="Permission Denied")
+    
+    if not frappe.has_permission("Bank Transaction", "submit"):
+        frappe.throw(_("You do not have permission to import and submit bank transactions"), title="Permission Denied")
+
+    
+
+    company, account, is_company_account, disabled = frappe.get_value("Bank Account", bank_account, ["company", "account", "is_company_account", "disabled"])
+    if not is_company_account:
+        frappe.throw(_("The bank account is not a company account. Please select a company account"), title="Invalid Bank Account")
+    
+    if disabled:
+        frappe.throw(_("The bank account is disabled. Please enable it"), title="Disabled Bank Account")
+    
+    currency = frappe.get_value("Account", account, "account_currency")
+    # Create the bank transactions, submit them and then store the closing balance if any
+
+    data = get_statement_details(file_url, bank_account)
+
+    progress = 0
+
+    for transaction in data.get("final_transactions"):
+        bank_tx = frappe.get_doc({
+            "doctype": "Bank Transaction",
+            "date": transaction.get("date"),
+            "status": "Unreconciled",
+            "bank_account": bank_account,
+            "withdrawal": transaction.get("withdrawal"),
+            "deposit": transaction.get("deposit"),
+            "description": transaction.get("description"),
+            "reference_number": transaction.get("reference"),
+            "transaction_type": transaction.get("transaction_type"),
+            "currency": currency,
+            "company": company,
+        })
+        bank_tx.insert()
+        bank_tx.submit()
+        progress += 1
+
+        frappe.publish_realtime("mint-statement-import-progress", {
+            "progress": round((progress / len(data.get("final_transactions"))) * 100),
+        }, user=frappe.session.user)
+    
+    frappe.publish_realtime("mint-statement-import-progress", {
+        "progress": 100,
+        "total": len(data.get("final_transactions")),
+    }, user=frappe.session.user)
+    
+    log = frappe.new_doc("Mint Bank Statement Import Log")
+    log.bank_account = bank_account
+    log.file = file_url
+    log.number_of_transactions = len(data.get("final_transactions"))
+    log.start_date = data.get("statement_start_date")
+    log.end_date = data.get("statement_end_date")
+    log.closing_balance = data.get("closing_balance")
+    log.insert(ignore_permissions=True)
+
+    if data.get("closing_balance") and data.get("closing_balance") > 0 and data.get("statement_end_date"):
+        set_closing_balance_as_per_statement(bank_account, frappe.utils.getdate(data.get("statement_end_date")), data.get("closing_balance"))
+    
+    from mint.apis.rules import run_rule_evaluation
+    run_rule_evaluation()
+
+    return {
+        "success": True,
+        "message": _("Bank statement imported successfully."),
     }
 
 def get_data(file_path: str):
@@ -351,3 +435,78 @@ def get_closing_balance(transactions: list, date_format: str):
             closing_balance = transaction.get("balance")
 
     return getdate(statement_start_date), getdate(statement_end_date), closing_balance
+
+
+def check_for_conflicts(bank_account: str, start_date: str, end_date: str):
+    """
+    Given a bank account, start date and end date, check if there are any conflicts with existing bank transactions
+    """
+
+    conflicts = frappe.get_all("Bank Transaction", filters={
+        "bank_account": bank_account,
+        "date": ["between", [start_date, end_date]],
+        "docstatus": 1,
+    }, fields=["name", "date", "withdrawal", "deposit", "description", "reference_number", "currency"],
+    order_by="date")
+
+    return conflicts
+
+
+def get_final_transactions(transactions: list, date_format: str, amount_format: str):
+    """
+    Given the transactions, date format and amount format, try to get the final transactions
+    """
+
+    final_transactions = []
+
+    def parse_amount(transaction_row: dict):
+        """
+        Given a transaction row, try to parse the amount - returns tuple of (withdrawal, deposit)
+        """
+
+        if amount_format == "separate_columns_for_withdrawal_and_deposit":
+            return transaction_row.get("withdrawal"), transaction_row.get("deposit")
+        
+        if amount_format == "dr_cr_in_amount":
+            amount = transaction_row.get("amount")
+            if "cr" in amount.lower():
+                return 0, float(amount.lower().replace("cr", "").replace(" ", ""))
+            else:
+                return float(amount.lower().replace("dr", "").replace(" ", "")), 0
+        
+        if amount_format == "positive_negative_in_amount":
+            amount = transaction_row.get("amount")
+            if amount > 0:
+                return 0, abs(amount)
+            else:
+                return abs(amount), 0
+        
+        if amount_format == "cr_dr_in_transaction_type":
+            transaction_type = transaction_row.get("transaction_type")
+            if "cr" in transaction_type.lower():
+                return 0, float(transaction_type.lower().replace("cr", "").replace(" ", ""))
+            else:
+                return float(transaction_type.lower().replace("dr", "").replace(" ", "")), 0
+        
+        if amount_format == "deposit_withdrawal_in_transaction_type":
+            transaction_type = transaction_row.get("transaction_type")
+            if "deposit" in transaction_type.lower():
+                return 0, float(transaction_type.lower().replace("deposit", "").replace(" ", ""))
+            else:
+                return float(transaction_type.lower().replace("withdrawal", "").replace(" ", "")), 0
+        
+        return 0, 0
+    
+    for transaction in transactions:
+        date = transaction.get("date")
+        withdrawal, deposit = parse_amount(transaction)
+        final_transactions.append({
+            "date": datetime.strptime(date, date_format).strftime("%Y-%m-%d"),
+            "withdrawal": withdrawal,
+            "deposit": deposit,
+            "description": transaction.get("description"),
+            "reference": transaction.get("reference"),
+            "transaction_type": transaction.get("transaction_type"),
+        })
+    
+    return final_transactions

@@ -21,5 +21,3 @@ class MintBankStatementImportLog(Document):
 		number_of_transactions: DF.Int
 		start_date: DF.Date | None
 	# end: auto-generated types
-
-	pass

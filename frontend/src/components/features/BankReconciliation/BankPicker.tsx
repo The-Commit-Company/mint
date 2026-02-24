@@ -73,7 +73,7 @@ const BankPickerItem = ({ bank, size = 'base' }: { bank: SelectedBank, size?: 'b
         className={cn('rounded-md border-2 border-gray-200 min-w-80 relative p-2 bg-card overflow-hidden cursor-pointer',
             isSelected ? 'border-primary bg-primary-foreground' : 'hover:bg-gray-50',
             {
-                "max-w-56 min-w-56": size === 'sm',
+                "max-w-60 min-w-60": size === 'sm',
             }
         )}
     >
@@ -81,10 +81,10 @@ const BankPickerItem = ({ bank, size = 'base' }: { bank: SelectedBank, size?: 'b
             src={`/assets/mint/mint/${bank.logo}`}
             alt={bank.bank || bank.name || ''}
             className={cn("max-w-24 object-left h-10 object-contain mb-1", {
-                'h-5 max-w-16': size === 'sm',
+                'h-6 max-w-18 mb-2': size === 'sm',
             })}
         /> : <div className={cn("rounded-md flex items-center h-10 gap-2", {
-            "h-5 mb-1": size === 'sm',
+            "h-6 mb-2": size === 'sm',
         })}>
             <Landmark size={size === 'sm' ? '16px' : '30px'} />
             <H4 className={cn("text-base mb-0", {
@@ -96,7 +96,7 @@ const BankPickerItem = ({ bank, size = 'base' }: { bank: SelectedBank, size?: 'b
             <span className={cn("tracking-tight font-medium", {
                 'text-xs': size === 'sm',
             })}>{bank.account_name}</span>
-            <span title={_("GL Account")} className={size === 'sm' ? 'text-xs text-ellipsis line-clamp-1' : "text-sm"}>{bank.account}</span>
+            <span title={_("GL Account")} className={cn("text-ellipsis line-clamp-1", size === 'sm' ? 'text-xs' : "text-sm")}>{bank.account}</span>
             {bank.last_integration_date && size !== 'sm' && <span className="text-xs text-muted-foreground">{_("Last Synced Transaction")}: {getTimeago(bank.last_integration_date)}</span>}
         </div>
 
