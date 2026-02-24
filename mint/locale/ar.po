@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mint VERSION\n"
 "Report-Msgid-Bugs-To: support@thecommit.company\n"
-"POT-Creation-Date: 2026-02-24 16:09+0553\n"
+"POT-Creation-Date: 2026-02-24 16:10+0553\n"
 "PO-Revision-Date: 2025-11-24 12:16+0000\n"
 "Last-Translator: support@thecommit.company\n"
 "Language: ar\n"
@@ -1320,7 +1320,7 @@ msgid "No accounts found."
 msgstr "لم يتم العثور على حسابات."
 
 #: frontend/src/pages/BankStatementImporter.tsx:181
-msgid "No bank statements imported yet."
+msgid "No bank statements imported yet"
 msgstr ""
 
 #: frontend/src/components/features/BankReconciliation/CompanySelector.tsx:58
