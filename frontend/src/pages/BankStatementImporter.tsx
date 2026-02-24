@@ -178,7 +178,7 @@ const StatementImportLog = () => {
                         <EmptyMedia variant="icon">
                             <ListIcon />
                         </EmptyMedia>
-                        <EmptyTitle>{_("No previous imports found.")}</EmptyTitle>
+                        <EmptyTitle>{_("No bank statements imported yet.")}</EmptyTitle>
                     </EmptyHeader>
                 </Empty>}
         </div>
