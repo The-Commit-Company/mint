@@ -146,6 +146,8 @@ def import_statement(file_url: str, bank_account: str):
     return {
         "success": True,
         "message": _("Bank statement imported successfully."),
+        "start_date": data.get("statement_start_date"),
+        "end_date": data.get("statement_end_date"),
     }
 
 def get_data(file_path: str):

@@ -2,7 +2,7 @@ import _ from '@/lib/translate'
 import { GetStatementDetailsResponse } from '../import_utils'
 import { flt, formatCurrency } from '@/lib/numbers'
 import { formatDate } from '@/lib/date'
-import { SelectedBank } from '../../BankReconciliation/bankRecAtoms'
+import { bankRecDateAtom, SelectedBank } from '../../BankReconciliation/bankRecAtoms'
 import { ExternalLinkIcon, InfoIcon, Landmark, Loader2Icon } from 'lucide-react'
 import { H2, H3, H4, Paragraph } from '@/components/ui/typography'
 import { FileTypeIcon } from '@/components/ui/file-dropzone'
@@ -17,6 +17,7 @@ import ErrorBanner from '@/components/ui/error-banner'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { Progress } from '@/components/ui/progress'
+import { useSetAtom } from 'jotai'
 
 type Props = {
     data: GetStatementDetailsResponse,
@@ -125,16 +126,24 @@ const DATE_FORMAT_LABEL_MAP: Record<string, { label: string; dayjsFormat: string
 const StatementDetails = ({ data, bank }: Props) => {
     const dateFormatMeta = DATE_FORMAT_LABEL_MAP[data.date_format as keyof typeof DATE_FORMAT_LABEL_MAP]
 
-    const { call, loading, error } = useFrappePostCall<{ message: { success: boolean } }>('mint.apis.statement_import.import_statement')
+    const { call, loading, error } = useFrappePostCall<{ message: { success: boolean, start_date: string, end_date: string } }>('mint.apis.statement_import.import_statement')
 
     const navigate = useNavigate()
+
+    const setDates = useSetAtom(bankRecDateAtom)
 
     const onImport = () => {
 
         call({
             file_url: data.file_path,
             bank_account: bank?.name,
-        }).then(() => {
+        }).then((response) => {
+            if (response.message.start_date && response.message.end_date) {
+                setDates({
+                    fromDate: response.message.start_date,
+                    toDate: response.message.end_date,
+                })
+            }
             toast.success(_("Bank statement imported."))
             navigate(`/`)
         }).catch(() => {
