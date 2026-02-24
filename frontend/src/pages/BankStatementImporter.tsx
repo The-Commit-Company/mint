@@ -139,7 +139,9 @@ const StatementImportLog = () => {
             order: "desc"
         },
         limit: 10
-    }, bankAccount ? undefined : null)
+    }, bankAccount ? undefined : null, {
+        revalidateOnFocus: false
+    })
 
     return (
         <div className="flex flex-col gap-4">

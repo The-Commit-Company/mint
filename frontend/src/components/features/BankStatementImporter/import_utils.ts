@@ -49,6 +49,8 @@ export const useGetStatementDetails = (fileURL: string, bankAccount: string) => 
     return useFrappeGetCall<{ message: GetStatementDetailsResponse }>("mint.apis.statement_import.get_statement_details", {
         file_url: fileURL,
         bank_account: bankAccount,
+    }, undefined, {
+        revalidateOnFocus: false
     })
 
 }
