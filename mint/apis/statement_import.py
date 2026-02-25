@@ -23,16 +23,9 @@ def get_statement_details(file_url: str, bank_account: str):
     4. Opening and Closing dates of the statement and balance
     """
 
-    # file_path = "/private/files/DetailedStatement.xlsx"
-    # file_path = "/private/files/HDFC.xls"
-    # file_path = "/private/files/SBI.xlsx"
-    # file_path = "/private/files/ICICI.xls"
-
     data = get_data(file_url)
 
     file_name = file_url.split("/")[-1]
-
-    # print(data)
 
     header_index = get_header_row_index(data)
 
