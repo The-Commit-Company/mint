@@ -50,6 +50,9 @@ def get_statement_details(file_url: str, bank_account: str):
 
     final_transactions = get_final_transactions(transaction_rows, date_format, amount_format)
 
+    account = frappe.get_cached_value("Bank Account", bank_account, "account")
+    account_currency = frappe.get_cached_value("Account", account, "account_currency")
+
     return {
         "file_name": file_name,
         "file_path": file_url,
@@ -68,6 +71,7 @@ def get_statement_details(file_url: str, bank_account: str):
         "closing_balance": closing_balance,
         "conflicting_transactions": conflicting_transactions,
         "final_transactions": final_transactions,
+        "currency": account_currency,
     }
 
 @frappe.whitelist(methods=["POST"])

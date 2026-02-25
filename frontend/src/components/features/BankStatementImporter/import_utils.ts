@@ -43,6 +43,7 @@ export interface GetStatementDetailsResponse {
         reference: string,
         transaction_type: string,
     }>,
+    currency: string,
 }
 
 export const useGetStatementDetails = (fileURL: string, bankAccount: string) => {
