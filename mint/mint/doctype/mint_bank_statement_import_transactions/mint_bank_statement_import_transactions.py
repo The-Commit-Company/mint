@@ -25,4 +25,5 @@ class MintBankStatementImportTransactions(Document):
 		string_amount: DF.Data | None
 		type: DF.Literal["Withdrawal", "Deposit"]
 	# end: auto-generated types
+
 	pass
