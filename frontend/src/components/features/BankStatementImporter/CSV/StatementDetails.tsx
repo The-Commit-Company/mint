@@ -350,8 +350,8 @@ const StatementDetails = ({ data, bank }: Props) => {
                                     <TableCell>{formatDate(transaction.date)}</TableCell>
                                     <TableCell className='max-w-[200px] w-fit overflow-hidden text-ellipsis'>{transaction.description}</TableCell>
                                     <TableCell className='max-w-[100px] w-fit overflow-hidden text-ellipsis'>{transaction.reference}</TableCell>
-                                    <TableCell className='text-right font-mono'>{formatCurrency(transaction.withdrawal)}</TableCell>
-                                    <TableCell className='text-right font-mono'>{formatCurrency(transaction.deposit)}</TableCell>
+                                    <TableCell className='text-right font-mono'>{formatCurrency(transaction.withdrawal, data.currency)}</TableCell>
+                                    <TableCell className='text-right font-mono'>{formatCurrency(transaction.deposit, data.currency)}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
