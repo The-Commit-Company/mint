@@ -160,10 +160,7 @@ const StatementDetails = ({ data, bank }: Props) => {
 
     return (
         <div className='flex flex-col gap-4'>
-
-
             <div className='flex flex-col gap-4'>
-                {error && <ErrorBanner error={error} />}
                 <div className='flex items-start gap-4 justify-between'>
                     <div className='flex flex-col gap-1'>
                         <H2 className='text-lg border-0 p-0'>{_("Statement Details")}</H2>
@@ -187,6 +184,8 @@ const StatementDetails = ({ data, bank }: Props) => {
                     <span className='text-sm'>{_("Importing {0} transactions", [progress.toString()])}
                     </span>
                 </div>}
+
+                {error && <ErrorBanner error={error} />}
 
                 <Table>
                     <TableBody>
@@ -356,18 +355,6 @@ const StatementDetails = ({ data, bank }: Props) => {
                         </TableBody>
                     </Table>
                 </div>
-            </div>
-
-            {progress > 0 && <div className='flex flex-col gap-2 py-4'><Progress value={progress} max={100} />
-                <span className='text-sm'>{_("Importing {0} transactions", [progress.toString()])}
-                </span>
-            </div>}
-
-            <div className='flex justify-end py-8'>
-                <Button onClick={onImport} disabled={loading} size='sm' type='button'>
-                    {loading ? <Loader2Icon className='size-4 animate-spin' /> : null}
-                    {loading ? _("Importing...") : _("Import {0} transactions", [data.final_transactions?.length?.toString() || "0"])}
-                </Button>
             </div>
         </div>
 

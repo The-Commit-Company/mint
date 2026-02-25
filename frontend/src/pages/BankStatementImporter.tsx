@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils"
 import { MintBankStatementImportLog } from "@/types/Mint/MintBankStatementImportLog"
 import { useFrappeFileUpload, useFrappeGetDocList } from "frappe-react-sdk"
 import { useAtom, useAtomValue } from "jotai"
-import { ListIcon, Loader2Icon } from "lucide-react"
+import { ChevronLeftIcon, ListIcon, Loader2Icon } from "lucide-react"
 import { useState } from "react"
 import { Link } from "react-router"
 
@@ -31,16 +31,23 @@ const BankStatementImporter = () => {
 
     const [files, setFiles] = useState<File[]>([])
 
+    const [currentStep, setCurrentStep] = useState<"upload" | "import">("upload")
     const [uploadedFileURL, setUploadedFileURL] = useState<string | null>(null)
 
     const { upload, error, loading } = useFrappeFileUpload()
 
     const onUpload = () => {
 
+        if (uploadedFileURL) {
+            setCurrentStep("import")
+            return
+        }
+
         upload(files[0], {
             isPrivate: true,
         }).then((file) => {
             setUploadedFileURL(file.file_url)
+            setCurrentStep("import")
         })
     }
 
@@ -65,7 +72,15 @@ const BankStatementImporter = () => {
                 </Breadcrumb>
             </div>
 
-            {uploadedFileURL && selectedBankAccount ? <CSVImport bank={selectedBankAccount} fileURL={uploadedFileURL} /> :
+            {currentStep === 'import' && <div className="px-4">
+                <Button size='sm' variant='outline' onClick={() => setCurrentStep("upload")}>
+                    <ChevronLeftIcon />
+                    {_("Back")}</Button>
+            </div>}
+
+            {uploadedFileURL && selectedBankAccount && currentStep === 'import' ? <CSVImport
+                bank={selectedBankAccount}
+                fileURL={uploadedFileURL} /> :
 
                 <div className="flex px-4">
                     <div className="w-[52%]">
@@ -96,6 +111,7 @@ const BankStatementImporter = () => {
                                 </div>
                                 <FileDropzone
                                     setFiles={setFiles}
+                                    onUpdate={() => setUploadedFileURL(null)}
                                     files={files}
                                     className="p-8"
                                     accept={{

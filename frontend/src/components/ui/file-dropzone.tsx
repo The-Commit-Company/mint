@@ -12,10 +12,11 @@ type Props = {
     accept?: Accept,
     multiple?: boolean
     onDrop?: (acceptedFiles: File[]) => void,
+    onUpdate?: VoidFunction
     className?: string
 }
 
-export const FileDropzone = ({ files, setFiles, accept, multiple = true, onDrop, className }: Props) => {
+export const FileDropzone = ({ files, setFiles, accept, multiple = true, onDrop, className, onUpdate }: Props) => {
 
     const onFileDrop = useCallback((acceptedFiles: File[]) => {
         // Do something with the files
@@ -25,8 +26,9 @@ export const FileDropzone = ({ files, setFiles, accept, multiple = true, onDrop,
             setFiles?.(acceptedFiles)
         }
         onDrop?.(acceptedFiles)
+        onUpdate?.()
 
-    }, [setFiles, onDrop, multiple])
+    }, [setFiles, onDrop, multiple, onUpdate])
     const { getRootProps, getInputProps } = useDropzone({ onDrop: onFileDrop, accept, multiple })
     return (
         <div {...getRootProps()} className={cn('border border-border border-dashed p-4 rounded-sm bg-muted/20', className)}>
@@ -46,6 +48,7 @@ export const FileDropzone = ({ files, setFiles, accept, multiple = true, onDrop,
                         onClick={(e) => {
                             e.stopPropagation()
                             setFiles?.(files.filter(file => file.name !== f.name))
+                            onUpdate?.()
                         }}>
                         <Trash2Icon className='w-4 h-4' />
                     </Button>
