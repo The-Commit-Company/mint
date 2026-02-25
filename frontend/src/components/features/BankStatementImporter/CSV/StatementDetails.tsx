@@ -155,7 +155,6 @@ const StatementDetails = ({ data, bank }: Props) => {
     const [progress, setProgress] = useState(0)
 
     useFrappeEventListener("mint-statement-import-progress", (event) => {
-        console.log(event)
         setProgress(event.progress)
     })
 

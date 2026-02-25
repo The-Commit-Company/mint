@@ -2,10 +2,15 @@ import { useGetStatementDetails } from '../import_utils'
 import CSVRawDataPreview from './CSVRawDataPreview'
 import StatementDetails from './StatementDetails'
 import { SelectedBank } from '../../BankReconciliation/bankRecAtoms'
+import ErrorBanner from '@/components/ui/error-banner'
 
 const CSVImport = ({ bank, fileURL }: { bank: SelectedBank, fileURL: string }) => {
 
-    const { data } = useGetStatementDetails(fileURL, bank.name)
+    const { data, error } = useGetStatementDetails(fileURL, bank.name)
+
+    if (error) {
+        return <ErrorBanner error={error} />
+    }
 
     if (!data || !data.message) {
         return null
