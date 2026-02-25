@@ -489,17 +489,19 @@ def get_final_transactions(transactions: list, date_format: str, amount_format: 
         
         if amount_format == "cr_dr_in_transaction_type":
             transaction_type = transaction_row.get("transaction_type")
+            amount = transaction_row.get("amount")
             if "cr" in transaction_type.lower():
-                return 0, float(transaction_type.lower().replace("cr", "").replace(" ", ""))
+                return 0, float(amount)
             else:
-                return float(transaction_type.lower().replace("dr", "").replace(" ", "")), 0
+                return float(amount), 0
         
         if amount_format == "deposit_withdrawal_in_transaction_type":
             transaction_type = transaction_row.get("transaction_type")
+            amount = transaction_row.get("amount")
             if "deposit" in transaction_type.lower():
-                return 0, float(transaction_type.lower().replace("deposit", "").replace(" ", ""))
+                return 0, float(amount)
             else:
-                return float(transaction_type.lower().replace("withdrawal", "").replace(" ", "")), 0
+                return float(amount), 0
         
         return 0, 0
     
