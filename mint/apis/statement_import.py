@@ -1,4 +1,5 @@
 import frappe
+import re
 from frappe.utils.csvutils import read_csv_content
 from frappe.utils.xlsxutils import (
 	read_xls_file_from_attached_file,
@@ -349,9 +350,16 @@ def get_float_amount(amount):
 
     if isinstance(amount, str):
         amount = amount.lower().replace(",", "").replace(" ", "").replace("cr", "").replace("dr", "")
+        # Remove any other alphabets and currency symbols
+        amount = re.sub(r'[^\d.]', '', amount)
+        amount = float(amount)
+    elif isinstance(amount, int):
         amount = float(amount)
     else:
-        amount = float(amount)
+        try:
+            amount = float(amount)
+        except ValueError:
+            return None
 
     return amount
 
@@ -466,17 +474,17 @@ def get_final_transactions(transactions: list, date_format: str, amount_format: 
         """
 
         if amount_format == "separate_columns_for_withdrawal_and_deposit":
-            return transaction_row.get("withdrawal"), transaction_row.get("deposit")
+            return get_float_amount(transaction_row.get("withdrawal")), get_float_amount(transaction_row.get("deposit"))
         
         if amount_format == "dr_cr_in_amount":
-            amount = transaction_row.get("amount")
+            amount = get_float_amount(transaction_row.get("amount"))
             if "cr" in amount.lower():
-                return 0, float(amount.lower().replace("cr", "").replace(" ", ""))
+                return 0, amount
             else:
-                return float(amount.lower().replace("dr", "").replace(" ", "")), 0
+                return amount, 0
         
         if amount_format == "positive_negative_in_amount":
-            amount = transaction_row.get("amount")
+            amount = get_float_amount(transaction_row.get("amount", "0"))
             if amount > 0:
                 return 0, abs(amount)
             else:
@@ -484,19 +492,19 @@ def get_final_transactions(transactions: list, date_format: str, amount_format: 
         
         if amount_format == "cr_dr_in_transaction_type":
             transaction_type = transaction_row.get("transaction_type")
-            amount = transaction_row.get("amount")
+            amount = get_float_amount(transaction_row.get("amount", "0"))
             if "cr" in transaction_type.lower():
-                return 0, float(amount)
+                return 0, abs(amount)
             else:
-                return float(amount), 0
+                return abs(amount), 0
         
         if amount_format == "deposit_withdrawal_in_transaction_type":
             transaction_type = transaction_row.get("transaction_type")
-            amount = transaction_row.get("amount")
+            amount = get_float_amount(transaction_row.get("amount", "0"))
             if "deposit" in transaction_type.lower():
-                return 0, float(amount)
+                return 0, abs(amount)
             else:
-                return float(amount), 0
+                return abs(amount), 0
         
         return 0, 0
     
