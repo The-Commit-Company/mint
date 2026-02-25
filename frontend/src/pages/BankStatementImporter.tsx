@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils"
 import { MintBankStatementImportLog } from "@/types/Mint/MintBankStatementImportLog"
 import { useFrappeFileUpload, useFrappeGetDocList } from "frappe-react-sdk"
 import { useAtom, useAtomValue } from "jotai"
-import { ChevronLeftIcon, ListIcon, Loader2Icon } from "lucide-react"
+import { ListIcon, Loader2Icon } from "lucide-react"
 import { useState } from "react"
 import { Link } from "react-router"
 
@@ -72,14 +72,9 @@ const BankStatementImporter = () => {
                 </Breadcrumb>
             </div>
 
-            {currentStep === 'import' && <div className="px-4">
-                <Button size='sm' variant='outline' onClick={() => setCurrentStep("upload")}>
-                    <ChevronLeftIcon />
-                    {_("Back")}</Button>
-            </div>}
-
             {uploadedFileURL && selectedBankAccount && currentStep === 'import' ? <CSVImport
                 bank={selectedBankAccount}
+                onBack={() => setCurrentStep("upload")}
                 fileURL={uploadedFileURL} /> :
 
                 <div className="flex px-4">

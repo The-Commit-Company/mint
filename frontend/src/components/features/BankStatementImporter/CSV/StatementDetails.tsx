@@ -3,7 +3,7 @@ import { GetStatementDetailsResponse } from '../import_utils'
 import { flt, formatCurrency } from '@/lib/numbers'
 import { formatDate } from '@/lib/date'
 import { bankRecDateAtom, SelectedBank } from '../../BankReconciliation/bankRecAtoms'
-import { ExternalLinkIcon, InfoIcon, Landmark, Loader2Icon } from 'lucide-react'
+import { ChevronLeftIcon, ExternalLinkIcon, InfoIcon, Landmark, Loader2Icon } from 'lucide-react'
 import { H2, H3, H4, Paragraph } from '@/components/ui/typography'
 import { FileTypeIcon } from '@/components/ui/file-dropzone'
 import { getFileExtension } from '@/lib/file'
@@ -18,11 +18,6 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { Progress } from '@/components/ui/progress'
 import { useSetAtom } from 'jotai'
-
-type Props = {
-    data: GetStatementDetailsResponse,
-    bank: SelectedBank | null
-}
 
 const AMOUNT_FORMAT_LABEL_MAP = {
     "separate_columns_for_withdrawal_and_deposit": _("Separate columns for withdrawal and deposit"),
@@ -123,7 +118,13 @@ const DATE_FORMAT_LABEL_MAP: Record<string, { label: string; dayjsFormat: string
     },
 }
 
-const StatementDetails = ({ data, bank }: Props) => {
+type Props = {
+    data: GetStatementDetailsResponse,
+    bank: SelectedBank | null,
+    onBack: () => void
+}
+
+const StatementDetails = ({ data, bank, onBack }: Props) => {
     const dateFormatMeta = DATE_FORMAT_LABEL_MAP[data.date_format as keyof typeof DATE_FORMAT_LABEL_MAP]
 
     const { call, loading, error } = useFrappePostCall<{ message: { success: boolean, start_date: string, end_date: string } }>('mint.apis.statement_import.import_statement')
@@ -161,7 +162,16 @@ const StatementDetails = ({ data, bank }: Props) => {
     return (
         <div className='flex flex-col gap-4'>
             <div className='flex flex-col gap-4'>
-                <div className='flex items-start gap-4 justify-between'>
+                <div className='flex justify-between items-center'>
+                    <Button size='sm' variant='outline' onClick={onBack}>
+                        <ChevronLeftIcon />
+                        {_("Back")}
+                    </Button>
+                    <Button onClick={onImport} disabled={loading} size='sm' type='button'>
+                        {loading ? <Loader2Icon className='size-4 animate-spin' /> : null}
+                        {loading ? _("Importing...") : _("Import {0} transactions", [data.final_transactions?.length?.toString() || "0"])}</Button>
+                </div>
+                <div className='flex items-start gap-4'>
                     <div className='flex flex-col gap-1'>
                         <H2 className='text-lg border-0 p-0'>{_("Statement Details")}</H2>
                         <Paragraph className='text-sm'><span>
@@ -171,12 +181,6 @@ const StatementDetails = ({ data, bank }: Props) => {
                                 {_("Please review the details below and click the 'Import' button to proceed.")}
                             </span>
                         </Paragraph>
-                    </div>
-
-                    <div>
-                        <Button onClick={onImport} disabled={loading} size='sm' type='button'>
-                            {loading ? <Loader2Icon className='size-4 animate-spin' /> : null}
-                            {loading ? _("Importing...") : _("Import {0} transactions", [data.final_transactions?.length?.toString() || "0"])}</Button>
                     </div>
                 </div>
 
