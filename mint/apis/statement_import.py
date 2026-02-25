@@ -1,4 +1,5 @@
 import frappe
+import re
 from frappe.utils.csvutils import read_csv_content
 from frappe.utils.xlsxutils import (
 	read_xls_file_from_attached_file,
@@ -23,16 +24,9 @@ def get_statement_details(file_url: str, bank_account: str):
     4. Opening and Closing dates of the statement and balance
     """
 
-    # file_path = "/private/files/DetailedStatement.xlsx"
-    # file_path = "/private/files/HDFC.xls"
-    # file_path = "/private/files/SBI.xlsx"
-    # file_path = "/private/files/ICICI.xls"
-
     data = get_data(file_url)
 
     file_name = file_url.split("/")[-1]
-
-    # print(data)
 
     header_index = get_header_row_index(data)
 
@@ -356,9 +350,16 @@ def get_float_amount(amount):
 
     if isinstance(amount, str):
         amount = amount.lower().replace(",", "").replace(" ", "").replace("cr", "").replace("dr", "")
+        # Remove any other alphabets and currency symbols
+        amount = re.sub(r'[^\d.]', '', amount)
+        amount = float(amount)
+    elif isinstance(amount, int):
         amount = float(amount)
     else:
-        amount = float(amount)
+        try:
+            amount = float(amount)
+        except ValueError:
+            return None
 
     return amount
 
@@ -369,7 +370,9 @@ def get_file_properties(transactions: list):
     2. Amount format - does it contain "CR/Dr" text or is it in a separate column (maybe transaction type?). Amount could also be positive and negative.
     """
 
-    date_format_frequency = {}
+    date_format_frequency = {
+        "%d/%m/%Y": 0,
+    }
 
     amount_format_frequency = {
         "separate_columns_for_withdrawal_and_deposit": 0,
@@ -471,17 +474,18 @@ def get_final_transactions(transactions: list, date_format: str, amount_format: 
         """
 
         if amount_format == "separate_columns_for_withdrawal_and_deposit":
-            return transaction_row.get("withdrawal"), transaction_row.get("deposit")
+            return get_float_amount(transaction_row.get("withdrawal")), get_float_amount(transaction_row.get("deposit"))
         
         if amount_format == "dr_cr_in_amount":
             amount = transaction_row.get("amount")
+            float_amount = get_float_amount(amount)
             if "cr" in amount.lower():
-                return 0, float(amount.lower().replace("cr", "").replace(" ", ""))
+                return 0, float_amount
             else:
-                return float(amount.lower().replace("dr", "").replace(" ", "")), 0
+                return float_amount, 0
         
         if amount_format == "positive_negative_in_amount":
-            amount = transaction_row.get("amount")
+            amount = get_float_amount(transaction_row.get("amount", "0"))
             if amount > 0:
                 return 0, abs(amount)
             else:
@@ -489,19 +493,19 @@ def get_final_transactions(transactions: list, date_format: str, amount_format: 
         
         if amount_format == "cr_dr_in_transaction_type":
             transaction_type = transaction_row.get("transaction_type")
-            amount = transaction_row.get("amount")
+            amount = get_float_amount(transaction_row.get("amount", "0"))
             if "cr" in transaction_type.lower():
-                return 0, float(amount)
+                return 0, abs(amount)
             else:
-                return float(amount), 0
+                return abs(amount), 0
         
         if amount_format == "deposit_withdrawal_in_transaction_type":
             transaction_type = transaction_row.get("transaction_type")
-            amount = transaction_row.get("amount")
+            amount = get_float_amount(transaction_row.get("amount", "0"))
             if "deposit" in transaction_type.lower():
-                return 0, float(amount)
+                return 0, abs(amount)
             else:
-                return float(amount), 0
+                return abs(amount), 0
         
         return 0, 0
     
