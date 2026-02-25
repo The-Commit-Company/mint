@@ -477,11 +477,12 @@ def get_final_transactions(transactions: list, date_format: str, amount_format: 
             return get_float_amount(transaction_row.get("withdrawal")), get_float_amount(transaction_row.get("deposit"))
         
         if amount_format == "dr_cr_in_amount":
-            amount = get_float_amount(transaction_row.get("amount"))
+            amount = transaction_row.get("amount")
+            float_amount = get_float_amount(amount)
             if "cr" in amount.lower():
-                return 0, amount
+                return 0, float_amount
             else:
-                return amount, 0
+                return float_amount, 0
         
         if amount_format == "positive_negative_in_amount":
             amount = get_float_amount(transaction_row.get("amount", "0"))
