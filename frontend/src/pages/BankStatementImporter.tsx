@@ -4,12 +4,13 @@ import CompanySelector from "@/components/features/BankReconciliation/CompanySel
 import CSVImport from "@/components/features/BankStatementImporter/CSV/CSVImport"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import ErrorBanner from "@/components/ui/error-banner"
 import { FileDropzone } from "@/components/ui/file-dropzone"
 import { Label } from "@/components/ui/label"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { H1, H3 } from "@/components/ui/typography"
+import { H1, H3, Paragraph } from "@/components/ui/typography"
 import { useCurrentCompany } from "@/hooks/useCurrentCompany"
 import { formatDate } from "@/lib/date"
 import { flt, formatCurrency } from "@/lib/numbers"
@@ -95,15 +96,21 @@ const BankStatementImporter = () => {
                             </div>
                             }
                             {selectedBankAccount && <div className="flex flex-col gap-4 pr-4">
-                                <div className="flex flex-col gap-2">
-                                    <Label>{_("Bank Statement")}<span className="text-destructive">*</span></Label>
-                                    <p
-                                        data-slot="form-description"
-                                        className={cn("text-muted-foreground text-xs")}
-                                    >
-                                        {_("Upload your bank statement file to start the import process. We support CSV, and XLSX files.")}
-                                    </p>
+                                <div className="flex justify-between">
+                                    <div className="flex flex-col gap-2">
+                                        <Label>{_("Bank Statement")}<span className="text-destructive">*</span></Label>
+                                        <p
+                                            data-slot="form-description"
+                                            className={cn("text-muted-foreground text-xs")}
+                                        >
+                                            {_("Upload your bank statement file to start the import process. We support CSV, and XLSX files.")}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <StatementInstructions />
+                                    </div>
                                 </div>
+
                                 <FileDropzone
                                     setFiles={setFiles}
                                     onUpdate={() => setUploadedFileURL(null)}
@@ -136,6 +143,62 @@ const BankStatementImporter = () => {
             }
         </div >
     )
+}
+
+const StatementInstructions = () => {
+    return <Dialog>
+        <DialogTrigger asChild>
+            <Button variant='outline' size='sm'>{_("View Instructions")}</Button>
+        </DialogTrigger>
+        <DialogContent className="min-w-7xl">
+            <DialogHeader>
+                <DialogTitle>{_("Statement Import Instructions")}</DialogTitle>
+                <DialogDescription>{_("We support uploading CSV, XLSX and XLS files. Please make sure the file contains the correct columns.")}</DialogDescription>
+            </DialogHeader>
+            <Paragraph className="text-sm">{_("The file should contain the following columns with a distinct header row. You can upload most bank statements as is without changing the columns.")}</Paragraph>
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>{_("Column Name")}</TableHead>
+                        <TableHead>{_("Maps To")}</TableHead>
+                        <TableHead>{_("Description")}</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    <TableRow>
+                        <TableCell>Date/Transaction Date/Value Date</TableCell>
+                        <TableCell>{_("Date")}</TableCell>
+                        <TableCell className="text-muted-foreground">{_("The date of the transaction")}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Amount</TableCell>
+                        <TableCell>{_("Amount")}</TableCell>
+                        <TableCell className="text-muted-foreground">{_('This can contain "CR"/"DR" values or positive/negative values. You could also have a separate column for CR/DR.')}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Withdrawal/Deposit</TableCell>
+                        <TableCell>{_("Withdrawal")}/{_("Deposit")}</TableCell>
+                        <TableCell className="text-muted-foreground">{_("The withdrawal or deposit amounts - only required if there's no amount column.")}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Description/Particulars/Remarks/Narration/Detail</TableCell>
+                        <TableCell>{_("Description")}</TableCell>
+                        <TableCell className="text-muted-foreground">{_("The description of the transaction")}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell>Reference/Ref/Transaction ID/Cheque/Check</TableCell>
+                        <TableCell>{_("Reference")}</TableCell>
+                        <TableCell className="text-muted-foreground">{_("The reference number of the transaction")}</TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
+            <DialogFooter>
+                <DialogClose asChild>
+                    <Button variant='outline'>{_("Close")}</Button>
+                </DialogClose>
+            </DialogFooter>
+        </DialogContent>
+    </Dialog>
 }
 
 const StatementImportLog = () => {
