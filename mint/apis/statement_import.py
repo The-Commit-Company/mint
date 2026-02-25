@@ -162,7 +162,7 @@ def get_data(file_path: str):
         frappe.throw(_("Import template should be of type .csv, .xlsx or .xls"), title="Invalid File Type")
 
     if extension == ".csv":
-        data = read_csv_content(content, use_sniffer=True)
+        data = read_csv_content(content)
     elif extension == ".xlsx":
         data = read_xlsx_file_from_attached_file(fcontent=content)
     elif extension == ".xls":
