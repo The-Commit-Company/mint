@@ -18,6 +18,7 @@ class MintBankStatementImport(Document):
 
 		amended_from: DF.Link | None
 		bank_account: DF.Link
+		currency: DF.Link | None
 		error: DF.Code | None
 		file: DF.Attach | None
 		file_type: DF.Literal["PDF"]
@@ -26,6 +27,9 @@ class MintBankStatementImport(Document):
 	# end: auto-generated types
 
 	def before_validate(self):
+
+		account = frappe.get_cached_value("Bank Account", self.bank_account, "account")
+		self.currency = frappe.get_cached_value("Account", account, "account_currency")
 		# For all string amounts, compute the actual amount and type
 		for transaction in self.transactions:
 			if transaction.string_amount:
@@ -93,6 +97,7 @@ class MintBankStatementImport(Document):
 				"deposit": transaction.get("amount") if transaction.get("type") == "Deposit" else 0,
 				"description": transaction.get("description"),
 				"reference_number": transaction.get("reference"),
+				"currency": self.currency,
 			})
 			bank_tx.insert()
 			bank_tx.submit()

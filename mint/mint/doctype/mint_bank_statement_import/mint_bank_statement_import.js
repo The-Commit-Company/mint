@@ -9,4 +9,18 @@ frappe.ui.form.on("Mint Bank Statement Import", {
         })
 
     },
+    bank_account(frm) {
+        // Fetch currency from account
+        if (frm.doc.bank_account) {
+            frappe.db.get_value("Bank Account", frm.doc.bank_account, "account", (d) => {
+                if (d) {
+                    frappe.db.get_value("Account", d.account, "account_currency", (d) => {
+                        if (d) {
+                            frm.set_value("currency", d.account_currency)
+                        }
+                    })
+                }
+            })
+        }
+    }
 });
