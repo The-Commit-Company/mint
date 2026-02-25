@@ -369,7 +369,9 @@ def get_file_properties(transactions: list):
     2. Amount format - does it contain "CR/Dr" text or is it in a separate column (maybe transaction type?). Amount could also be positive and negative.
     """
 
-    date_format_frequency = {}
+    date_format_frequency = {
+        "%d/%m/%Y": 0,
+    }
 
     amount_format_frequency = {
         "separate_columns_for_withdrawal_and_deposit": 0,
