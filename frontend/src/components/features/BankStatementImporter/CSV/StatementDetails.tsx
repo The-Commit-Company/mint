@@ -116,6 +116,14 @@ const DATE_FORMAT_LABEL_MAP: Record<string, { label: string; dayjsFormat: string
         label: "DD MMMM YYYY",
         dayjsFormat: "DD MMMM YYYY",
     },
+    "%d/%b/%Y": {
+        label: "DD/MMM/YYYY",
+        dayjsFormat: "DD/MMM/YYYY",
+    },
+    "%d-%b-%Y": {
+        label: "DD-MMM-YYYY",
+        dayjsFormat: "DD-MMM-YYYY",
+    }
 }
 
 type Props = {
