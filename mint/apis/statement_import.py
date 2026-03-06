@@ -247,7 +247,7 @@ def get_column_mapping(header_row: list[str]):
 
                     column_mapping[standard_variable] = idx
 
-                break
+                    break
         
         columns.append(column)
     
@@ -443,7 +443,7 @@ def get_closing_balance(transactions: list, date_format: str):
 
             closing_balance = transaction.get("balance")
 
-    return getdate(statement_start_date), getdate(statement_end_date), closing_balance
+    return getdate(statement_start_date), getdate(statement_end_date), get_float_amount(closing_balance)
 
 
 def check_for_conflicts(bank_account: str, start_date: str, end_date: str):
