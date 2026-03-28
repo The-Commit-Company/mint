@@ -248,7 +248,7 @@ def create_bulk_bank_entry_and_reconcile(bank_transactions: list[str|int],
                 "debit_in_account_currency": transactions_details.unallocated_amount,
                 "debit": transactions_details.unallocated_amount,
                 "credit_in_account_currency": 0,
-                "debit": 0,
+                "credit": 0,
             })
 
             entries.append({
