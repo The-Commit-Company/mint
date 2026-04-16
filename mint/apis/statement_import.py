@@ -353,9 +353,12 @@ def get_float_amount(amount):
 
     if isinstance(amount, str):
         amount = amount.lower().replace(",", "").replace(" ", "").replace("cr", "").replace("dr", "")
-        # Remove any other alphabets and currency symbols
-        amount = re.sub(r'[^\d.]', '', amount)
-        amount = float(amount)
+        # Remove any other alphabets and currency symbols - do not remove the minus or decimal sign
+        amount = re.sub(r'[^\d.-]', '', amount)
+        try:
+            amount = float(amount)
+        except ValueError:
+            return None
     elif isinstance(amount, int):
         amount = float(amount)
     else:
