@@ -156,14 +156,14 @@ def get_data(file_path: str):
     extension = parts[1]
     content = file_doc.get_content()
 
-    if extension not in (".csv", ".xlsx", ".xls"):
+    if extension.lower() not in (".csv", ".xlsx", ".xls"):
         frappe.throw(_("Import template should be of type .csv, .xlsx or .xls"), title="Invalid File Type")
 
-    if extension == ".csv":
+    if extension.lower() == ".csv":
         data = read_csv_content(content)
-    elif extension == ".xlsx":
+    elif extension.lower() == ".xlsx":
         data = read_xlsx_file_from_attached_file(fcontent=content)
-    elif extension == ".xls":
+    elif extension.lower() == ".xls":
         data = read_xls_file_from_attached_file(content)
     
     return data
