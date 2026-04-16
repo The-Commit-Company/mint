@@ -284,6 +284,9 @@ def get_transaction_rows(data: list[list[str]], header_index: int, column_mappin
         if not date:
             continue
 
+        if isinstance(date, datetime):
+            date = date.strftime("%Y-%m-%d")
+
         if not isinstance(date, str):
             continue
 
@@ -433,7 +436,10 @@ def get_closing_balance(transactions: list, date_format: str):
         if not date:
             continue
 
-        tx_date = datetime.strptime(date, date_format)
+        if isinstance(date, datetime):
+            tx_date = date
+        else:
+            tx_date = datetime.strptime(date, date_format)
 
         if statement_start_date is None or tx_date < statement_start_date:
             statement_start_date = tx_date
@@ -511,9 +517,15 @@ def get_final_transactions(transactions: list, date_format: str, amount_format: 
     
     for transaction in transactions:
         date = transaction.get("date")
+
+        if isinstance(date, datetime):
+            date = date.strftime("%Y-%m-%d")
+        else:
+            date = datetime.strptime(date, date_format).strftime("%Y-%m-%d")
+
         withdrawal, deposit = parse_amount(transaction)
         final_transactions.append({
-            "date": datetime.strptime(date, date_format).strftime("%Y-%m-%d"),
+            "date": date,
             "withdrawal": withdrawal,
             "deposit": deposit,
             "description": transaction.get("description"),
