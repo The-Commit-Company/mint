@@ -123,6 +123,10 @@ const DATE_FORMAT_LABEL_MAP: Record<string, { label: string; dayjsFormat: string
     "%d-%b-%Y": {
         label: "DD-MMM-YYYY",
         dayjsFormat: "DD-MMM-YYYY",
+    },
+    "%d-%b-%y": {
+        label: "DD-MMM-YY",
+        dayjsFormat: "DD-MMM-YY",
     }
 }
 
