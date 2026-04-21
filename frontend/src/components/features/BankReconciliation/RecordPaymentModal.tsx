@@ -967,13 +967,31 @@ const FetchInvoicesModal = ({ onClose }: { onClose: () => void }) => {
     }, [data])
 
     const [selectedInvoices, setSelectedInvoices] = useState<OutstandingInvoice[]>([])
+    const [anchorIndex, setAnchorIndex] = useState<number | null>(null)
 
-    const onSelectRow = (row: OutstandingInvoice) => {
-        if (selectedInvoices.includes(row)) {
-            setSelectedInvoices(selectedInvoices.filter((invoice) => invoice !== row))
+    const onSelectRow = (row: OutstandingInvoice, index: number, shiftKey: boolean) => {
+        const rows = data?.message ?? []
+        const isSelected = selectedInvoices.includes(row)
+        const nextChecked = !isSelected
+
+        if (shiftKey && anchorIndex !== null && anchorIndex !== index) {
+            const [start, end] = anchorIndex < index ? [anchorIndex, index] : [index, anchorIndex]
+            const rangeRows = rows.slice(start, end + 1)
+
+            setSelectedInvoices((prev) => {
+                if (nextChecked) {
+                    const toAdd = rangeRows.filter((r) => !prev.includes(r))
+                    return [...prev, ...toAdd]
+                }
+                return prev.filter((r) => !rangeRows.includes(r))
+            })
         } else {
-            setSelectedInvoices([...selectedInvoices, row])
+            setSelectedInvoices((prev) =>
+                isSelected ? prev.filter((invoice) => invoice !== row) : [...prev, row]
+            )
         }
+
+        setAnchorIndex(index)
     }
 
     const { call: allocateAmountToReferences, loading: allocateAmountToReferencesLoading, error: allocateAmountToReferencesError } = useFrappePostCall('run_doc_method')
@@ -1059,26 +1077,24 @@ const FetchInvoicesModal = ({ onClose }: { onClose: () => void }) => {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {data.message.map((ref) => (
+                {data.message.map((ref, index) => (
                     <TableRow
                         key={ref.voucher_no}
                         onClick={(e) => {
                             const target = e.target as HTMLElement
-                            // Do not select the checkbox if the user clicks on the checkbox or the link
-                            if (target.tagName !== 'INPUT' && !target.className.includes('chakra-checkbox') && !target.className.includes('chakra-link')) {
-                                onSelectRow(ref)
-                            }
+                            if (target.closest('a')) return
+                            onSelectRow(ref, index, e.shiftKey)
                         }}
-                        className="cursor-pointer">
-                        <TableCell>
-                            <Checkbox checked={selectedInvoices.includes(ref)}
-                                onCheckedChange={(checked) => {
-                                    if (checked) {
-                                        setSelectedInvoices([...selectedInvoices, ref])
-                                    } else {
-                                        setSelectedInvoices(selectedInvoices.filter((invoice) => invoice !== ref))
-                                    }
-                                }}
+                        className="cursor-pointer select-none">
+                        <TableCell
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                onSelectRow(ref, index, e.shiftKey)
+                            }}>
+                            <Checkbox
+                                checked={selectedInvoices.includes(ref)}
+                                tabIndex={-1}
+                                className="pointer-events-none"
                             />
                         </TableCell>
                         <TableCell>
