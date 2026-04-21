@@ -913,7 +913,7 @@ const GetUnpaidInvoicesButton = () => {
             {partyType && party && <DialogTrigger asChild>
                 <Button variant='outline' size='sm' type='button'>Get Unpaid Invoices</Button>
             </DialogTrigger>}
-            <DialogContent className="min-w-[75vw]">
+            <DialogContent className="min-w-[75vw] max-h-[90vh] overflow-hidden flex flex-col">
                 <DialogHeader>
                     <DialogTitle>Select Invoices</DialogTitle>
                     <DialogDescription>Unpaid invoices from {partyName} for {formatCurrency(amount)}.</DialogDescription>
@@ -1019,7 +1019,8 @@ const FetchInvoicesModal = ({ onClose }: { onClose: () => void }) => {
             onClose()
         })
     }
-    return <div className="flex flex-col gap-4">
+    return <div className="flex flex-col gap-4 min-h-0 flex-1">
+        <div className="flex flex-col gap-4 min-h-0 flex-1 overflow-y-auto">
         {isLoading ? <TableLoader columns={6} /> : null}
         {error && <ErrorBanner error={error} />}
         {error && <ErrorBanner error={allocateAmountToReferencesError} />}
@@ -1105,12 +1106,13 @@ const FetchInvoicesModal = ({ onClose }: { onClose: () => void }) => {
                 ))}
             </TableBody>
         </Table> : null}
-        <div className="flex justify-between items-center">
+        </div>
+        <div className="flex justify-between items-center shrink-0 border-t pt-4 bg-background">
             <div className="flex gap-2">
                 <span className="text-muted-foreground">Invoices: <span className="text-foreground font-mono font-medium">{selectedInvoices.length}</span></span> /
                 <span className="text-muted-foreground">Total: <span className="text-foreground font-mono font-medium">{formatCurrency(selectedInvoices.reduce((acc, invoice) => acc + invoice.outstanding_amount, 0))}</span></span>
             </div>
-            <DialogFooter className="pt-2">
+            <DialogFooter>
                 <DialogClose asChild>
                     <Button variant='ghost' disabled={allocateAmountToReferencesLoading}>Cancel</Button>
                 </DialogClose>
