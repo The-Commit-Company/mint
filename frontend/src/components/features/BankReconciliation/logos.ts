@@ -142,6 +142,10 @@ export const BANK_LOGOS: { keywords: string[], logo: string }[] = [
         logo: 'assets/bank-logos/Bank_of_Maharashtra.svg'
     },
     {
+        keywords: ['City Union Bank', 'CUB'],
+        logo: 'assets/bank-logos/City_Union_bank.svg'
+    },
+    {
         keywords: ['Kotak Mahindra Bank', 'Kotak'],
         logo: 'assets/bank-logos/Kotak_Mahindra.svg'
     },
