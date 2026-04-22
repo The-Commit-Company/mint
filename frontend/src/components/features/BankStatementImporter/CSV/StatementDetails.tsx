@@ -27,103 +27,29 @@ const AMOUNT_FORMAT_LABEL_MAP = {
     "deposit_withdrawal_in_transaction_type": _('Transaction type column has "Deposit"/"Withdrawal" values'),
 }
 
-const DATE_FORMAT_LABEL_MAP: Record<string, { label: string; dayjsFormat: string }> = {
-    "%d-%m-%Y": {
-        label: "DD-MM-YYYY",
-        dayjsFormat: "DD-MM-YYYY",
-    },
-    "%m-%d-%Y": {
-        label: "MM-DD-YYYY",
-        dayjsFormat: "MM-DD-YYYY",
-    },
-    "%Y-%m-%d": {
-        label: "YYYY-MM-DD",
-        dayjsFormat: "YYYY-MM-DD",
-    },
-    "%d-%m-%y": {
-        label: "DD-MM-YY",
-        dayjsFormat: "DD-MM-YY",
-    },
-    "%m-%d-%y": {
-        label: "MM-DD-YY",
-        dayjsFormat: "MM-DD-YY",
-    },
-    "%y-%m-%d": {
-        label: "YY-MM-DD",
-        dayjsFormat: "YY-MM-DD",
-    },
-    "%y-%b-%d": {
-        label: "YY-MMM-DD",
-        dayjsFormat: "YY-MMM-DD",
-    },
-    "%d/%m/%Y": {
-        label: "DD/MM/YYYY",
-        dayjsFormat: "DD/MM/YYYY",
-    },
-    "%m/%d/%Y": {
-        label: "MM/DD/YYYY",
-        dayjsFormat: "MM/DD/YYYY",
-    },
-    "%Y/%m/%d": {
-        label: "YYYY/MM/DD",
-        dayjsFormat: "YYYY/MM/DD",
-    },
-    "%d/%m/%y": {
-        label: "DD/MM/YY",
-        dayjsFormat: "DD/MM/YY",
-    },
-    "%m/%d/%y": {
-        label: "MM/DD/YY",
-        dayjsFormat: "MM/DD/YY",
-    },
-    "%y/%m/%d": {
-        label: "YY/MM/DD",
-        dayjsFormat: "YY/MM/DD",
-    },
-    "%d/%b/%y": {
-        label: "DD/MMM/YY",
-        dayjsFormat: "DD/MMM/YY",
-    },
-    "%d.%m.%Y": {
-        label: "DD.MM.YYYY",
-        dayjsFormat: "DD.MM.YYYY",
-    },
-    "%m.%d.%Y": {
-        label: "MM.DD.YYYY",
-        dayjsFormat: "MM.DD.YYYY",
-    },
-    "%Y.%m.%d": {
-        label: "YYYY.MM.DD",
-        dayjsFormat: "YYYY.MM.DD",
-    },
-    "%d.%m.%y": {
-        label: "DD.MM.YY",
-        dayjsFormat: "DD.MM.YY",
-    },
-    "%m.%d.%y": {
-        label: "MM.DD.YY",
-        dayjsFormat: "MM.DD.YY",
-    },
-    "%y.%m.%d": {
-        label: "YY.MM.DD",
-        dayjsFormat: "YY.MM.DD",
-    },
-    "%d %b %Y": {
-        label: "DD MMM YYYY",
-        dayjsFormat: "DD MMM YYYY",
-    },
-    "%d %B %Y": {
-        label: "DD MMMM YYYY",
-        dayjsFormat: "DD MMMM YYYY",
-    },
-    "%d/%b/%Y": {
-        label: "DD/MMM/YYYY",
-        dayjsFormat: "DD/MMM/YYYY",
-    },
-    "%d-%b-%Y": {
-        label: "DD-MMM-YYYY",
-        dayjsFormat: "DD-MMM-YYYY",
+const parseDateFormat = (dateFormat: string) => {
+
+    const charMap = {
+        "%d": "DD",
+        "%m": "MM",
+        "%Y": "YYYY",
+        "%y": "YY",
+        "%b": "MMM",
+        "%B": "MMMM",
     }
+
+    let label = dateFormat
+
+    Object.keys(charMap).forEach((char) => {
+        label = label.replace(char, charMap[char as keyof typeof charMap])
+    })
+
+    return {
+        label,
+        dayjsFormat: label,
+    }
+
+
 }
 
 type Props = {
@@ -133,7 +59,7 @@ type Props = {
 }
 
 const StatementDetails = ({ data, bank, onBack }: Props) => {
-    const dateFormatMeta = DATE_FORMAT_LABEL_MAP[data.date_format as keyof typeof DATE_FORMAT_LABEL_MAP]
+    const dateFormatMeta = parseDateFormat(data.date_format)
 
     const { call, loading, error } = useFrappePostCall<{ message: { success: boolean, start_date: string, end_date: string } }>('mint.apis.statement_import.import_statement')
 

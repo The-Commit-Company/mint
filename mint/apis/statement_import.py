@@ -38,6 +38,19 @@ def get_statement_details(file_url: str, bank_account: str):
 
     date_format, amount_format = get_file_properties(transaction_rows)
 
+    char_map = {
+        "%d": "DD",
+        "%m": "MM",
+        "%Y": "YYYY",
+        "%y": "YY",
+        "%b": "MMM",
+        "%B": "MMMM",
+    }
+
+    formatted_date_format = date_format
+    for char, replacement in char_map.items():
+        formatted_date_format = formatted_date_format.replace(char, replacement)
+
     statement_start_date, statement_end_date, closing_balance = get_closing_balance(transaction_rows, date_format)
 
     conflicting_transactions = check_for_conflicts(bank_account, statement_start_date, statement_end_date)
@@ -58,7 +71,7 @@ def get_statement_details(file_url: str, bank_account: str):
         "transaction_starting_index": transaction_starting_index,
         "transaction_ending_index": transaction_ending_index,
         "transaction_rows": transaction_rows,
-        "date_format": date_format,
+        "date_format": formatted_date_format,
         "amount_format": amount_format,
         "statement_start_date": statement_start_date,
         "statement_end_date": statement_end_date,
@@ -203,13 +216,13 @@ def get_column_mapping(header_row: list[str]):
     """
     standard_variables = {
         "Date": ["date", "transaction date"], 
+        "Withdrawal": ["withdrawal", "debit"],
+        "Deposit": ["deposit", "credit"],
         "Amount": ["amount"], 
         "Description": ["description", "particulars", "remarks", "narration", "detail", "reference"], 
         "Reference": ["reference", "ref", "tran id", "transaction id", "cheque", "check", "id"], 
         "Transaction Type": ["transaction type", "cr/dr", "dr/cr", "debit/credit", "credit/debit"], 
         "Balance": ["balance"],
-        "Withdrawal": ["withdrawal", "debit"],
-        "Deposit": ["deposit", "credit"],
     }
 
     # A standard variable can be represented by multiple names
