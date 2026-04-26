@@ -220,7 +220,7 @@ def get_column_mapping(header_row: list[str]):
         "Deposit": ["deposit", "credit"],
         "Amount": ["amount"], 
         "Description": ["description", "particulars", "remarks", "narration", "detail", "reference"], 
-        "Reference": ["reference", "ref", "tran id", "transaction id", "cheque", "check", "id"], 
+        "Reference": ["reference", "ref", "tran id", "transaction id", "cheque", "check", "id", "chq"], 
         "Transaction Type": ["transaction type", "cr/dr", "dr/cr", "debit/credit", "credit/debit"], 
         "Balance": ["balance"],
     }
