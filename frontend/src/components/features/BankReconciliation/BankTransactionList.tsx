@@ -81,16 +81,27 @@ const BankTransactionListView = () => {
                     return false
                 }
             }
-
             if (status !== 'All') {
                 if (status === 'Reconciled' && transaction.status !== 'Reconciled') {
                     return false
                 }
-                if (status === 'Unreconciled' && (!transaction.allocated_amount || (transaction.allocated_amount && transaction.allocated_amount === 0))) {
-                    return false
+                if (status === 'Unreconciled') {
+                    if (transaction.status === 'Reconciled') {
+                        return false
+                    }
+                    // Filter out partially reconciled transactions
+                    if (transaction.allocated_amount && transaction.allocated_amount > 0 && transaction.unallocated_amount !== 0) {
+                        return false
+                    }
                 }
-                if (status === 'Partially Reconciled' && transaction.allocated_amount && transaction.allocated_amount > 0 && transaction.unallocated_amount !== 0) {
-                    return false
+                if (status === 'Partially Reconciled') {
+
+                    if (transaction.status === 'Reconciled') {
+                        return false
+                    }
+                    if ((transaction.allocated_amount ?? 0) === 0) {
+                        return false
+                    }
                 }
 
             }
