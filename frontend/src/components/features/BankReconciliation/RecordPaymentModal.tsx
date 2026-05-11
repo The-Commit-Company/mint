@@ -913,7 +913,7 @@ const GetUnpaidInvoicesButton = () => {
             {partyType && party && <DialogTrigger asChild>
                 <Button variant='outline' size='sm' type='button'>Get Unpaid Invoices</Button>
             </DialogTrigger>}
-            <DialogContent className="min-w-[75vw]">
+            <DialogContent className="min-w-[75vw] max-h-[90vh] overflow-hidden flex flex-col">
                 <DialogHeader>
                     <DialogTitle>Select Invoices</DialogTitle>
                     <DialogDescription>Unpaid invoices from {partyName} for {formatCurrency(amount)}.</DialogDescription>
@@ -967,13 +967,31 @@ const FetchInvoicesModal = ({ onClose }: { onClose: () => void }) => {
     }, [data])
 
     const [selectedInvoices, setSelectedInvoices] = useState<OutstandingInvoice[]>([])
+    const [anchorIndex, setAnchorIndex] = useState<number | null>(null)
 
-    const onSelectRow = (row: OutstandingInvoice) => {
-        if (selectedInvoices.includes(row)) {
-            setSelectedInvoices(selectedInvoices.filter((invoice) => invoice !== row))
+    const onSelectRow = (row: OutstandingInvoice, index: number, shiftKey: boolean) => {
+        const rows = data?.message ?? []
+        const isSelected = selectedInvoices.includes(row)
+        const nextChecked = !isSelected
+
+        if (shiftKey && anchorIndex !== null && anchorIndex !== index) {
+            const [start, end] = anchorIndex < index ? [anchorIndex, index] : [index, anchorIndex]
+            const rangeRows = rows.slice(start, end + 1)
+
+            setSelectedInvoices((prev) => {
+                if (nextChecked) {
+                    const toAdd = rangeRows.filter((r) => !prev.includes(r))
+                    return [...prev, ...toAdd]
+                }
+                return prev.filter((r) => !rangeRows.includes(r))
+            })
         } else {
-            setSelectedInvoices([...selectedInvoices, row])
+            setSelectedInvoices((prev) =>
+                isSelected ? prev.filter((invoice) => invoice !== row) : [...prev, row]
+            )
         }
+
+        setAnchorIndex(index)
     }
 
     const { call: allocateAmountToReferences, loading: allocateAmountToReferencesLoading, error: allocateAmountToReferencesError } = useFrappePostCall('run_doc_method')
@@ -1019,7 +1037,8 @@ const FetchInvoicesModal = ({ onClose }: { onClose: () => void }) => {
             onClose()
         })
     }
-    return <div className="flex flex-col gap-4">
+    return <div className="flex flex-col gap-4 min-h-0 flex-1">
+        <div className="flex flex-col gap-4 min-h-0 flex-1 overflow-y-auto">
         {isLoading ? <TableLoader columns={6} /> : null}
         {error && <ErrorBanner error={error} />}
         {error && <ErrorBanner error={allocateAmountToReferencesError} />}
@@ -1058,26 +1077,24 @@ const FetchInvoicesModal = ({ onClose }: { onClose: () => void }) => {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {data.message.map((ref) => (
+                {data.message.map((ref, index) => (
                     <TableRow
                         key={ref.voucher_no}
                         onClick={(e) => {
                             const target = e.target as HTMLElement
-                            // Do not select the checkbox if the user clicks on the checkbox or the link
-                            if (target.tagName !== 'INPUT' && !target.className.includes('chakra-checkbox') && !target.className.includes('chakra-link')) {
-                                onSelectRow(ref)
-                            }
+                            if (target.closest('a')) return
+                            onSelectRow(ref, index, e.shiftKey)
                         }}
-                        className="cursor-pointer">
-                        <TableCell>
-                            <Checkbox checked={selectedInvoices.includes(ref)}
-                                onCheckedChange={(checked) => {
-                                    if (checked) {
-                                        setSelectedInvoices([...selectedInvoices, ref])
-                                    } else {
-                                        setSelectedInvoices(selectedInvoices.filter((invoice) => invoice !== ref))
-                                    }
-                                }}
+                        className="cursor-pointer select-none">
+                        <TableCell
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                onSelectRow(ref, index, e.shiftKey)
+                            }}>
+                            <Checkbox
+                                checked={selectedInvoices.includes(ref)}
+                                tabIndex={-1}
+                                className="pointer-events-none"
                             />
                         </TableCell>
                         <TableCell>
@@ -1105,12 +1122,13 @@ const FetchInvoicesModal = ({ onClose }: { onClose: () => void }) => {
                 ))}
             </TableBody>
         </Table> : null}
-        <div className="flex justify-between items-center">
+        </div>
+        <div className="flex justify-between items-center shrink-0 border-t pt-4 bg-background">
             <div className="flex gap-2">
                 <span className="text-muted-foreground">Invoices: <span className="text-foreground font-mono font-medium">{selectedInvoices.length}</span></span> /
                 <span className="text-muted-foreground">Total: <span className="text-foreground font-mono font-medium">{formatCurrency(selectedInvoices.reduce((acc, invoice) => acc + invoice.outstanding_amount, 0))}</span></span>
             </div>
-            <DialogFooter className="pt-2">
+            <DialogFooter>
                 <DialogClose asChild>
                     <Button variant='ghost' disabled={allocateAmountToReferencesLoading}>Cancel</Button>
                 </DialogClose>
